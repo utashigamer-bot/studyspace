@@ -8,7 +8,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="StudySpace">
 <meta name="theme-color" content="#0c0b14">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+/* Polices de secours si Google Fonts ne charge pas */
+@font-face {
+  font-family: 'Syne';
+  src: local('Arial Black'), local('Arial Bold'), local('Helvetica Bold');
+  font-weight: 700 800;
+  unicode-range: U+0000-00FF;
+}
+</style>
 <style>
 /* ============================================================
    THEME VARIABLES
@@ -48,12 +57,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Instrument Sans', sans-serif;
+  font-family: 'Instrument Sans', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0.01em;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
   transition: background 0.3s, color 0.3s;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; }
@@ -97,7 +110,7 @@ textarea, input, select { font-family: inherit; }
 .logo-text {
   font-family: 'Syne', sans-serif;
   font-size: 17px; font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: 0px;
   line-height: 1.1;
 }
 .logo-text small {
@@ -219,7 +232,7 @@ textarea, input, select { font-family: inherit; }
 .page-title {
   font-family: 'Syne', sans-serif;
   font-size: 32px; font-weight: 800;
-  letter-spacing: -1px; line-height: 1.1;
+  letter-spacing: -1px; line-height: 1.35;
 }
 .page-title span { color: var(--accent); }
 .page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
@@ -349,7 +362,7 @@ textarea, input, select { font-family: inherit; }
 .stat-card.blue::before { background: var(--accent5); }
 .stat-card.orange::before { background: var(--accent6); }
 .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
-.stat-value { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+.stat-value { font-family: 'Space Grotesk', 'Arial Black', Arial, sans-serif; font-size: 36px; font-weight: 700; line-height: 1.3; }
 .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 .dashboard-row {
   display: grid;
@@ -718,8 +731,8 @@ textarea, input, select { font-family: inherit; }
   align-items: center; justify-content: center;
 }
 .pomo-ring .pomo-time .time-big {
-  font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800;
-  letter-spacing: -2px; line-height: 1;
+  font-family: 'Space Grotesk', 'Arial Black', Arial, sans-serif; font-size: 52px; font-weight: 700;
+  line-height: 1.3;
 }
 .pomo-ring .pomo-time .time-label {
   font-size: 11px; color: var(--muted);
@@ -750,7 +763,7 @@ textarea, input, select { font-family: inherit; }
   border: 1px solid var(--border); border-radius: 14px;
   text-align: center;
 }
-.pomo-stat-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+.pomo-stat-val { font-family: 'Space Grotesk', 'Arial Black', Arial, sans-serif; font-size: 28px; font-weight: 700;  line-height: 1.3; }
 .pomo-stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .pomo-task-input {
   width: 100%; background: var(--card);
@@ -810,8 +823,231 @@ textarea, input, select { font-family: inherit; }
 .nc-dot.selected { border-color: white; transform: scale(1.15); }
 
 /* ============================================================
-   FAMILLE
+   CHALLENGES & POINTS
 ============================================================ */
+.xp-bar-wrap {
+  background: var(--border); border-radius: 20px;
+  height: 10px; overflow: hidden; margin: 8px 0 4px;
+}
+.xp-bar-fill {
+  height: 100%; border-radius: 20px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.level-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(155,138,251,0.2), rgba(240,193,75,0.2));
+  border: 1px solid rgba(155,138,251,0.4);
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 13px;
+}
+.level-badge .lvl-num { font-size: 18px; color: var(--accent); }
+.points-hero {
+  padding: 28px 32px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(155,138,251,0.15), rgba(240,193,75,0.08));
+  border: 1px solid rgba(155,138,251,0.25);
+  margin-bottom: 24px; display: flex; align-items: center; gap: 24px;
+  flex-wrap: wrap;
+}
+.points-hero-left { flex: 1; min-width: 200px; }
+.points-total {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 56px; font-weight: 700; line-height: 1;
+  color: var(--accent);
+}
+.points-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.points-hero-right { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
+
+.challenge-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.challenge-card {
+  padding: 20px; border-radius: var(--radius);
+  background: var(--card); border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.challenge-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.challenge-card.done { opacity: 0.65; }
+.challenge-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.challenge-card.daily::before { background: var(--accent3); }
+.challenge-card.weekly::before { background: var(--accent2); }
+.challenge-card.monthly::before { background: var(--accent6); }
+.challenge-card.done::before { background: var(--border); }
+.ch-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.ch-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.ch-info { flex: 1; }
+.ch-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.ch-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.ch-pts {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--accent);
+  display: flex; align-items: center; gap: 5px;
+}
+.ch-type {
+  font-size: 10px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
+}
+.ch-type.daily { background: rgba(82,232,162,0.15); color: var(--accent3); }
+.ch-type.weekly { background: rgba(155,138,251,0.15); color: var(--accent2); }
+.ch-type.monthly { background: rgba(251,146,60,0.15); color: var(--accent6); }
+.ch-progress { margin: 10px 0 0; }
+.ch-progress-bar {
+  background: var(--border); border-radius: 10px; height: 6px; overflow: hidden;
+}
+.ch-progress-fill { height: 100%; border-radius: 10px; transition: width 0.4s ease; }
+.ch-progress-label { font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; justify-content: space-between; }
+.ch-complete-btn {
+  width: 100%; margin-top: 14px; padding: 10px;
+  border-radius: 10px; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  transition: all 0.18s;
+}
+.ch-complete-btn.todo { background: var(--accent); color: #0c0b14; }
+.ch-complete-btn.todo:hover { opacity: 0.88; transform: translateY(-1px); }
+.ch-complete-btn.completed { background: var(--border); color: var(--muted); cursor: default; }
+
+/* Leaderboard */
+.leaderboard { }
+.leaderboard-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 14px;
+  margin-bottom: 8px; background: var(--card);
+  border: 1px solid var(--border);
+  transition: transform 0.15s;
+}
+.leaderboard-item:hover { transform: translateX(4px); }
+.leaderboard-item.me { border-color: var(--accent); background: rgba(240,193,75,0.06); }
+.lb-rank {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 700; width: 32px; text-align: center;
+  flex-shrink: 0;
+}
+.lb-rank.gold { color: #f0c14b; }
+.lb-rank.silver { color: #c0c0c0; }
+.lb-rank.bronze { color: #cd7f32; }
+.lb-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0; border: 2px solid var(--border);
+}
+.lb-info { flex: 1; }
+.lb-name { font-size: 14px; font-weight: 600; }
+.lb-pts-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.lb-pts {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 700; color: var(--accent);
+}
+.lb-pts-word { font-size: 10px; color: var(--muted); }
+.add-friend-card { padding: 22px; margin-bottom: 16px; }
+.challenges-layout {
+  display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+}
+
+/* ============================================================
+   SOCIAL
+============================================================ */
+.social-layout {
+  display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start;
+}
+.feed { display: flex; flex-direction: column; gap: 16px; }
+.post-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.post-card:hover { box-shadow: var(--shadow); }
+.post-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 20px 12px;
+}
+.post-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; border: 2px solid var(--border); flex-shrink: 0;
+}
+.post-author { font-size: 14px; font-weight: 600; }
+.post-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.post-body { padding: 0 20px 14px; font-size: 14px; line-height: 1.6; }
+.post-img { width: 100%; max-height: 280px; object-fit: cover; display: block; }
+.post-actions {
+  display: flex; gap: 6px; padding: 10px 20px 16px;
+  border-top: 1px solid var(--border);
+}
+.post-action-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--muted); cursor: pointer; transition: all 0.15s;
+}
+.post-action-btn:hover { color: var(--text); background: var(--card2); }
+.post-action-btn.liked { color: #f87171; border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+.new-post-card { padding: 22px; margin-bottom: 4px; }
+.new-post-card h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+.post-textarea {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px; color: var(--text);
+  font-family: inherit; font-size: 14px; line-height: 1.6;
+  resize: none; outline: none; min-height: 80px; transition: border-color 0.2s;
+}
+.post-textarea:focus { border-color: var(--accent2); }
+.post-toolbar { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+.post-mood-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.mood-chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 13px;
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--surface); transition: all 0.15s;
+}
+.mood-chip.selected { border-color: var(--accent2); background: rgba(155,138,251,0.15); }
+.online-friends { }
+.online-card { padding: 20px; }
+.online-card h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.friend-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.friend-row:last-child { border-bottom: none; }
+.friend-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; border: 2px solid var(--border);
+  position: relative; flex-shrink: 0;
+}
+.online-dot {
+  position: absolute; bottom: 0; right: 0;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--card); background: var(--accent3);
+}
+.offline-dot {
+  position: absolute; bottom: 0; right: 0;
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--card); background: var(--border);
+}
+.friend-info { flex: 1; }
+.friend-name { font-size: 13px; font-weight: 500; }
+.friend-status { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.add-friend-btn {
+  background: none; border: 1px dashed var(--border);
+  color: var(--muted); border-radius: 8px; padding: 6px 12px;
+  font-size: 12px; cursor: pointer; transition: all 0.15s;
+}
+.add-friend-btn:hover { color: var(--text); border-color: var(--muted); }
+.streak-fire {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px; font-weight: 700; color: var(--accent6);
+}
+
 .famille-hero {
   border-radius: var(--radius);
   padding: 28px 32px;
@@ -829,7 +1065,7 @@ textarea, input, select { font-family: inherit; }
 .famille-hero-info { flex: 1; }
 .famille-hero-location {
   font-family: 'Syne', sans-serif;
-  font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+  font-size: 28px; font-weight: 800; letter-spacing: 0px;
   margin-bottom: 4px;
 }
 .famille-hero-sub { font-size: 14px; opacity: 0.8; }
@@ -841,8 +1077,8 @@ textarea, input, select { font-family: inherit; }
   text-align: right; flex-shrink: 0;
 }
 .famille-countdown-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 44px; font-weight: 800; line-height: 1;
+  font-family: 'Space Grotesk', 'Arial Black', Arial, sans-serif;
+  font-size: 44px; font-weight: 700; line-height: 1.3;
 }
 .famille-countdown-label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -1045,6 +1281,10 @@ textarea, input, select { font-family: inherit; }
   </div>
   <div class="nav-item" onclick="showSection('famille', this)">
     <span class="nav-emoji">🏠</span><span>Ma Famille</span>
+  </div>
+  <div class="nav-item" onclick="showSection('challenges', this)">
+    <span class="nav-emoji">🏆</span><span>Challenges</span>
+    <span class="nav-badge" id="badge-ch">0</span>
   </div>
 
   <div class="sidebar-bottom">
@@ -1364,7 +1604,106 @@ textarea, input, select { font-family: inherit; }
 
 </main>
 
-<!-- PWA INSTALL MODAL -->
+<!-- ===================== CHALLENGES ===================== -->
+<section id="challenges" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🏆 <span>Challenges</span></div>
+      <div class="page-sub">Accomplis des défis, gagne des points, monte dans le classement !</div>
+    </div>
+  </div>
+
+  <div class="challenges-layout">
+    <div>
+      <!-- Hero points -->
+      <div class="points-hero">
+        <div class="points-hero-left">
+          <div style="margin-bottom:12px" id="ch-level-badge"></div>
+          <div class="points-total" id="ch-total-pts">0</div>
+          <div class="points-label">points XP accumulés</div>
+          <div class="xp-bar-wrap" style="margin-top:14px">
+            <div class="xp-bar-fill" id="ch-xp-bar" style="width:0%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px" id="ch-xp-label"></div>
+        </div>
+        <div class="points-hero-right">
+          <div class="card" style="padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Défis complétés</div>
+            <div class="streak-fire" id="ch-done-count">0 🎯</div>
+          </div>
+          <div class="card" style="padding:16px;text-align:center">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Série actuelle</div>
+            <div class="streak-fire" id="ch-streak">0 🔥</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filter-chips" style="margin-bottom:20px">
+        <div class="chip active" data-cf="all" onclick="filterChallenges(this)">Tous</div>
+        <div class="chip" data-cf="daily" onclick="filterChallenges(this)">Quotidiens</div>
+        <div class="chip" data-cf="weekly" onclick="filterChallenges(this)">Hebdomadaires</div>
+        <div class="chip" data-cf="monthly" onclick="filterChallenges(this)">Mensuels</div>
+        <div class="chip" data-cf="custom" onclick="filterChallenges(this)">Mes défis</div>
+      </div>
+
+      <div class="challenge-grid" id="challengeGrid"></div>
+
+      <!-- Créer un défi perso -->
+      <div class="card" style="padding:22px;margin-top:8px">
+        <div class="dash-section-title" style="margin-bottom:16px">➕ Créer mon propre défi</div>
+        <div class="form-row">
+          <div class="form-field">
+            <div class="field-label">Nom du défi</div>
+            <input class="field-input" id="chName" placeholder="Ex: Lire 20 min par jour…">
+          </div>
+          <div class="form-field" style="max-width:120px">
+            <div class="field-label">Points XP</div>
+            <input class="field-input" id="chPts" type="number" placeholder="50" min="5" max="500">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <div class="field-label">Description</div>
+            <input class="field-input" id="chDesc" placeholder="En quoi consiste ce défi ?">
+          </div>
+        </div>
+        <div class="field-label" style="margin-bottom:8px">Type</div>
+        <div class="cat-chips" id="chTypePicker">
+          <div class="cat-chip selected" data-t="daily" style="border-color:var(--accent3);color:var(--accent3)" onclick="selectChType(this)">Quotidien</div>
+          <div class="cat-chip" data-t="weekly" onclick="selectChType(this)">Hebdo</div>
+          <div class="cat-chip" data-t="monthly" onclick="selectChType(this)">Mensuel</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="addCustomChallenge()">Créer le défi</button>
+      </div>
+    </div>
+
+    <!-- Classement -->
+    <div>
+      <div class="card add-friend-card">
+        <div class="dash-section-title" style="margin-bottom:14px">🏅 Classement</div>
+        <div class="leaderboard" id="leaderboard"></div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="field-label" style="margin-bottom:8px">Ajouter un ami au classement</div>
+          <div style="display:flex;gap:8px">
+            <input class="field-input" id="friendName" placeholder="Prénom de ton ami…">
+            <button class="btn btn-primary btn-sm" onclick="addFriend()" style="white-space:nowrap">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges gagnés -->
+      <div class="card" style="padding:22px;margin-top:0">
+        <div class="dash-section-title" style="margin-bottom:14px">🎖️ Mes badges</div>
+        <div id="badges-grid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
 <div class="pwa-modal" id="pwaModal" onclick="closePwaModal(event)">
   <div class="pwa-box">
     <h2>📲 Installer StudySpace</h2>
@@ -1488,6 +1827,8 @@ function showSection(id, el) {
   if (id === 'dashboard') renderDashboard();
   if (id === 'agenda') { renderCalendar(); renderAgendaView(); renderEvents(); }
   if (id === 'objectifs') renderObjs();
+  if (id === 'challenges') renderChallenges();
+  if (id === 'social') 
   if (id === 'famille') renderFamille();
 }
 
@@ -2135,8 +2476,187 @@ function goToSection(s) {
 }
 
 // ============================================================
-//  FAMILLE
+//  CHALLENGES & POINTS
 // ============================================================
+const LEVELS = [
+  { name: 'Débutant', min: 0, max: 100, emoji: '🌱' },
+  { name: 'Apprenti', min: 100, max: 300, emoji: '📚' },
+  { name: 'Studieux', min: 300, max: 600, emoji: '⭐' },
+  { name: 'Champion', min: 600, max: 1000, emoji: '🏅' },
+  { name: 'Expert', min: 1000, max: 1500, emoji: '🏆' },
+  { name: 'Légende', min: 1500, max: 99999, emoji: '👑' },
+];
+
+const DEFAULT_CHALLENGES = [
+  { id: 'c1', title: 'Séance Pomodoro', desc: 'Complète une session de travail de 25 min', pts: 30, type: 'daily', icon: '⏱️', color: '#f0c14b', done: false, custom: false },
+  { id: 'c2', title: 'Objectif du jour', desc: 'Coche un objectif quotidien', pts: 20, type: 'daily', icon: '🎯', color: '#52e8a2', done: false, custom: false },
+  { id: 'c3', title: 'Notes de cours', desc: 'Ajoute une photo de cours', pts: 25, type: 'daily', icon: '📸', color: '#9b8afb', done: false, custom: false },
+  { id: 'c4', title: 'Hydratation', desc: 'Bois 8 verres d\'eau dans la journée', pts: 15, type: 'daily', icon: '💧', color: '#60a5fa', done: false, custom: false },
+  { id: 'c5', title: 'Semaine parfaite', desc: 'Complète un défi chaque jour pendant 7 jours', pts: 150, type: 'weekly', icon: '🌟', color: '#fb923c', done: false, custom: false },
+  { id: 'c6', title: 'Agenda complet', desc: 'Ajoute 5 événements dans l\'agenda cette semaine', pts: 80, type: 'weekly', icon: '📅', color: '#a78bfa', done: false, custom: false },
+  { id: 'c7', title: 'Studieux du mois', desc: 'Complète 20 défis quotidiens ce mois-ci', pts: 300, type: 'monthly', icon: '🏆', color: '#f0c14b', done: false, custom: false },
+  { id: 'c8', title: 'Social actif', desc: 'Publie 10 posts dans la section sociale', pts: 200, type: 'monthly', icon: '👥', color: '#52e8a2', done: false, custom: false },
+];
+
+const BADGES_DEF = [
+  { id: 'b1', name: 'Premier pas', emoji: '👶', desc: 'Premier défi complété', unlock: (s) => s.totalDone >= 1 },
+  { id: 'b2', name: 'Sur la lancée', emoji: '🔥', desc: '5 défis complétés', unlock: (s) => s.totalDone >= 5 },
+  { id: 'b3', name: 'Machine', emoji: '⚡', desc: '20 défis complétés', unlock: (s) => s.totalDone >= 20 },
+  { id: 'b4', name: '100 XP', emoji: '💯', desc: '100 points gagnés', unlock: (s) => s.totalPts >= 100 },
+  { id: 'b5', name: 'Millionnaire XP', emoji: '💎', desc: '1000 points gagnés', unlock: (s) => s.totalPts >= 1000 },
+  { id: 'b6', name: 'Série de feu', emoji: '🌋', desc: '7 jours de suite', unlock: (s) => s.streak >= 7 },
+];
+
+let challenges = store.get('challenges', JSON.parse(JSON.stringify(DEFAULT_CHALLENGES)));
+let chStats = store.get('chStats', { totalPts: 0, totalDone: 0, streak: 0, lastDate: '', friends: [
+  { name: 'Alex', pts: 420, emoji: '🐱' },
+  { name: 'Léa', pts: 310, emoji: '🌟' },
+  { name: 'Noah', pts: 180, emoji: '🎮' },
+] });
+let chFilter = 'all', selChType = 'daily';
+
+function saveChallenges() { store.set('challenges', challenges); store.set('chStats', chStats); updateBadges(); }
+
+function getLevel(pts) { return LEVELS.find(l => pts >= l.min && pts < l.max) || LEVELS[LEVELS.length-1]; }
+
+function completeChallenge(id) {
+  const ch = challenges.find(c => c.id === id);
+  if (!ch || ch.done) return;
+  ch.done = true;
+  chStats.totalPts += ch.pts;
+  chStats.totalDone++;
+  const today = new Date().toISOString().split('T')[0];
+  if (chStats.lastDate !== today) { chStats.streak++; chStats.lastDate = today; }
+  saveChallenges();
+  renderChallenges();
+  // Confetti effect
+  showXPPop(ch.pts);
+}
+
+function showXPPop(pts) {
+  const pop = document.createElement('div');
+  pop.textContent = `+${pts} XP 🎉`;
+  pop.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:#f0c14b;
+    z-index:9999;pointer-events:none;animation:popUp 1.2s ease forwards;`;
+  document.body.appendChild(pop);
+  const style = document.createElement('style');
+  style.textContent = `@keyframes popUp{0%{opacity:0;transform:translate(-50%,-60%) scale(0.5)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-40%)}}`;
+  document.head.appendChild(style);
+  setTimeout(() => { pop.remove(); style.remove(); }, 1200);
+}
+
+function filterChallenges(el) {
+  document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); chFilter = el.dataset.cf; renderChallenges();
+}
+
+function selectChType(el) {
+  document.querySelectorAll('#chTypePicker .cat-chip').forEach(c => { c.classList.remove('selected'); c.style.borderColor=''; c.style.color=''; });
+  el.classList.add('selected');
+  const colors = { daily: 'var(--accent3)', weekly: 'var(--accent2)', monthly: 'var(--accent6)' };
+  el.style.borderColor = colors[el.dataset.t]; el.style.color = colors[el.dataset.t];
+  selChType = el.dataset.t;
+}
+
+function addCustomChallenge() {
+  const name = document.getElementById('chName').value.trim();
+  const pts = parseInt(document.getElementById('chPts').value) || 50;
+  const desc = document.getElementById('chDesc').value.trim();
+  if (!name) return;
+  const icons = { daily: '⭐', weekly: '🎯', monthly: '🏆' };
+  const colors = { daily: '#52e8a2', weekly: '#9b8afb', monthly: '#fb923c' };
+  challenges.push({ id: 'custom_' + Date.now(), title: name, desc, pts, type: selChType, icon: icons[selChType], color: colors[selChType], done: false, custom: true });
+  saveChallenges(); renderChallenges();
+  document.getElementById('chName').value = '';
+  document.getElementById('chPts').value = '';
+  document.getElementById('chDesc').value = '';
+}
+
+function deleteChallenge(id) {
+  challenges = challenges.filter(c => c.id !== id);
+  saveChallenges(); renderChallenges();
+}
+
+function addFriend() {
+  const name = document.getElementById('friendName').value.trim();
+  if (!name) return;
+  const emojis = ['🐱','🌟','🎮','🐶','🦊','🐼','🎨','🎵'];
+  const pts = Math.floor(Math.random() * 200) + 50;
+  chStats.friends.push({ name, pts, emoji: emojis[Math.floor(Math.random()*emojis.length)] });
+  saveChallenges(); renderChallenges();
+  document.getElementById('friendName').value = '';
+}
+
+function renderChallenges() {
+  // Points hero
+  const lvl = getLevel(chStats.totalPts);
+  const nextLvl = LEVELS[LEVELS.indexOf(lvl)+1];
+  const pct = nextLvl ? Math.round((chStats.totalPts - lvl.min) / (nextLvl.min - lvl.min) * 100) : 100;
+  document.getElementById('ch-total-pts').textContent = chStats.totalPts;
+  document.getElementById('ch-level-badge').innerHTML = `<div class="level-badge">${lvl.emoji} <span>Niveau </span><span class="lvl-num">${LEVELS.indexOf(lvl)+1}</span> — ${lvl.name}</div>`;
+  document.getElementById('ch-xp-bar').style.width = pct + '%';
+  document.getElementById('ch-xp-label').textContent = nextLvl ? `${chStats.totalPts} / ${nextLvl.min} XP pour le niveau suivant` : 'Niveau maximum atteint ! 👑';
+  document.getElementById('ch-done-count').textContent = chStats.totalDone + ' 🎯';
+  document.getElementById('ch-streak').textContent = chStats.streak + ' 🔥';
+
+  // Challenges grid
+  const grid = document.getElementById('challengeGrid');
+  const filtered = chFilter === 'all' ? challenges : chFilter === 'custom' ? challenges.filter(c=>c.custom) : challenges.filter(c=>c.type===chFilter);
+  const TYPE_LABELS = { daily: 'Quotidien', weekly: 'Hebdomadaire', monthly: 'Mensuel' };
+  if (!filtered.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span class="empty-icon">🎯</span>Aucun défi ici.</div>`; }
+  else {
+    grid.innerHTML = filtered.map(ch => `
+      <div class="challenge-card ${ch.type}${ch.done?' done':''}">
+        <div class="ch-header">
+          <div class="ch-icon" style="background:${ch.color}22">${ch.icon}</div>
+          <div class="ch-info">
+            <div class="ch-title">${ch.title}</div>
+            <div class="ch-desc">${ch.desc}</div>
+          </div>
+        </div>
+        <div class="ch-meta">
+          <div class="ch-pts">⚡ ${ch.pts} XP</div>
+          <div class="ch-type ${ch.type}">${TYPE_LABELS[ch.type]}</div>
+        </div>
+        ${ch.done
+          ? `<button class="ch-complete-btn completed" disabled>✅ Défi accompli !</button>`
+          : `<button class="ch-complete-btn todo" onclick="completeChallenge('${ch.id}')">Marquer comme fait ✓</button>`
+        }
+        ${ch.custom ? `<button class="btn btn-danger btn-sm" style="margin-top:8px;width:100%" onclick="deleteChallenge('${ch.id}')">Supprimer</button>` : ''}
+      </div>`).join('');
+  }
+
+  // Leaderboard
+  const meEntry = { name: 'Moi 👤', pts: chStats.totalPts, emoji: store.get('profileData', {}).emoji || '🧑', isMe: true };
+  const all = [...chStats.friends, meEntry].sort((a,b) => b.pts - a.pts);
+  const rankEmojis = ['🥇','🥈','🥉'];
+  const rankClass = ['gold','silver','bronze'];
+  document.getElementById('leaderboard').innerHTML = all.map((f, i) => `
+    <div class="leaderboard-item${f.isMe?' me':''}">
+      <div class="lb-rank ${rankClass[i]||''}">${rankEmojis[i] || (i+1)}</div>
+      <div class="lb-avatar">${f.emoji}</div>
+      <div class="lb-info">
+        <div class="lb-name">${f.name}</div>
+        <div class="lb-pts-label">points XP</div>
+      </div>
+      <div style="text-align:right">
+        <div class="lb-pts">${f.pts}</div>
+      </div>
+    </div>`).join('');
+
+  // Badges
+  const badgesEl = document.getElementById('badges-grid');
+  badgesEl.innerHTML = BADGES_DEF.map(b => {
+    const unlocked = b.unlock(chStats);
+    return `<div title="${b.desc}" style="width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:${unlocked?'rgba(240,193,75,0.15)':'var(--surface)'};border:1px solid ${unlocked?'rgba(240,193,75,0.4)':'var(--border)'};cursor:help;filter:${unlocked?'none':'grayscale(1) opacity(0.4)'}">
+      ${b.emoji}
+    </div>`;
+  }).join('');
+
+  updateBadges();
+}
+
 const FAMILLE_FIELDS = [
   { key: 'phone', label: 'Téléphone', icon: '📞' },
   { key: 'adresse', label: 'Adresse', icon: '📍' },
@@ -2338,7 +2858,8 @@ function updateBadges() {
   document.getElementById('badge-cours').textContent = store.get('matieres',[]).length;
   document.getElementById('badge-agenda').textContent = store.get('agendaEvents',[]).length;
   document.getElementById('badge-obj').textContent = store.get('objectifs',[]).filter(o=>!o.done).length;
-  document.getElementById('badge-notes').textContent = store.get('stickies',[]).length;
+  document.getElementById('badge-ch') && (document.getElementById('badge-ch').textContent = store.get('challenges',[]).filter(c=>!c.done).length);
+  
 }
 
 // Keyboard shortcut for search
@@ -2359,6 +2880,8 @@ renderAgendaView();
 renderEvents();
 renderObjs();
 renderStickies();
+renderChallenges();
+
 updatePomoDisplay();
 updatePomoStats();
 updateBadges();
