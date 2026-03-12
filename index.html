@@ -682,95 +682,56 @@ textarea, input, select { font-family: inherit; }
 }
 .chip:hover { color: var(--text); }
 .chip.active { background: var(--accent); color: #0c0b14; border-color: var(--accent); }
-/* Matière = accordéon principal */
-.cours-grid { display: flex; flex-direction: column; gap: 14px; }
-.matiere-block {
+/* Navigation cours */
+.cours-back-btn {
+  width: 36px; height: 36px; border-radius: 10px;
   background: var(--card); border: 1px solid var(--border);
-  border-radius: 18px; overflow: hidden;
-  transition: box-shadow 0.2s;
+  color: var(--text); font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.15s;
+  line-height: 1;
 }
-.matiere-block:hover { box-shadow: var(--shadow); }
-/* En-tête matière cliquable */
-.matiere-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 18px; cursor: pointer;
-  user-select: none; transition: background 0.15s;
+.cours-back-btn:hover { background: var(--card2); }
+/* Cartes matières */
+.matiere-card {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 20px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 16px;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 10px;
 }
-.matiere-header:hover { background: rgba(255,255,255,0.03); }
-.matiere-color-dot {
-  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+.matiere-card:hover { transform: translateX(4px); border-color: var(--accent2); }
+.matiere-card-dot {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
 }
-.matiere-header-title {
-  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; flex: 1;
+.matiere-card-info { flex: 1; min-width: 0; }
+.matiere-card-name { font-family: 'Syne',sans-serif; font-size: 17px; font-weight: 700; }
+.matiere-card-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.matiere-card-arrow { font-size: 20px; color: var(--muted); }
+/* Cartes chapitres */
+.chapitre-card {
+  display: flex; align-items: center; gap: 0;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; cursor: pointer;
+  transition: all 0.15s; margin-bottom: 10px;
+  overflow: hidden;
 }
-.matiere-header-meta {
-  font-size: 11px; color: var(--muted); display: flex; gap: 8px; align-items: center;
+.chapitre-card:hover { border-color: var(--accent2); }
+.chapitre-card-cover {
+  width: 90px; height: 80px; object-fit: cover; flex-shrink: 0;
 }
-.matiere-chevron {
-  font-size: 13px; color: var(--muted);
-  transition: transform 0.25s; flex-shrink: 0;
+.chapitre-card-cover-placeholder {
+  width: 90px; height: 80px; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
 }
-.matiere-block.open .matiere-chevron { transform: rotate(90deg); }
-/* Chapitres = liste d'accordéons internes */
-.matiere-body { display: none; border-top: 1px solid var(--border); }
-.matiere-block.open .matiere-body { display: block; }
-.chapter-row {
-  border-bottom: 1px solid var(--border);
-}
-.chapter-row:last-child { border-bottom: none; }
-/* En-tête chapitre */
-.chapter-header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 0; cursor: pointer; transition: background 0.15s;
-  min-height: 70px; overflow: hidden;
-}
-.chapter-header:hover { background: rgba(255,255,255,0.03); }
-/* Miniature couverture */
-.chapter-cover {
-  width: 80px; height: 70px; flex-shrink: 0;
-  object-fit: cover; display: block;
-  background: var(--surface);
-}
-.chapter-cover-placeholder {
-  width: 80px; height: 70px; flex-shrink: 0;
-  background: var(--surface); display: flex;
-  align-items: center; justify-content: center;
-  font-size: 22px; cursor: pointer; transition: background 0.15s;
-  position: relative;
-}
-.chapter-cover-placeholder:hover { background: var(--card2); }
-.chapter-cover-placeholder input[type=file] {
-  position: absolute; inset: 0; opacity: 0; cursor: pointer;
-}
-.chapter-header-info { flex: 1; padding: 12px 6px; min-width: 0; }
-.chapter-header-name {
-  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.chapter-header-preview {
-  font-size: 12px; color: var(--muted); margin-top: 3px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  max-width: 200px;
-}
-.chapter-header-right {
-  display: flex; align-items: center; gap: 8px;
-  padding-right: 14px; flex-shrink: 0;
-}
-.chapter-img-count {
-  font-size: 11px; color: var(--muted);
-  background: var(--surface); border-radius: 8px;
-  padding: 3px 8px;
-}
-.chapter-chevron {
-  font-size: 12px; color: var(--muted);
-  transition: transform 0.25s;
-}
-.chapter-row.open .chapter-chevron { transform: rotate(90deg); }
-/* Contenu chapitre */
-.chapter-body { display: none; background: var(--surface); }
-.chapter-row.open .chapter-body { display: block; }
-.chapter-body-inner { padding: 16px 18px; }
-/* Drop zone */
+.chapitre-card-info { flex: 1; padding: 14px 14px; min-width: 0; }
+.chapitre-card-name { font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 700; }
+.chapitre-card-preview { font-size: 12px; color: var(--muted); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.chapitre-card-arrow { font-size: 18px; color: var(--muted); padding-right: 14px; flex-shrink: 0; }
+/* Matière grid */
+.cours-grid { display: flex; flex-direction: column; }
 .drop-zone {
   border: 2px dashed var(--border); border-radius: 12px;
   padding: 18px; text-align: center; cursor: pointer;
@@ -1764,17 +1725,55 @@ textarea, input, select { font-family: inherit; }
 
 <!-- ===================== COURS ===================== -->
 <section id="cours" class="section">
-  <div class="page-header">
-    <div>
-      <div class="page-title">📚 <span>Cours</span></div>
-      <div class="page-sub">Tes images et notes par matière</div>
+  <!-- VUE 1 : liste des matières -->
+  <div id="cours-vue-matieres">
+    <div class="page-header">
+      <div>
+        <div class="page-title">📚 <span>Cours</span></div>
+        <div class="page-sub">Choisis une matière</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="showAddMatiere()">+ Matière</button>
     </div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <input class="field-input" id="newMatiere" style="width:200px" type="text" placeholder="Nouvelle matière...">
-      <button class="btn btn-primary" onclick="addMatiere()">+ Ajouter</button>
+    <!-- Formulaire ajout (caché par défaut) -->
+    <div id="add-matiere-form" style="display:none;margin-bottom:16px">
+      <div style="display:flex;gap:8px">
+        <input class="field-input" id="newMatiere" placeholder="Nom de la matière..." onkeydown="if(event.key==='Enter')addMatiere()">
+        <button class="btn btn-primary" onclick="addMatiere()">Ajouter</button>
+        <button class="btn btn-ghost" onclick="hideAddMatiere()">✕</button>
+      </div>
     </div>
+    <div id="coursGrid"></div>
   </div>
-  <div class="cours-grid" id="coursGrid"></div>
+
+  <!-- VUE 2 : chapitres d'une matière -->
+  <div id="cours-vue-chapitres" style="display:none">
+    <div class="page-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="cours-back-btn" onclick="coursGoBack('matieres')">‹</button>
+        <div>
+          <div class="page-title" id="cours-matiere-title">Matière</div>
+          <div class="page-sub">Choisis un chapitre</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="addChapterCurrent()">+ Chapitre</button>
+    </div>
+    <div id="chapitresGrid"></div>
+  </div>
+
+  <!-- VUE 3 : contenu d'un chapitre -->
+  <div id="cours-vue-chapitre" style="display:none">
+    <div class="page-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="cours-back-btn" onclick="coursGoBack('chapitres')">‹</button>
+        <div>
+          <div class="page-title" id="cours-chapitre-title">Chapitre</div>
+          <div class="page-sub" id="cours-chapitre-sub"></div>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteCurrentChapter()">🗑</button>
+    </div>
+    <div id="chapitreContent"></div>
+  </div>
 </section>
 
 <!-- ===================== AGENDA ===================== -->
@@ -2460,47 +2459,196 @@ function renderDashboard() {
 }
 
 // ============================================================
-//  COURS
+//  COURS — Navigation 3 niveaux
 // ============================================================
 const MATIERE_COLORS = ['#f0c14b','#9b8afb','#52e8a2','#f87171','#60a5fa','#fb923c','#e879f9','#34d399'];
+const MATIERE_EMOJIS = ['📐','📝','🌍','⚗️','📖','🎨','🔬','💻','🎵','🏃'];
 let matieres = store.get('matieres', []);
-let activeChapters = {}; // matiereId -> chapterIndex
+let activeChapters = {};
+let coursCurrentMatiere = null; // id de la matière ouverte
+let coursCurrentChapter = null; // index du chapitre ouvert
 
 function saveMatieres() { store.set('matieres', matieres); updateBadges(); }
+
+// — Formulaire ajout matière —
+function showAddMatiere() { document.getElementById('add-matiere-form').style.display = 'flex'; document.getElementById('newMatiere').focus(); }
+function hideAddMatiere() { document.getElementById('add-matiere-form').style.display = 'none'; document.getElementById('newMatiere').value = ''; }
 
 function addMatiere() {
   const inp = document.getElementById('newMatiere');
   const name = inp.value.trim();
   if (!name) return;
   const color = MATIERE_COLORS[matieres.length % MATIERE_COLORS.length];
-  matieres.push({ id: Date.now(), name, color, chapters: [{ name: 'Chapitre 1', imgs: [], notes: '' }] });
-  saveMatieres(); renderMatieres(); inp.value = '';
+  const emoji = MATIERE_EMOJIS[matieres.length % MATIERE_EMOJIS.length];
+  matieres.push({ id: Date.now(), name, color, emoji, chapters: [{ name: 'Chapitre 1', imgs: [], notes: '', cover: null }] });
+  saveMatieres(); hideAddMatiere(); renderMatieres();
 }
 
 function deleteMatiere(id) {
-  if (!confirm('Supprimer cette matière et tout son contenu ?')) return;
+  if (!confirm('Supprimer cette matière ?')) return;
   matieres = matieres.filter(m => m.id !== id);
   saveMatieres(); renderMatieres();
 }
 
-function addChapter(mId) {
+// — Navigation —
+function coursGoBack(to) {
+  if (to === 'matieres') {
+    document.getElementById('cours-vue-chapitres').style.display = 'none';
+    document.getElementById('cours-vue-matieres').style.display = 'block';
+    coursCurrentMatiere = null;
+  } else if (to === 'chapitres') {
+    document.getElementById('cours-vue-chapitre').style.display = 'none';
+    document.getElementById('cours-vue-chapitres').style.display = 'block';
+    coursCurrentChapter = null;
+  }
+}
+
+function openMatiere(id) {
+  coursCurrentMatiere = id;
+  const m = matieres.find(m => m.id === id);
+  if (!m) return;
+  document.getElementById('cours-matiere-title').textContent = m.emoji + ' ' + m.name;
+  document.getElementById('cours-vue-matieres').style.display = 'none';
+  document.getElementById('cours-vue-chapitres').style.display = 'block';
+  renderChapitres(m);
+}
+
+function openChapitre(mId, chIdx) {
+  coursCurrentMatiere = mId;
+  coursCurrentChapter = chIdx;
   const m = matieres.find(m => m.id === mId);
+  if (!m || !m.chapters[chIdx]) return;
+  const ch = m.chapters[chIdx];
+  document.getElementById('cours-chapitre-title').textContent = ch.name;
+  document.getElementById('cours-chapitre-sub').textContent = m.emoji + ' ' + m.name;
+  document.getElementById('cours-vue-chapitres').style.display = 'none';
+  document.getElementById('cours-vue-chapitre').style.display = 'block';
+  renderChapitreContent(m, chIdx);
+}
+
+// — Vue 1 : Liste matières —
+function renderMatieres() {
+  const grid = document.getElementById('coursGrid');
+  if (!grid) return;
+  if (!matieres.length) {
+    grid.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span>Ajoute ta première matière !</div>`;
+    return;
+  }
+  grid.innerHTML = matieres.map(m => {
+    const totalImgs = m.chapters.reduce((a, ch) => a + (ch.imgs||[]).length, 0);
+    return `
+    <div class="matiere-card" onclick="openMatiere(${m.id})">
+      <div class="matiere-card-dot" style="background:${m.color}22">
+        <span>${m.emoji || '📚'}</span>
+      </div>
+      <div class="matiere-card-info">
+        <div class="matiere-card-name">${m.name}</div>
+        <div class="matiere-card-meta">${m.chapters.length} chapitre${m.chapters.length > 1 ? 's' : ''} · ${totalImgs} photo${totalImgs > 1 ? 's' : ''}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" style="padding:6px 10px;font-size:12px;margin-right:8px"
+        onclick="event.stopPropagation();deleteMatiere(${m.id})">🗑</button>
+      <span class="matiere-card-arrow">›</span>
+    </div>`;
+  }).join('');
+}
+
+// — Vue 2 : Liste chapitres —
+function renderChapitres(m) {
+  const grid = document.getElementById('chapitresGrid');
+  if (!grid) return;
+  grid.innerHTML = m.chapters.map((ch, chIdx) => {
+    const cover = ch.cover || (ch.imgs && ch.imgs[0]) || null;
+    const preview = ch.notes ? ch.notes.slice(0, 60) + (ch.notes.length > 60 ? '…' : '') : 'Aucune note';
+    return `
+    <div class="chapitre-card" onclick="openChapitre(${m.id}, ${chIdx})">
+      ${cover
+        ? `<img class="chapitre-card-cover" src="${cover}" alt="">`
+        : `<div class="chapitre-card-cover-placeholder">📄</div>`}
+      <div class="chapitre-card-info">
+        <div class="chapitre-card-name">${ch.name}</div>
+        <div class="chapitre-card-preview">${preview}</div>
+      </div>
+      <span class="chapitre-card-arrow">›</span>
+    </div>`;
+  }).join('');
+}
+
+function addChapterCurrent() {
+  const m = matieres.find(m => m.id === coursCurrentMatiere);
   if (!m) return;
   const name = prompt('Nom du chapitre :', `Chapitre ${m.chapters.length + 1}`);
   if (!name) return;
   m.chapters.push({ name, imgs: [], notes: '', cover: null });
-  saveMatieres(); renderMatieres();
-  setTimeout(() => {
-    document.getElementById(`matiere-${mId}`)?.classList.add('open');
-    const lastIdx = m.chapters.length - 1;
-    document.getElementById(`chrow-${mId}-${lastIdx}`)?.classList.add('open');
-  }, 10);
+  saveMatieres(); renderChapitres(m);
 }
 
-function switchChapter(mId, idx) {
-  activeChapters[mId] = idx;
-  renderMatieres();
+// — Vue 3 : Contenu chapitre —
+function renderChapitreContent(m, chIdx) {
+  const ch = m.chapters[chIdx];
+  const cover = ch.cover || null;
+  const container = document.getElementById('chapitreContent');
+  container.innerHTML = `
+    <!-- Couverture -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:12px;color:var(--muted)">🖼️ Couverture :</span>
+      ${cover ? `<button class="btn btn-ghost btn-sm" onclick="removeCover(${m.id},${chIdx})">✕ Retirer</button>` : ''}
+      <label style="cursor:pointer">
+        <span class="btn btn-ghost btn-sm">📷 ${cover ? 'Changer' : 'Ajouter'}</span>
+        <input type="file" accept="image/*" style="display:none" onchange="handleCoverUpload(event,${m.id},${chIdx})">
+      </label>
+    </div>
+    <!-- Drop zone -->
+    <div class="drop-zone" id="drop-${m.id}-${chIdx}"
+      onclick="triggerUpload(${m.id},${chIdx})"
+      ondragover="handleDragOver(event,${m.id},${chIdx})"
+      ondragleave="handleDragLeave(${m.id},${chIdx})"
+      ondrop="handleDrop(event,${m.id},${chIdx})">
+      <div class="drop-icon">📷</div>Clique ou glisse des images
+    </div>
+    <input type="file" id="file-${m.id}-${chIdx}" accept="image/*" multiple style="display:none"
+      onchange="handleFileInput(event,${m.id},${chIdx})">
+    <!-- Photos -->
+    ${(ch.imgs||[]).length > 0 ? `
+    <div style="margin-bottom:14px">
+      <button class="btn btn-ghost btn-sm" style="width:100%;padding:12px"
+        onclick="toggleImgGrid('imgs-${m.id}-${chIdx}', this)">
+        📷 Voir les photos (${ch.imgs.length})
+      </button>
+      <div id="imgs-${m.id}-${chIdx}" style="display:none;margin-top:10px">
+        <div class="img-grid">
+          ${ch.imgs.map((src, i) => `
+            <div class="img-thumb" onclick="openLightbox('${src}')">
+              <img src="${src}" alt="">
+              <button class="img-delete" onclick="event.stopPropagation();deleteImg(${m.id},${chIdx},${i})">✕</button>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>` : ''}
+    <!-- Notes -->
+    <div class="notes-wrapper">
+      <textarea class="notes-area" placeholder="Écris tes notes ici…"
+        oninput="autoExpand(this);saveChapterNotes(${m.id},${chIdx},this.value)"
+        onfocus="autoExpand(this)">${ch.notes||''}</textarea>
+    </div>
+  `;
+  setTimeout(() => container.querySelectorAll('.notes-area').forEach(autoExpand), 30);
 }
+
+function deleteCurrentChapter() {
+  const m = matieres.find(m => m.id === coursCurrentMatiere);
+  if (!m) return;
+  if (m.chapters.length <= 1) { alert('Une matière doit avoir au moins 1 chapitre.'); return; }
+  if (!confirm('Supprimer ce chapitre ?')) return;
+  m.chapters.splice(coursCurrentChapter, 1);
+  saveMatieres();
+  coursGoBack('chapitres');
+  renderChapitres(m);
+}
+
+function addChapter(mId) { /* legacy - unused */ }
+function switchChapter(mId, idx) { /* legacy - unused */ }
+function toggleMatiere(id) { /* legacy - unused */ }
+function toggleChapter(mId, chIdx) { /* legacy - unused */ }
 
 function toggleImgGrid(id, btn) {
   const el = document.getElementById(id);
@@ -2520,133 +2668,7 @@ function saveChapterNotes(mId, chIdx, val) {
   if (m && m.chapters[chIdx]) { m.chapters[chIdx].notes = val; saveMatieres(); }
 }
 
-function renderMatieres() {
-  const grid = document.getElementById('coursGrid');
-  if (!matieres.length) {
-    grid.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span>Ajoute ta première matière !</div>`;
-    return;
-  }
-  grid.innerHTML = matieres.map(m => {
-    const totalImgs = m.chapters.reduce((a, ch) => a + (ch.imgs||[]).length, 0);
-    const chapitresHTML = m.chapters.map((ch, chIdx) => {
-      const coverSrc = ch.cover || (ch.imgs && ch.imgs[0]) || null;
-      const previewText = ch.notes ? ch.notes.slice(0, 50) + (ch.notes.length > 50 ? '…' : '') : 'Aucune note';
-      return `
-      <div class="chapter-row" id="chrow-${m.id}-${chIdx}">
-        <div class="chapter-header" onclick="toggleChapter(${m.id}, ${chIdx})">
-          ${coverSrc
-            ? `<img class="chapter-cover" src="${coverSrc}" alt="cover">`
-            : `<div class="chapter-cover-placeholder" title="Ajouter une image de couverture" onclick="event.stopPropagation();triggerCoverUpload(${m.id},${chIdx})">
-                🖼️
-                <input type="file" accept="image/*" onchange="handleCoverUpload(event,${m.id},${chIdx})">
-               </div>`
-          }
-          <div class="chapter-header-info">
-            <div class="chapter-header-name">${ch.name}</div>
-            <div class="chapter-header-preview">${previewText}</div>
-          </div>
-          <div class="chapter-header-right">
-            <span class="chapter-img-count">📷 ${(ch.imgs||[]).length}</span>
-            <span class="chapter-chevron">›</span>
-          </div>
-        </div>
-        <div class="chapter-body">
-          <div class="chapter-body-inner">
-            <!-- Couverture change -->
-            <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
-              <div style="font-size:12px;color:var(--muted)">🖼️ Image de couverture :</div>
-              ${coverSrc
-                ? `<button class="btn btn-ghost btn-sm" onclick="removeCover(${m.id},${chIdx})">✕ Retirer</button>`
-                : ''
-              }
-              <label style="cursor:pointer">
-                <span class="btn btn-ghost btn-sm">📷 ${coverSrc ? 'Changer' : 'Ajouter une couverture'}</span>
-                <input type="file" accept="image/*" style="display:none" onchange="handleCoverUpload(event,${m.id},${chIdx})">
-              </label>
-            </div>
-            <!-- Drop zone images -->
-            <div class="drop-zone" id="drop-${m.id}-${chIdx}"
-              onclick="triggerUpload(${m.id}, ${chIdx})"
-              ondragover="handleDragOver(event,${m.id},${chIdx})"
-              ondragleave="handleDragLeave(${m.id},${chIdx})"
-              ondrop="handleDrop(event,${m.id},${chIdx})">
-              <div class="drop-icon">📷</div>Clique ou glisse des images
-            </div>
-            <input type="file" id="file-${m.id}-${chIdx}" accept="image/*" multiple style="display:none"
-              onchange="handleFileInput(event,${m.id},${chIdx})">
-            ${(ch.imgs||[]).length > 0 ? `
-            <div style="margin-bottom:12px">
-              <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;gap:8px;padding:12px"
-                onclick="toggleImgGrid('imgs-${m.id}-${chIdx}', this)">
-                📷 Voir les photos (${(ch.imgs||[]).length})
-              </button>
-              <div id="imgs-${m.id}-${chIdx}" style="display:none;margin-top:10px">
-                <div class="img-grid">
-                  ${(ch.imgs||[]).map((src, i) => `
-                    <div class="img-thumb" onclick="openLightbox('${src}')">
-                      <img src="${src}" alt="">
-                      <button class="img-delete" onclick="event.stopPropagation();deleteImg(${m.id},${chIdx},${i})">✕</button>
-                    </div>`).join('')}
-                </div>
-              </div>
-            </div>` : ''}
-            <div class="notes-wrapper">
-              <textarea class="notes-area" placeholder="Écris tes notes ici…"
-                oninput="autoExpand(this);saveChapterNotes(${m.id},${chIdx},this.value)"
-                onfocus="autoExpand(this)">${ch.notes||''}</textarea>
-            </div>
-            <div style="display:flex;justify-content:flex-end;margin-top:10px">
-              <button class="btn btn-danger btn-sm" onclick="deleteChapter(${m.id},${chIdx})">🗑 Supprimer ce chapitre</button>
-            </div>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-
-    return `
-    <div class="matiere-block" id="matiere-${m.id}">
-      <div class="matiere-header" onclick="toggleMatiere(${m.id})">
-        <div class="matiere-color-dot" style="background:${m.color}"></div>
-        <div class="matiere-header-title">${m.name}</div>
-        <div class="matiere-header-meta">
-          <span>${m.chapters.length} chapitre${m.chapters.length > 1 ? 's' : ''}</span>
-          <span>·</span>
-          <span>${totalImgs} img</span>
-        </div>
-        <button class="btn btn-danger btn-sm" style="margin-left:8px;padding:4px 8px;font-size:11px"
-          onclick="event.stopPropagation();deleteMatiere(${m.id})">🗑</button>
-        <span class="matiere-chevron">›</span>
-      </div>
-      <div class="matiere-body">
-        ${chapitresHTML}
-        <div class="add-chapter-btn" onclick="addChapter(${m.id})">
-          <span style="font-size:16px">＋</span> Ajouter un chapitre
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function toggleMatiere(id) {
-  const el = document.getElementById(`matiere-${id}`);
-  el.classList.toggle('open');
-}
-
-function toggleChapter(mId, chIdx) {
-  const el = document.getElementById(`chrow-${mId}-${chIdx}`);
-  el.classList.toggle('open');
-  // Auto-expand textarea after open
-  if (el.classList.contains('open')) {
-    setTimeout(() => {
-      el.querySelectorAll('.notes-area').forEach(autoExpand);
-    }, 10);
-  }
-}
-
-function triggerCoverUpload(mId, chIdx) {
-  // handled via label click
-}
-
+function triggerCoverUpload(mId, chIdx) {}
 function handleCoverUpload(e, mId, chIdx) {
   const file = e.target.files[0];
   if (!file) return;
@@ -2655,27 +2677,27 @@ function handleCoverUpload(e, mId, chIdx) {
     const m = matieres.find(m => m.id === mId);
     if (!m || !m.chapters[chIdx]) return;
     m.chapters[chIdx].cover = ev.target.result;
-    saveMatieres(); renderMatieres();
+    saveMatieres();
+    renderChapitreContent(m, chIdx);
   };
   reader.readAsDataURL(file);
 }
 
 function removeCover(mId, chIdx) {
   const m = matieres.find(m => m.id === mId);
-  if (m && m.chapters[chIdx]) { delete m.chapters[chIdx].cover; saveMatieres(); renderMatieres(); }
+  if (m && m.chapters[chIdx]) {
+    delete m.chapters[chIdx].cover;
+    saveMatieres();
+    renderChapitreContent(m, chIdx);
+    renderChapitres(m);
+  }
 }
 
-function deleteChapter(mId, chIdx) {
-  const m = matieres.find(m => m.id === mId);
-  if (!m || m.chapters.length <= 1) { alert('Une matière doit avoir au moins 1 chapitre.'); return; }
-  if (!confirm('Supprimer ce chapitre ?')) return;
-  m.chapters.splice(chIdx, 1);
-  saveMatieres(); renderMatieres();
-}
+function deleteChapter(mId, chIdx) { deleteCurrentChapter(); }
 
 function triggerUpload(mId, chIdx) { document.getElementById(`file-${mId}-${chIdx}`).click(); }
-function handleDragOver(e, mId, chIdx) { e.preventDefault(); document.getElementById(`drop-${mId}-${chIdx}`).classList.add('dragover'); }
-function handleDragLeave(mId, chIdx) { document.getElementById(`drop-${mId}-${chIdx}`).classList.remove('dragover'); }
+function handleDragOver(e, mId, chIdx) { e.preventDefault(); document.getElementById(`drop-${mId}-${chIdx}`)?.classList.add('dragover'); }
+function handleDragLeave(mId, chIdx) { document.getElementById(`drop-${mId}-${chIdx}`)?.classList.remove('dragover'); }
 function handleDrop(e, mId, chIdx) { e.preventDefault(); handleDragLeave(mId, chIdx); Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(f => readImg(f, mId, chIdx)); }
 function handleFileInput(e, mId, chIdx) { Array.from(e.target.files).forEach(f => readImg(f, mId, chIdx)); e.target.value = ''; }
 function readImg(file, mId, chIdx) {
@@ -2685,12 +2707,8 @@ function readImg(file, mId, chIdx) {
     if (!m || !m.chapters[chIdx]) return;
     m.chapters[chIdx].imgs = m.chapters[chIdx].imgs || [];
     m.chapters[chIdx].imgs.push(e.target.result);
-    saveMatieres(); renderMatieres();
-    // Keep chapter open after re-render
-    setTimeout(() => {
-      document.getElementById(`matiere-${mId}`)?.classList.add('open');
-      document.getElementById(`chrow-${mId}-${chIdx}`)?.classList.add('open');
-    }, 10);
+    saveMatieres();
+    renderChapitreContent(m, chIdx);
   };
   reader.readAsDataURL(file);
 }
@@ -2698,11 +2716,8 @@ function deleteImg(mId, chIdx, imgIdx) {
   const m = matieres.find(m => m.id === mId);
   if (m && m.chapters[chIdx]) {
     m.chapters[chIdx].imgs.splice(imgIdx, 1);
-    saveMatieres(); renderMatieres();
-    setTimeout(() => {
-      document.getElementById(`matiere-${mId}`)?.classList.add('open');
-      document.getElementById(`chrow-${mId}-${chIdx}`)?.classList.add('open');
-    }, 10);
+    saveMatieres();
+    renderChapitreContent(m, chIdx);
   }
 }
 function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
