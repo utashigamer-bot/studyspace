@@ -83,8 +83,96 @@
 }
 
 /* ============================================================
-   RESET & BASE
+   SPLASH SCREEN
 ============================================================ */
+#splash {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 20px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+#splash.hide {
+  opacity: 0; transform: scale(1.04);
+  pointer-events: none;
+}
+.splash-icon {
+  width: 90px; height: 90px;
+  background: var(--accent);
+  border-radius: 26px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42px;
+  animation: splashPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  box-shadow: 0 0 60px rgba(240,193,75,0.35);
+}
+.splash-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px; font-weight: 800;
+  animation: splashFadeUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.splash-sub {
+  font-size: 13px; color: var(--muted);
+  letter-spacing: 3px; text-transform: uppercase;
+  animation: splashFadeUp 0.6s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.splash-dots {
+  display: flex; gap: 8px; margin-top: 10px;
+  animation: splashFadeUp 0.6s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.splash-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border);
+}
+.splash-dot:nth-child(1) { animation: dotPulse 1.2s 0.4s infinite; }
+.splash-dot:nth-child(2) { animation: dotPulse 1.2s 0.6s infinite; }
+.splash-dot:nth-child(3) { animation: dotPulse 1.2s 0.8s infinite; }
+
+@keyframes splashPop {
+  from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes splashFadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes dotPulse {
+  0%, 100% { background: var(--border); transform: scale(1); }
+  50% { background: var(--accent); transform: scale(1.4); }
+}
+
+/* Animations cartes au chargement */
+.card, .stat-card, .cours-card, .event-card, .obj-card, .sticky-note, .challenge-card, .bday-card, .leaderboard-item {
+  animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Vibration quand on coche un objectif */
+@keyframes checkVibrate {
+  0%,100% { transform: scale(1); }
+  20% { transform: scale(1.18) rotate(-3deg); }
+  40% { transform: scale(0.95) rotate(2deg); }
+  60% { transform: scale(1.08) rotate(-1deg); }
+  80% { transform: scale(0.98); }
+}
+.check-anim { animation: checkVibrate 0.4s ease both !important; }
+
+/* Confettis */
+.confetti-piece {
+  position: fixed;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  z-index: 9998;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -1390,12 +1478,115 @@ textarea, input, select { font-family: inherit; }
 .lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
 /* ============================================================
+   LISTE DE COURSES
+============================================================ */
+.courses-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+.courses-categories { display: flex; flex-direction: column; gap: 14px; }
+.courses-cat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.courses-cat-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+}
+.courses-cat-header .cat-count {
+  margin-left: auto; font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; color: var(--muted); font-weight: 400;
+}
+.courses-items { padding: 0 18px 14px; display: flex; flex-direction: column; gap: 6px; }
+.course-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  transition: all 0.15s;
+}
+.course-item.checked { opacity: 0.5; }
+.course-item.checked .course-name { text-decoration: line-through; color: var(--muted); }
+.course-check {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 2px solid var(--border); background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0; font-size: 12px;
+  transition: all 0.15s;
+}
+.course-item.checked .course-check { background: var(--accent3); border-color: var(--accent3); color: #0c0b14; }
+.course-name { flex: 1; font-size: 14px; }
+.course-qty { font-size: 12px; color: var(--muted); margin-right: 4px; }
+.course-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 4px; }
+.courses-progress {
+  padding: 16px 18px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.courses-progress-bar { flex: 1; background: var(--border); border-radius: 10px; height: 6px; overflow: hidden; }
+.courses-progress-fill { height: 100%; background: var(--accent3); border-radius: 10px; transition: width 0.4s ease; }
+
+/* ============================================================
+   ROUE DU TIRAGE AU SORT
+============================================================ */
+.wheel-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.wheel-container {
+  position: relative; width: 280px; height: 280px;
+}
+#wheelCanvas {
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+#wheelCanvas:active { transform: scale(0.97); }
+.wheel-pointer {
+  position: absolute; top: -18px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  z-index: 2;
+}
+.wheel-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; z-index: 2; cursor: pointer;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  transition: all 0.15s;
+}
+.wheel-center:hover { transform: translate(-50%, -50%) scale(1.1); }
+.wheel-result {
+  font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+  text-align: center; min-height: 36px; color: var(--accent);
+  animation: splashFadeUp 0.4s ease both;
+}
+.wheel-layout { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+.wheel-items-card { padding: 22px; }
+.wheel-item-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+}
+.wheel-item-row:last-child { border-bottom: none; }
+.wheel-item-color { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+.wheel-item-label { flex: 1; font-size: 14px; }
+.wheel-item-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; }
+
+/* ============================================================
    RESPONSIVE
 ============================================================ */
 
 </style>
 </head>
 <body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-icon">✦</div>
+  <div class="splash-title">StudySpace</div>
+  <div class="splash-sub">Mon espace personnel</div>
+  <div class="splash-dots">
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+  </div>
+</div>
 
 <!-- TOP BAR -->
 <div class="top-bar">
@@ -1436,6 +1627,12 @@ textarea, input, select { font-family: inherit; }
       <div class="more-drawer-item" data-section="anniversaires" onclick="showFromDrawer('anniversaires', this)">
         <span class="di-emoji">🎂</span>Anniversaires
         <span class="nav-badge" id="badge-bday" style="position:static;margin-top:2px;background:rgba(248,113,113,0.2);color:#f87171">0</span>
+      </div>
+      <div class="more-drawer-item" data-section="courses" onclick="showFromDrawer('courses', this)">
+        <span class="di-emoji">🛒</span>Courses
+      </div>
+      <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
+        <span class="di-emoji">🎡</span>Roue
       </div>
       <div class="more-drawer-item" onclick="openPwaModal()">
         <span class="di-emoji">📲</span>Installer
@@ -1787,151 +1984,174 @@ textarea, input, select { font-family: inherit; }
   </div>
 </section>
 
-</main>
+<!-- ===================== CHALLENGES ===================== -->
 
 <!-- ===================== CHALLENGES ===================== -->
 <section id="challenges" class="section">
   <div class="page-header">
     <div>
       <div class="page-title">🏆 <span>Challenges</span></div>
-      <div class="page-sub">Accomplis des défis, gagne des points, monte dans le classement !</div>
+      <div class="page-sub">Gagne des XP, monte de niveau !</div>
     </div>
   </div>
-
-  <div class="challenges-layout">
-    <div>
-      <!-- Hero points -->
-      <div class="points-hero">
-        <div class="points-hero-left">
-          <div style="margin-bottom:12px" id="ch-level-badge"></div>
-          <div class="points-total" id="ch-total-pts">0</div>
-          <div class="points-label">points XP accumulés</div>
-          <div class="xp-bar-wrap" style="margin-top:14px">
-            <div class="xp-bar-fill" id="ch-xp-bar" style="width:0%"></div>
-          </div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px" id="ch-xp-label"></div>
-        </div>
-        <div class="points-hero-right">
-          <div class="card" style="padding:16px;text-align:center">
-            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Défis complétés</div>
-            <div class="streak-fire" id="ch-done-count">0 🎯</div>
-          </div>
-          <div class="card" style="padding:16px;text-align:center">
-            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Série actuelle</div>
-            <div class="streak-fire" id="ch-streak">0 🔥</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filtres -->
-      <div class="filter-chips" style="margin-bottom:20px">
-        <div class="chip active" data-cf="all" onclick="filterChallenges(this)">Tous</div>
-        <div class="chip" data-cf="daily" onclick="filterChallenges(this)">Quotidiens</div>
-        <div class="chip" data-cf="weekly" onclick="filterChallenges(this)">Hebdomadaires</div>
-        <div class="chip" data-cf="monthly" onclick="filterChallenges(this)">Mensuels</div>
-        <div class="chip" data-cf="custom" onclick="filterChallenges(this)">Mes défis</div>
-      </div>
-
-      <div class="challenge-grid" id="challengeGrid"></div>
-
-      <!-- Créer un défi perso -->
-      <div class="card" style="padding:22px;margin-top:8px">
-        <div class="dash-section-title" style="margin-bottom:16px">➕ Créer mon propre défi</div>
-        <div class="form-row">
-          <div class="form-field">
-            <div class="field-label">Nom du défi</div>
-            <input class="field-input" id="chName" placeholder="Ex: Lire 20 min par jour…">
-          </div>
-          <div class="form-field" style="max-width:120px">
-            <div class="field-label">Points XP</div>
-            <input class="field-input" id="chPts" type="number" placeholder="50" min="5" max="500">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <div class="field-label">Description</div>
-            <input class="field-input" id="chDesc" placeholder="En quoi consiste ce défi ?">
-          </div>
-        </div>
-        <div class="field-label" style="margin-bottom:8px">Type</div>
-        <div class="cat-chips" id="chTypePicker">
-          <div class="cat-chip selected" data-t="daily" style="border-color:var(--accent3);color:var(--accent3)" onclick="selectChType(this)">Quotidien</div>
-          <div class="cat-chip" data-t="weekly" onclick="selectChType(this)">Hebdo</div>
-          <div class="cat-chip" data-t="monthly" onclick="selectChType(this)">Mensuel</div>
-        </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="addCustomChallenge()">Créer le défi</button>
-      </div>
+  <div id="ch-hero-card" style="border-radius:20px;padding:24px;margin-bottom:20px;background:linear-gradient(135deg,rgba(155,138,251,0.25),rgba(240,193,75,0.12));border:1px solid rgba(155,138,251,0.3)">
+    <div id="ch-level-badge" style="margin-bottom:10px"></div>
+    <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:4px">
+      <div class="points-total" id="ch-total-pts" style="font-size:48px;line-height:1">0</div>
+      <div style="font-size:13px;color:var(--muted);padding-bottom:6px">XP</div>
     </div>
-
-    <!-- Classement -->
-    <div>
-      <div class="card add-friend-card">
-        <div class="dash-section-title" style="margin-bottom:14px">🏅 Classement</div>
-        <div class="leaderboard" id="leaderboard"></div>
-        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-          <div class="field-label" style="margin-bottom:8px">Ajouter un ami au classement</div>
-          <div style="display:flex;gap:8px">
-            <input class="field-input" id="friendName" placeholder="Prénom de ton ami…">
-            <button class="btn btn-primary btn-sm" onclick="addFriend()" style="white-space:nowrap">+ Ajouter</button>
-          </div>
-        </div>
+    <div class="xp-bar-wrap" style="margin:10px 0 6px"><div class="xp-bar-fill" id="ch-xp-bar" style="width:0%"></div></div>
+    <div style="font-size:11px;color:var(--muted)" id="ch-xp-label"></div>
+    <div style="display:flex;gap:12px;margin-top:16px">
+      <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:12px;padding:12px;text-align:center">
+        <div class="streak-fire" id="ch-done-count" style="font-size:20px">0</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">Défis faits 🎯</div>
       </div>
-
-      <!-- Badges gagnés -->
-      <div class="card" style="padding:22px;margin-top:0">
-        <div class="dash-section-title" style="margin-bottom:14px">🎖️ Mes badges</div>
-        <div id="badges-grid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+      <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:12px;padding:12px;text-align:center">
+        <div class="streak-fire" id="ch-streak" style="font-size:20px">0</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">Jours de suite 🔥</div>
       </div>
     </div>
   </div>
+  <div class="filter-chips" style="margin-bottom:16px">
+    <div class="chip active" data-cf="all" onclick="filterChallenges(this)">Tous</div>
+    <div class="chip" data-cf="daily" onclick="filterChallenges(this)">Quotidiens</div>
+    <div class="chip" data-cf="weekly" onclick="filterChallenges(this)">Hebdo</div>
+    <div class="chip" data-cf="monthly" onclick="filterChallenges(this)">Mensuels</div>
+    <div class="chip" data-cf="custom" onclick="filterChallenges(this)">Mes défis</div>
+  </div>
+  <div class="challenge-grid" id="challengeGrid"></div>
+  <div style="margin-top:20px;margin-bottom:20px">
+    <div class="dash-section-title" style="margin-bottom:12px">🥇 Classement</div>
+    <div id="leaderboard"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input class="field-input" id="friendName" placeholder="Ajouter un ami...">
+      <button class="btn btn-primary btn-sm" onclick="addFriend()">+</button>
+    </div>
+  </div>
+  <div class="card" style="padding:18px;margin-bottom:20px">
+    <div class="dash-section-title" style="margin-bottom:12px">🎖️ Mes badges</div>
+    <div id="badges-grid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+  </div>
+  <details style="margin-bottom:16px">
+    <summary style="cursor:pointer;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px">
+      <span>➕</span> Créer mon propre défi
+    </summary>
+    <div style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:18px">
+      <input class="field-input" id="chName" placeholder="Nom du défi…" style="margin-bottom:10px">
+      <input class="field-input" id="chDesc" placeholder="Description…" style="margin-bottom:10px">
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input class="field-input" id="chPts" type="number" placeholder="XP (50)" style="flex:1">
+        <div id="chTypePicker" style="display:flex;gap:6px;flex:2">
+          <div class="cat-chip selected" data-t="daily" onclick="selectChType(this)" style="font-size:11px">Quotidien</div>
+          <div class="cat-chip" data-t="weekly" onclick="selectChType(this)" style="font-size:11px">Hebdo</div>
+          <div class="cat-chip" data-t="monthly" onclick="selectChType(this)" style="font-size:11px">Mensuel</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="addCustomChallenge()">Créer le défi ✓</button>
+    </div>
+  </details>
 </section>
-
-
-
 
 <!-- ===================== ANNIVERSAIRES ===================== -->
 <section id="anniversaires" class="section">
   <div class="page-header">
     <div>
       <div class="page-title">🎂 <span>Anniversaires</span></div>
-      <div class="page-sub">Ne rate plus jamais un anniversaire important !</div>
+      <div class="page-sub">Ne rate plus jamais un anniversaire !</div>
     </div>
   </div>
-
   <div id="bday-hero-wrap"></div>
-
-  <div class="bday-layout">
-    <div>
-      <!-- Tabs -->
-      <div class="filter-chips" style="margin-bottom:20px">
-        <div class="chip active" data-bf="all" onclick="filterBdays(this)">Tous</div>
-        <div class="chip" data-bf="upcoming" onclick="filterBdays(this)">À venir (30j)</div>
-        <div class="chip" data-bf="passed" onclick="filterBdays(this)">Passés</div>
+  <div class="filter-chips" style="margin-bottom:16px">
+    <div class="chip active" data-bf="all" onclick="filterBdays(this)">Tous</div>
+    <div class="chip" data-bf="upcoming" onclick="filterBdays(this)">Dans 30 jours</div>
+    <div class="chip" data-bf="passed" onclick="filterBdays(this)">Passés</div>
+  </div>
+  <div class="bday-list" id="bdayList" style="margin-bottom:20px"></div>
+  <details>
+    <summary style="cursor:pointer;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px">
+      <span>➕</span> Ajouter un anniversaire
+    </summary>
+    <div style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 14px 14px;padding:18px">
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <input class="field-input" id="bdayName" placeholder="Prénom…" style="flex:2">
+        <input class="field-input" id="bdayDate" type="date" style="flex:2">
       </div>
-      <div class="bday-list" id="bdayList"></div>
-    </div>
-
-    <!-- Formulaire ajout -->
-    <div class="card bday-form-card">
-      <div class="dash-section-title" style="margin-bottom:16px">➕ Ajouter un anniversaire</div>
-      <div class="form-field" style="margin-bottom:12px">
-        <div class="field-label">Prénom</div>
-        <input class="field-input" id="bdayName" placeholder="Ex: Mamie Suzanne…">
-      </div>
-      <div class="form-field" style="margin-bottom:12px">
-        <div class="field-label">Date de naissance</div>
-        <input class="field-input" id="bdayDate" type="date">
-      </div>
-      <div class="field-label" style="margin-bottom:8px">Emoji</div>
+      <input class="field-input" id="bdayNote" placeholder="Idée cadeau, note…" style="margin-bottom:12px">
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="bdayEmojiPicker"></div>
-      <div class="form-field" style="margin-bottom:14px">
-        <div class="field-label">Note (cadeau, idée…)</div>
-        <input class="field-input" id="bdayNote" placeholder="Ex: Aime les livres, la cuisine…">
-      </div>
       <button class="btn btn-primary" style="width:100%" onclick="addBday()">Ajouter 🎂</button>
     </div>
+  </details>
+</section>
+
+<!-- ===================== COURSES ===================== -->
+<section id="courses" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🛒 <span>Courses</span></div>
+      <div class="page-sub">Ta liste intelligente par catégorie</div>
+    </div>
+  </div>
+  <div style="position:sticky;top:56px;z-index:50;background:var(--bg);padding-bottom:12px">
+    <div style="display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px 14px">
+      <input class="field-input" id="courseItemName" placeholder="Ajouter un article..." style="flex:1;background:transparent;border:none;padding:0;font-size:15px" onkeydown="if(event.key==='Enter')addCourseItem()">
+      <input class="field-input" id="courseItemQty" placeholder="Qté" style="width:60px;background:transparent;border:none;padding:0;font-size:13px;color:var(--muted)" onkeydown="if(event.key==='Enter')addCourseItem()">
+      <button onclick="addCourseItem()" style="background:var(--accent);color:#0c0b14;border:none;border-radius:10px;width:34px;height:34px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">+</button>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none" id="courseCatPicker">
+      <div class="cat-chip selected" data-cat="🥦 Fruits & Légumes" onclick="selectCourseCat(this)">🥦 F&L</div>
+      <div class="cat-chip" data-cat="🥛 Frigo" onclick="selectCourseCat(this)">🥛 Frigo</div>
+      <div class="cat-chip" data-cat="🥖 Boulangerie" onclick="selectCourseCat(this)">🥖 Boulangerie</div>
+      <div class="cat-chip" data-cat="🥩 Viande & Poisson" onclick="selectCourseCat(this)">🥩 Viande</div>
+      <div class="cat-chip" data-cat="🧴 Hygiène" onclick="selectCourseCat(this)">🧴 Hygiène</div>
+      <div class="cat-chip" data-cat="🍫 Snacks" onclick="selectCourseCat(this)">🍫 Snacks</div>
+      <div class="cat-chip" data-cat="🏠 Maison" onclick="selectCourseCat(this)">🏠 Maison</div>
+      <div class="cat-chip" data-cat="📦 Autre" onclick="selectCourseCat(this)">📦 Autre</div>
+    </div>
+  </div>
+  <div class="courses-categories" id="coursesCats"></div>
+  <div style="display:flex;gap:8px;margin-top:16px">
+    <button class="btn btn-ghost btn-sm" style="flex:1" onclick="clearCheckedCourses()">🗑️ Vider cochés</button>
+    <button class="btn btn-ghost btn-sm" style="flex:1" onclick="resetAllCourses()">🔄 Tout décocher</button>
   </div>
 </section>
+
+<!-- ===================== ROULETTE ===================== -->
+<section id="roulette" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🎡 <span>Roue du sort</span></div>
+      <div class="page-sub">Laisse le hasard décider !</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:24px">
+    <div class="wheel-container" style="filter:drop-shadow(0 8px 32px rgba(155,138,251,0.3))">
+      <div class="wheel-pointer">▼</div>
+      <canvas id="wheelCanvas" width="280" height="280" onclick="spinWheel()"></canvas>
+      <div class="wheel-center" onclick="spinWheel()">▶</div>
+    </div>
+    <div class="wheel-result" id="wheelResult" style="font-size:20px;min-height:32px">Appuie sur la roue !</div>
+    <button class="btn btn-primary" style="width:200px;padding:14px;font-size:16px;border-radius:16px" onclick="spinWheel()">🎲 Lancer !</button>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn btn-ghost btn-sm" onclick="loadWheelPreset('repas')">🍕 Repas</button>
+    <button class="btn btn-ghost btn-sm" onclick="loadWheelPreset('films')">🎬 Films</button>
+    <button class="btn btn-ghost btn-sm" onclick="loadWheelPreset('activites')">🎮 Activités</button>
+    <button class="btn btn-ghost btn-sm" onclick="loadWheelPreset('matieres')">📚 Matières</button>
+  </div>
+  <div class="card" style="padding:18px">
+    <div class="dash-section-title" style="margin-bottom:14px">✏️ Mes options <span style="font-size:12px;color:var(--muted);font-weight:400">(max 12)</span></div>
+    <div id="wheelItemsList"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input class="field-input" id="newWheelItem" placeholder="Nouvelle option..." onkeydown="if(event.key==='Enter')addWheelItem()" style="flex:1">
+      <button class="btn btn-primary btn-sm" onclick="addWheelItem()">+</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px" onclick="resetWheelItems()">🔄 Réinitialiser</button>
+  </div>
+</section>
+
+</main>
+
 
 <div class="pwa-modal" id="pwaModal" onclick="closePwaModal(event)">
   <div class="pwa-box">
@@ -2071,6 +2291,8 @@ function showFromDrawer(id, el) {
   if (id === 'challenges') renderChallenges();
   if (id === 'famille') renderFamille();
   if (id === 'anniversaires') renderBdays();
+  if (id === 'courses') renderCourses();
+  if (id === 'roulette') renderWheel();
 }
 
 function showSection(id, el) {
@@ -2517,7 +2739,15 @@ function addObj() {
 }
 function toggleObj(id) {
   const o = objectifs.find(o => o.id === id);
-  if (o) { o.done = !o.done; saveObjs(); renderObjs(); }
+  if (o) {
+    o.done = !o.done;
+    saveObjs(); renderObjs();
+    if (o.done) {
+      const el = document.querySelector(`.obj-check`);
+      if (el) animateCheck(el);
+      if (navigator.vibrate) navigator.vibrate(40);
+    }
+  }
 }
 function deleteObj(id) { objectifs = objectifs.filter(o => o.id !== id); saveObjs(); renderObjs(); }
 
@@ -2792,8 +3022,9 @@ function completeChallenge(id) {
   if (chStats.lastDate !== today) { chStats.streak++; chStats.lastDate = today; }
   saveChallenges();
   renderChallenges();
-  // Confetti effect
   showXPPop(ch.pts);
+  launchConfetti();
+  if (navigator.vibrate) navigator.vibrate([30, 50, 80]);
 }
 
 function showXPPop(pts) {
@@ -3268,6 +3499,289 @@ document.addEventListener('keydown', e => {
 const nowInit = new Date();
 document.getElementById('evtDate').value = nowInit.toISOString().split('T')[0];
 
+// ============================================================
+//  LISTE DE COURSES
+// ============================================================
+const COURSE_CATS_ORDER = ['🥦 Fruits & Légumes','🥛 Frigo','🥖 Boulangerie','🥩 Viande & Poisson','🧴 Hygiène','🍫 Snacks','🏠 Maison','📦 Autre'];
+let courseItems = store.get('courseItems', []);
+let selCourseCat = '🥦 Fruits & Légumes';
+
+function selectCourseCat(el) {
+  document.querySelectorAll('#courseCatPicker .cat-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selCourseCat = el.dataset.cat;
+}
+
+function addCourseItem() {
+  const name = document.getElementById('courseItemName').value.trim();
+  const qty = document.getElementById('courseItemQty').value.trim();
+  if (!name) return;
+  courseItems.push({ id: Date.now(), name, qty, cat: selCourseCat, checked: false });
+  store.set('courseItems', courseItems);
+  renderCourses();
+  document.getElementById('courseItemName').value = '';
+  document.getElementById('courseItemQty').value = '';
+}
+
+function toggleCourseItem(id) {
+  const item = courseItems.find(i => i.id === id);
+  if (item) { item.checked = !item.checked; store.set('courseItems', courseItems); renderCourses(); }
+  if (navigator.vibrate) navigator.vibrate(30);
+}
+
+function deleteCourseItem(id) {
+  courseItems = courseItems.filter(i => i.id !== id);
+  store.set('courseItems', courseItems); renderCourses();
+}
+
+function clearCheckedCourses() {
+  courseItems = courseItems.filter(i => !i.checked);
+  store.set('courseItems', courseItems); renderCourses();
+}
+
+function resetAllCourses() {
+  courseItems.forEach(i => i.checked = false);
+  store.set('courseItems', courseItems); renderCourses();
+}
+
+function renderCourses() {
+  const container = document.getElementById('coursesCats');
+  if (!container) return;
+
+  // Group by category
+  const grouped = {};
+  COURSE_CATS_ORDER.forEach(cat => { grouped[cat] = courseItems.filter(i => i.cat === cat); });
+
+  const total = courseItems.length;
+  const done = courseItems.filter(i => i.checked).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  let html = '';
+
+  // Progress bar global
+  if (total > 0) {
+    html += `<div class="card" style="padding:16px 20px;margin-bottom:4px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600">Progression</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--accent3)">${done}/${total}</div>
+      </div>
+      <div class="courses-progress-bar"><div class="courses-progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }
+
+  let hasAny = false;
+  COURSE_CATS_ORDER.forEach(cat => {
+    const items = grouped[cat];
+    if (!items.length) return;
+    hasAny = true;
+    html += `<div class="courses-cat-card">
+      <div class="courses-cat-header">
+        <span>${cat}</span>
+        <span class="cat-count">${items.filter(i=>i.checked).length}/${items.length}</span>
+      </div>
+      <div class="courses-items">
+        ${items.map(item => `
+          <div class="course-item${item.checked?' checked':''}">
+            <div class="course-check" onclick="toggleCourseItem(${item.id})">${item.checked?'✓':''}</div>
+            <div class="course-name">${item.name}</div>
+            ${item.qty?`<div class="course-qty">${item.qty}</div>`:''}
+            <button class="course-del" onclick="deleteCourseItem(${item.id})">✕</button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  });
+
+  if (!hasAny) {
+    html += `<div class="card" style="padding:40px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🛒</div>
+      <div style="color:var(--muted)">Ta liste est vide !<br>Ajoute des articles à droite.</div>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+//  ROUE DU TIRAGE AU SORT
+// ============================================================
+const WHEEL_COLORS = ['#f0c14b','#9b8afb','#52e8a2','#f87171','#60a5fa','#fb923c','#f472b6','#a78bfa','#34d399','#fbbf24','#e879f9','#38bdf8'];
+const WHEEL_PRESETS = {
+  repas: ['🍕 Pizza','🍝 Pâtes','🍔 Burger','🥗 Salade','🍜 Soupe','🥪 Sandwich','🌮 Tacos','🍣 Sushi'],
+  films: ['Action','Comédie','Horreur','Animation','Science-fiction','Romance','Thriller','Documentaire'],
+  activites: ['🎮 Jeux vidéo','📚 Lecture','🎵 Musique','🏃 Sport','🎨 Dessin','📺 Série','🚶 Balade','😴 Repos'],
+  matieres: ['Maths','Français','Histoire','SVT','Physique','Anglais','Espagnol','Philosophie'],
+};
+let wheelItems = store.get('wheelItems', ['Option 1','Option 2','Option 3','Option 4','Option 5','Option 6']);
+let wheelSpinning = false;
+let wheelAngle = 0;
+
+function saveWheelItems() { store.set('wheelItems', wheelItems); }
+
+function addWheelItem() {
+  const val = document.getElementById('newWheelItem').value.trim();
+  if (!val || wheelItems.length >= 12) return;
+  wheelItems.push(val);
+  saveWheelItems(); renderWheel();
+  document.getElementById('newWheelItem').value = '';
+}
+
+function deleteWheelItem(i) {
+  wheelItems.splice(i, 1);
+  saveWheelItems(); renderWheel();
+}
+
+function resetWheelItems() {
+  wheelItems = ['Option 1','Option 2','Option 3','Option 4'];
+  saveWheelItems(); renderWheel();
+}
+
+function loadWheelPreset(key) {
+  wheelItems = [...WHEEL_PRESETS[key]];
+  saveWheelItems(); renderWheel();
+}
+
+function drawWheel() {
+  const canvas = document.getElementById('wheelCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 140, cy = 140, r = 136;
+  const n = wheelItems.length;
+  if (!n) return;
+  const slice = (2 * Math.PI) / n;
+
+  ctx.clearRect(0, 0, 280, 280);
+
+  wheelItems.forEach((item, i) => {
+    const start = wheelAngle + i * slice;
+    const end = start + slice;
+    // Slice
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Text
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(start + slice / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${n > 8 ? 10 : 13}px 'Instrument Sans', sans-serif`;
+    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+    ctx.shadowBlur = 3;
+    const maxLen = n > 8 ? 10 : 14;
+    const label = item.length > maxLen ? item.slice(0, maxLen - 1) + '…' : item;
+    ctx.fillText(label, r - 10, 5);
+    ctx.restore();
+  });
+
+  // Centre
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fill();
+}
+
+function spinWheel() {
+  if (wheelSpinning || !wheelItems.length) return;
+  wheelSpinning = true;
+  document.getElementById('wheelResult').textContent = '...';
+
+  const extraSpins = (5 + Math.floor(Math.random() * 5)) * 2 * Math.PI;
+  const randomStop = Math.random() * 2 * Math.PI;
+  const totalAngle = extraSpins + randomStop;
+  const duration = 3000 + Math.random() * 1000;
+  const start = performance.now();
+  const startAngle = wheelAngle;
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function frame(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    wheelAngle = startAngle + totalAngle * easeOut(progress);
+    drawWheel();
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    } else {
+      wheelSpinning = false;
+      // Determine winner: pointer is at top (angle = -π/2)
+      const n = wheelItems.length;
+      const slice = (2 * Math.PI) / n;
+      const norm = (((-wheelAngle - Math.PI / 2) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+      const winIdx = Math.floor(norm / slice) % n;
+      const winner = wheelItems[winIdx];
+      document.getElementById('wheelResult').textContent = '🎉 ' + winner + ' !';
+      launchConfetti();
+      if (navigator.vibrate) navigator.vibrate([50, 50, 100]);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function renderWheel() {
+  drawWheel();
+  const list = document.getElementById('wheelItemsList');
+  if (!list) return;
+  if (!wheelItems.length) {
+    list.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:10px 0">Aucune option. Ajoute-en ci-dessous !</div>`;
+    return;
+  }
+  list.innerHTML = wheelItems.map((item, i) => `
+    <div class="wheel-item-row">
+      <div class="wheel-item-color" style="background:${WHEEL_COLORS[i % WHEEL_COLORS.length]}"></div>
+      <div class="wheel-item-label">${item}</div>
+      <button class="wheel-item-del" onclick="deleteWheelItem(${i})">✕</button>
+    </div>`).join('');
+}
+
+// ============================================================
+//  SPLASH SCREEN
+// ============================================================
+function hideSplash() {
+  const splash = document.getElementById('splash');
+  splash.classList.add('hide');
+  setTimeout(() => splash.remove(), 600);
+}
+setTimeout(hideSplash, 2000);
+
+// ============================================================
+//  CONFETTIS
+// ============================================================
+function launchConfetti() {
+  const colors = ['#f0c14b','#9b8afb','#52e8a2','#f87171','#60a5fa','#fb923c','#f472b6'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-20px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width = (6 + Math.random() * 8) + 'px';
+      el.style.height = (6 + Math.random() * 8) + 'px';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    }, i * 30);
+  }
+}
+
+// ============================================================
+//  VIBRATION AU COCHE
+// ============================================================
+function animateCheck(el) {
+  el.classList.remove('check-anim');
+  void el.offsetWidth;
+  el.classList.add('check-anim');
+  if (navigator.vibrate) navigator.vibrate(40);
+}
+
 // Init all
 renderDashboard();
 renderMatieres();
@@ -3278,6 +3792,8 @@ renderObjs();
 renderStickies();
 renderChallenges();
 renderBdays();
+renderCourses();
+renderWheel();
 updatePomoDisplay();
 updatePomoStats();
 updateBadges();
