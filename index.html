@@ -682,97 +682,146 @@ textarea, input, select { font-family: inherit; }
 }
 .chip:hover { color: var(--text); }
 .chip.active { background: var(--accent); color: #0c0b14; border-color: var(--accent); }
-.cours-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 18px;
+/* Matière = accordéon principal */
+.cours-grid { display: flex; flex-direction: column; gap: 14px; }
+.matiere-block {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+  transition: box-shadow 0.2s;
 }
-.cours-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+.matiere-block:hover { box-shadow: var(--shadow); }
+/* En-tête matière cliquable */
+.matiere-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; cursor: pointer;
+  user-select: none; transition: background 0.15s;
 }
-.cours-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.cours-card-top {
-  height: 5px;
+.matiere-header:hover { background: rgba(255,255,255,0.03); }
+.matiere-color-dot {
+  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
 }
-.cours-card-header {
-  padding: 18px 20px 14px;
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 10px;
+.matiere-header-title {
+  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; flex: 1;
 }
-.cours-card-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; flex: 1; }
-.cours-card-count {
-  font-size: 10px; font-weight: 600;
-  padding: 3px 9px; border-radius: 20px;
-  text-transform: uppercase; letter-spacing: 1px;
+.matiere-header-meta {
+  font-size: 11px; color: var(--muted); display: flex; gap: 8px; align-items: center;
 }
-/* Chapters tabs */
-.chapters-bar {
-  display: flex; gap: 4px; overflow-x: auto;
-  padding: 0 20px 12px;
+.matiere-chevron {
+  font-size: 13px; color: var(--muted);
+  transition: transform 0.25s; flex-shrink: 0;
+}
+.matiere-block.open .matiere-chevron { transform: rotate(90deg); }
+/* Chapitres = liste d'accordéons internes */
+.matiere-body { display: none; border-top: 1px solid var(--border); }
+.matiere-block.open .matiere-body { display: block; }
+.chapter-row {
   border-bottom: 1px solid var(--border);
 }
-.chapters-bar::-webkit-scrollbar { height: 3px; }
-.chapter-tab {
-  padding: 5px 12px; border-radius: 7px;
-  font-size: 12px; font-weight: 500;
-  cursor: pointer; border: 1px solid transparent;
-  background: var(--surface); color: var(--muted);
-  white-space: nowrap; transition: all 0.15s;
-  flex-shrink: 0;
+.chapter-row:last-child { border-bottom: none; }
+/* En-tête chapitre */
+.chapter-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0; cursor: pointer; transition: background 0.15s;
+  min-height: 70px; overflow: hidden;
 }
-.chapter-tab.active { background: var(--card2); color: var(--text); border-color: var(--border); }
-.chapter-tab.add-btn {
-  background: none; color: var(--muted);
-  border: 1px dashed var(--border);
+.chapter-header:hover { background: rgba(255,255,255,0.03); }
+/* Miniature couverture */
+.chapter-cover {
+  width: 80px; height: 70px; flex-shrink: 0;
+  object-fit: cover; display: block;
+  background: var(--surface);
 }
-.chapter-tab.add-btn:hover { color: var(--text); border-color: var(--muted); }
+.chapter-cover-placeholder {
+  width: 80px; height: 70px; flex-shrink: 0;
+  background: var(--surface); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 22px; cursor: pointer; transition: background 0.15s;
+  position: relative;
+}
+.chapter-cover-placeholder:hover { background: var(--card2); }
+.chapter-cover-placeholder input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+.chapter-header-info { flex: 1; padding: 12px 6px; min-width: 0; }
+.chapter-header-name {
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.chapter-header-preview {
+  font-size: 12px; color: var(--muted); margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 200px;
+}
+.chapter-header-right {
+  display: flex; align-items: center; gap: 8px;
+  padding-right: 14px; flex-shrink: 0;
+}
+.chapter-img-count {
+  font-size: 11px; color: var(--muted);
+  background: var(--surface); border-radius: 8px;
+  padding: 3px 8px;
+}
+.chapter-chevron {
+  font-size: 12px; color: var(--muted);
+  transition: transform 0.25s;
+}
+.chapter-row.open .chapter-chevron { transform: rotate(90deg); }
+/* Contenu chapitre */
+.chapter-body { display: none; background: var(--surface); }
+.chapter-row.open .chapter-body { display: block; }
+.chapter-body-inner { padding: 16px 18px; }
 /* Drop zone */
 .drop-zone {
-  border: 2px dashed var(--border); border-radius: 10px;
-  padding: 20px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 18px; text-align: center; cursor: pointer;
   transition: all 0.2s; margin-bottom: 12px;
   color: var(--muted); font-size: 13px;
 }
 .drop-zone:hover, .drop-zone.dragover {
-  border-color: var(--accent);
-  background: rgba(240,193,75,0.04);
-  color: var(--accent);
+  border-color: var(--accent); background: rgba(240,193,75,0.04); color: var(--accent);
 }
 .drop-zone .drop-icon { font-size: 22px; margin-bottom: 4px; }
-.img-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+.img-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 .img-thumb {
-  position: relative; aspect-ratio: 4/3;
-  border-radius: 8px; overflow: hidden;
-  background: var(--surface); cursor: pointer;
+  position: relative; width: 100%;
+  border-radius: 14px; overflow: hidden;
+  background: var(--card); cursor: pointer;
+  aspect-ratio: 4/3;
 }
 .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .img-delete {
-  position: absolute; top: 4px; right: 4px;
-  background: rgba(0,0,0,0.7); border: none;
-  border-radius: 5px; color: var(--accent4);
-  cursor: pointer; font-size: 11px; padding: 2px 6px;
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.75); border: none;
+  border-radius: 8px; color: #fff;
+  cursor: pointer; font-size: 13px; padding: 6px 12px;
   opacity: 0; transition: opacity 0.15s;
 }
-.img-thumb:hover .img-delete { opacity: 1; }
+.img-thumb:hover .img-delete, .img-thumb:active .img-delete { opacity: 1; }
 .notes-area {
-  width: 100%;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 11px 13px;
-  color: var(--text); font-size: 13px;
-  line-height: 1.65; resize: vertical;
-  outline: none; min-height: 76px;
-  transition: border-color 0.2s;
+  width: 100%; background: transparent; border: none;
+  padding: 0; color: var(--text); font-size: 15px;
+  line-height: 1.8; resize: none; outline: none;
+  font-family: 'Instrument Sans', sans-serif;
+  display: block; box-sizing: border-box;
+  height: auto; overflow-y: hidden;
 }
-.notes-area:focus { border-color: var(--accent2); }
-.cours-card-body { padding: 14px 20px; }
-.cours-card-footer {
-  padding: 10px 20px 16px;
-  display: flex; gap: 8px; justify-content: flex-end;
+.notes-area:focus { outline: none; }
+.notes-wrapper {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px;
 }
+.notes-wrapper:focus-within {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(155,138,251,0.12);
+}
+/* Bouton add chapitre */
+.add-chapter-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 18px; color: var(--muted); font-size: 13px;
+  cursor: pointer; border-top: 1px dashed var(--border);
+  transition: color 0.15s, background 0.15s;
+}
+.add-chapter-btn:hover { color: var(--accent); background: rgba(240,193,75,0.03); }
 
 /* ============================================================
    AGENDA
@@ -2439,14 +2488,31 @@ function addChapter(mId) {
   if (!m) return;
   const name = prompt('Nom du chapitre :', `Chapitre ${m.chapters.length + 1}`);
   if (!name) return;
-  m.chapters.push({ name, imgs: [], notes: '' });
-  activeChapters[mId] = m.chapters.length - 1;
+  m.chapters.push({ name, imgs: [], notes: '', cover: null });
   saveMatieres(); renderMatieres();
+  setTimeout(() => {
+    document.getElementById(`matiere-${mId}`)?.classList.add('open');
+    const lastIdx = m.chapters.length - 1;
+    document.getElementById(`chrow-${mId}-${lastIdx}`)?.classList.add('open');
+  }, 10);
 }
 
 function switchChapter(mId, idx) {
   activeChapters[mId] = idx;
   renderMatieres();
+}
+
+function toggleImgGrid(id, btn) {
+  const el = document.getElementById(id);
+  const open = el.style.display === 'block';
+  el.style.display = open ? 'none' : 'block';
+  const count = el.querySelectorAll('.img-thumb').length;
+  btn.textContent = open ? `📷 Voir les photos (${count})` : `📷 Masquer les photos (${count})`;
+}
+
+function autoExpand(el) {
+  el.style.height = '0px';
+  el.style.height = (el.scrollHeight) + 'px';
 }
 
 function saveChapterNotes(mId, chIdx, val) {
@@ -2457,70 +2523,187 @@ function saveChapterNotes(mId, chIdx, val) {
 function renderMatieres() {
   const grid = document.getElementById('coursGrid');
   if (!matieres.length) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span class="empty-icon">📖</span>Ajoute ta première matière !</div>`;
+    grid.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span>Ajoute ta première matière !</div>`;
     return;
   }
   grid.innerHTML = matieres.map(m => {
-    const chIdx = activeChapters[m.id] !== undefined ? activeChapters[m.id] : 0;
-    const ch = m.chapters[chIdx] || m.chapters[0];
+    const totalImgs = m.chapters.reduce((a, ch) => a + (ch.imgs||[]).length, 0);
+    const chapitresHTML = m.chapters.map((ch, chIdx) => {
+      const coverSrc = ch.cover || (ch.imgs && ch.imgs[0]) || null;
+      const previewText = ch.notes ? ch.notes.slice(0, 50) + (ch.notes.length > 50 ? '…' : '') : 'Aucune note';
+      return `
+      <div class="chapter-row" id="chrow-${m.id}-${chIdx}">
+        <div class="chapter-header" onclick="toggleChapter(${m.id}, ${chIdx})">
+          ${coverSrc
+            ? `<img class="chapter-cover" src="${coverSrc}" alt="cover">`
+            : `<div class="chapter-cover-placeholder" title="Ajouter une image de couverture" onclick="event.stopPropagation();triggerCoverUpload(${m.id},${chIdx})">
+                🖼️
+                <input type="file" accept="image/*" onchange="handleCoverUpload(event,${m.id},${chIdx})">
+               </div>`
+          }
+          <div class="chapter-header-info">
+            <div class="chapter-header-name">${ch.name}</div>
+            <div class="chapter-header-preview">${previewText}</div>
+          </div>
+          <div class="chapter-header-right">
+            <span class="chapter-img-count">📷 ${(ch.imgs||[]).length}</span>
+            <span class="chapter-chevron">›</span>
+          </div>
+        </div>
+        <div class="chapter-body">
+          <div class="chapter-body-inner">
+            <!-- Couverture change -->
+            <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+              <div style="font-size:12px;color:var(--muted)">🖼️ Image de couverture :</div>
+              ${coverSrc
+                ? `<button class="btn btn-ghost btn-sm" onclick="removeCover(${m.id},${chIdx})">✕ Retirer</button>`
+                : ''
+              }
+              <label style="cursor:pointer">
+                <span class="btn btn-ghost btn-sm">📷 ${coverSrc ? 'Changer' : 'Ajouter une couverture'}</span>
+                <input type="file" accept="image/*" style="display:none" onchange="handleCoverUpload(event,${m.id},${chIdx})">
+              </label>
+            </div>
+            <!-- Drop zone images -->
+            <div class="drop-zone" id="drop-${m.id}-${chIdx}"
+              onclick="triggerUpload(${m.id}, ${chIdx})"
+              ondragover="handleDragOver(event,${m.id},${chIdx})"
+              ondragleave="handleDragLeave(${m.id},${chIdx})"
+              ondrop="handleDrop(event,${m.id},${chIdx})">
+              <div class="drop-icon">📷</div>Clique ou glisse des images
+            </div>
+            <input type="file" id="file-${m.id}-${chIdx}" accept="image/*" multiple style="display:none"
+              onchange="handleFileInput(event,${m.id},${chIdx})">
+            ${(ch.imgs||[]).length > 0 ? `
+            <div style="margin-bottom:12px">
+              <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;gap:8px;padding:12px"
+                onclick="toggleImgGrid('imgs-${m.id}-${chIdx}', this)">
+                📷 Voir les photos (${(ch.imgs||[]).length})
+              </button>
+              <div id="imgs-${m.id}-${chIdx}" style="display:none;margin-top:10px">
+                <div class="img-grid">
+                  ${(ch.imgs||[]).map((src, i) => `
+                    <div class="img-thumb" onclick="openLightbox('${src}')">
+                      <img src="${src}" alt="">
+                      <button class="img-delete" onclick="event.stopPropagation();deleteImg(${m.id},${chIdx},${i})">✕</button>
+                    </div>`).join('')}
+                </div>
+              </div>
+            </div>` : ''}
+            <div class="notes-wrapper">
+              <textarea class="notes-area" placeholder="Écris tes notes ici…"
+                oninput="autoExpand(this);saveChapterNotes(${m.id},${chIdx},this.value)"
+                onfocus="autoExpand(this)">${ch.notes||''}</textarea>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px">
+              <button class="btn btn-danger btn-sm" onclick="deleteChapter(${m.id},${chIdx})">🗑 Supprimer ce chapitre</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
     return `
-    <div class="cours-card">
-      <div class="cours-card-top" style="background:${m.color}"></div>
-      <div class="cours-card-header">
-        <div class="cours-card-title">${m.name}</div>
-        <div class="cours-card-count" style="background:${m.color}22;color:${m.color}">${(ch.imgs||[]).length} img</div>
-      </div>
-      <div class="chapters-bar">
-        ${m.chapters.map((c,i) => `<div class="chapter-tab${i===chIdx?' active':''}" onclick="switchChapter(${m.id},${i})">${c.name}</div>`).join('')}
-        <div class="chapter-tab add-btn" onclick="addChapter(${m.id})">+ chapitre</div>
-      </div>
-      <div class="cours-card-body">
-        <div class="drop-zone" id="drop-${m.id}"
-          onclick="triggerUpload(${m.id})"
-          ondragover="handleDragOver(event,${m.id})"
-          ondragleave="handleDragLeave(${m.id})"
-          ondrop="handleDrop(event,${m.id})">
-          <div class="drop-icon">📷</div>Clique ou glisse des images
+    <div class="matiere-block" id="matiere-${m.id}">
+      <div class="matiere-header" onclick="toggleMatiere(${m.id})">
+        <div class="matiere-color-dot" style="background:${m.color}"></div>
+        <div class="matiere-header-title">${m.name}</div>
+        <div class="matiere-header-meta">
+          <span>${m.chapters.length} chapitre${m.chapters.length > 1 ? 's' : ''}</span>
+          <span>·</span>
+          <span>${totalImgs} img</span>
         </div>
-        <input type="file" id="file-${m.id}" accept="image/*" multiple style="display:none" onchange="handleFileInput(event,${m.id})">
-        <div class="img-grid" id="imgs-${m.id}">
-          ${(ch.imgs||[]).map((src,i) => `
-            <div class="img-thumb" onclick="openLightbox('${src}')">
-              <img src="${src}" alt="">
-              <button class="img-delete" onclick="event.stopPropagation();deleteImg(${m.id},${chIdx},${i})">✕</button>
-            </div>`).join('')}
-        </div>
-        <textarea class="notes-area" placeholder="Notes pour ${ch.name}…"
-          oninput="saveChapterNotes(${m.id},${chIdx},this.value)">${ch.notes||''}</textarea>
+        <button class="btn btn-danger btn-sm" style="margin-left:8px;padding:4px 8px;font-size:11px"
+          onclick="event.stopPropagation();deleteMatiere(${m.id})">🗑</button>
+        <span class="matiere-chevron">›</span>
       </div>
-      <div class="cours-card-footer">
-        <button class="btn btn-danger btn-sm" onclick="deleteMatiere(${m.id})">🗑 Supprimer</button>
+      <div class="matiere-body">
+        ${chapitresHTML}
+        <div class="add-chapter-btn" onclick="addChapter(${m.id})">
+          <span style="font-size:16px">＋</span> Ajouter un chapitre
+        </div>
       </div>
     </div>`;
   }).join('');
 }
 
-function triggerUpload(id) { document.getElementById(`file-${id}`).click(); }
-function handleDragOver(e, id) { e.preventDefault(); document.getElementById(`drop-${id}`).classList.add('dragover'); }
-function handleDragLeave(id) { document.getElementById(`drop-${id}`).classList.remove('dragover'); }
-function handleDrop(e, id) { e.preventDefault(); handleDragLeave(id); Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(f => readImg(f, id)); }
-function handleFileInput(e, id) { Array.from(e.target.files).forEach(f => readImg(f, id)); e.target.value = ''; }
-function readImg(file, mId) {
+function toggleMatiere(id) {
+  const el = document.getElementById(`matiere-${id}`);
+  el.classList.toggle('open');
+}
+
+function toggleChapter(mId, chIdx) {
+  const el = document.getElementById(`chrow-${mId}-${chIdx}`);
+  el.classList.toggle('open');
+  // Auto-expand textarea after open
+  if (el.classList.contains('open')) {
+    setTimeout(() => {
+      el.querySelectorAll('.notes-area').forEach(autoExpand);
+    }, 10);
+  }
+}
+
+function triggerCoverUpload(mId, chIdx) {
+  // handled via label click
+}
+
+function handleCoverUpload(e, mId, chIdx) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const m = matieres.find(m => m.id === mId);
+    if (!m || !m.chapters[chIdx]) return;
+    m.chapters[chIdx].cover = ev.target.result;
+    saveMatieres(); renderMatieres();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeCover(mId, chIdx) {
+  const m = matieres.find(m => m.id === mId);
+  if (m && m.chapters[chIdx]) { delete m.chapters[chIdx].cover; saveMatieres(); renderMatieres(); }
+}
+
+function deleteChapter(mId, chIdx) {
+  const m = matieres.find(m => m.id === mId);
+  if (!m || m.chapters.length <= 1) { alert('Une matière doit avoir au moins 1 chapitre.'); return; }
+  if (!confirm('Supprimer ce chapitre ?')) return;
+  m.chapters.splice(chIdx, 1);
+  saveMatieres(); renderMatieres();
+}
+
+function triggerUpload(mId, chIdx) { document.getElementById(`file-${mId}-${chIdx}`).click(); }
+function handleDragOver(e, mId, chIdx) { e.preventDefault(); document.getElementById(`drop-${mId}-${chIdx}`).classList.add('dragover'); }
+function handleDragLeave(mId, chIdx) { document.getElementById(`drop-${mId}-${chIdx}`).classList.remove('dragover'); }
+function handleDrop(e, mId, chIdx) { e.preventDefault(); handleDragLeave(mId, chIdx); Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(f => readImg(f, mId, chIdx)); }
+function handleFileInput(e, mId, chIdx) { Array.from(e.target.files).forEach(f => readImg(f, mId, chIdx)); e.target.value = ''; }
+function readImg(file, mId, chIdx) {
   const reader = new FileReader();
   reader.onload = e => {
     const m = matieres.find(m => m.id === mId);
-    if (!m) return;
-    const chIdx = activeChapters[mId] !== undefined ? activeChapters[mId] : 0;
-    if (!m.chapters[chIdx]) return;
+    if (!m || !m.chapters[chIdx]) return;
     m.chapters[chIdx].imgs = m.chapters[chIdx].imgs || [];
     m.chapters[chIdx].imgs.push(e.target.result);
     saveMatieres(); renderMatieres();
+    // Keep chapter open after re-render
+    setTimeout(() => {
+      document.getElementById(`matiere-${mId}`)?.classList.add('open');
+      document.getElementById(`chrow-${mId}-${chIdx}`)?.classList.add('open');
+    }, 10);
   };
   reader.readAsDataURL(file);
 }
 function deleteImg(mId, chIdx, imgIdx) {
   const m = matieres.find(m => m.id === mId);
-  if (m && m.chapters[chIdx]) { m.chapters[chIdx].imgs.splice(imgIdx, 1); saveMatieres(); renderMatieres(); }
+  if (m && m.chapters[chIdx]) {
+    m.chapters[chIdx].imgs.splice(imgIdx, 1);
+    saveMatieres(); renderMatieres();
+    setTimeout(() => {
+      document.getElementById(`matiere-${mId}`)?.classList.add('open');
+      document.getElementById(`chrow-${mId}-${chIdx}`)?.classList.add('open');
+    }, 10);
+  }
 }
 function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
 function closeLightbox(e) { if (!e || e.target !== document.getElementById('lightboxImg')) document.getElementById('lightbox').classList.remove('open'); }
