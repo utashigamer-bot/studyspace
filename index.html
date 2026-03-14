@@ -994,12 +994,14 @@ body {
 .nav-item {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 10px 4px 8px; cursor: pointer;
-  color: var(--muted); font-size: 10px; gap: 3px;
+  padding: 10px 4px 6px; cursor: pointer;
+  color: var(--muted); font-size: 11px; gap: 3px;
   transition: color 0.15s; position: relative;
+  overflow: hidden;
 }
 .nav-item.active { color: var(--accent); }
-.nav-emoji { font-size: 22px; line-height: 1; }
+.nav-emoji { font-size: 24px; line-height: 1; flex-shrink: 0; }
+.nav-item > span:last-of-type { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .nav-badge {
   position: absolute; top: 6px; right: calc(50% - 18px);
   background: var(--accent4); color: #fff;
