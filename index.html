@@ -23,12 +23,13 @@
    THEME VARIABLES
 ============================================================ */
 :root {
-  --bg: #0c0b14;
-  --surface: #13111f;
-  --card: #1c192e;
-  --card2: #211e33;
-  --border: #2a2640;
+  --bg: #16142a;
+  --surface: #1e1b34;
+  --card: #272442;
+  --card2: #2e2a4e;
+  --border: #38335a;
   --text: #ede9ff;
+  color-scheme: dark;
   --muted: #7b759e;
   --accent: #f0c14b;
   --accent2: #9b8afb;
@@ -150,244 +151,6 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Vibration quand on coche un objectif */
-@keyframes checkVibrate {
-  0%,100% { transform: scale(1); }
-  20% { transform: scale(1.18) rotate(-3deg); }
-  40% { transform: scale(0.95) rotate(2deg); }
-  60% { transform: scale(1.08) rotate(-1deg); }
-  80% { transform: scale(0.98); }
-}
-.check-anim { animation: checkVibrate 0.4s ease both !important; }
-
-/* Confettis */
-.confetti-piece {
-  position: fixed;
-  width: 10px; height: 10px;
-  border-radius: 2px;
-  z-index: 9998;
-  pointer-events: none;
-  animation: confettiFall linear forwards;
-}
-@keyframes confettiFall {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Instrument Sans', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  letter-spacing: 0.01em;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background 0.3s, color 0.3s;
-  letter-spacing: 0.01em;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; }
-textarea, input, select { font-family: inherit; }
-
-/* ============================================================
-   SCROLLBAR
-============================================================ */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-/* ============================================================
-   BOTTOM NAV BAR — STYLE iPhone
-============================================================ */
-.sidebar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  width: 100%;
-  height: auto;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-right: none;
-  display: flex; flex-direction: column;
-  padding: 0;
-  z-index: 200;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  transition: background 0.3s, border-color 0.3s;
-}
-
-/* Barre principale visible */
-.bottom-nav-bar {
-  display: flex; align-items: stretch;
-  padding: 8px 4px;
-  padding-bottom: calc(8px + env(safe-area-inset-bottom));
-  gap: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.bottom-nav-bar::-webkit-scrollbar { display: none; }
-
-/* Menu "Plus" drawer qui s'ouvre vers le haut */
-.more-drawer {
-  display: none;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 16px;
-  padding-bottom: 4px;
-}
-.more-drawer.open { display: block; }
-.more-drawer-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.more-drawer-item {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  padding: 12px 8px; border-radius: 14px;
-  cursor: pointer; color: var(--muted);
-  font-size: 11px; font-weight: 500;
-  transition: all 0.15s;
-  border: 1px solid transparent;
-  text-align: center;
-  position: relative;
-}
-.more-drawer-item:hover, .more-drawer-item.active {
-  background: var(--card2); color: var(--text); border-color: var(--border);
-}
-.more-drawer-item.active { color: var(--accent); }
-.more-drawer-item .di-emoji { font-size: 22px; }
-.more-drawer-sep { height: 1px; background: var(--border); margin: 4px 0 12px; }
-.drawer-bottom-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 6px 4px 8px;
-  gap: 10px;
-}
-
-/* Thème picker compact dans le drawer */
-.drawer-theme-swatches {
-  display: flex; gap: 8px;
-}
-.drawer-theme-swatch {
-  width: 28px; height: 28px; border-radius: 8px;
-  cursor: pointer; border: 2px solid transparent;
-  transition: transform 0.15s, border-color 0.15s;
-  flex-shrink: 0;
-}
-.drawer-theme-swatch:hover { transform: scale(1.15); }
-.drawer-theme-swatch.active { border-color: var(--text); }
-
-/* Logo dans le drawer */
-.drawer-logo {
-  display: flex; align-items: center; gap: 8px;
-  padding: 0 4px;
-}
-.drawer-logo-icon {
-  width: 30px; height: 30px; background: var(--accent);
-  border-radius: 8px; display: flex; align-items: center;
-  justify-content: center; font-size: 14px; flex-shrink: 0;
-}
-.drawer-logo-text {
-  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
-}
-
-/* Boutons nav bottom */
-.nav-item {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 6px 4px 4px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 10px; font-weight: 500;
-  color: var(--muted);
-  transition: all 0.18s ease;
-  border: 1px solid transparent;
-  min-width: 0;
-  flex: 1;
-  position: relative;
-  user-select: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.nav-item:hover { color: var(--text); }
-.nav-item.active { color: var(--accent); }
-.nav-item .nav-emoji { font-size: 22px; width: auto; flex-shrink: 0; }
-.nav-item > span:last-of-type { font-size: 10px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
-.nav-item .nav-badge {
-  position: absolute; top: 2px; right: 8px;
-  font-size: 9px; font-weight: 700;
-  padding: 1px 5px; border-radius: 20px;
-  background: var(--accent4); color: white;
-  min-width: 16px; text-align: center;
-}
-
-/* Active indicator dot */
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-/* Cacher les éléments sidebar classiques qu'on n'utilise plus */
-.logo, .sidebar-search, .nav-group-label, .sidebar-bottom,
-.theme-picker-wrap, .theme-toggle { display: none; }
-
-/* ============================================================
-   MAIN LAYOUT — adapté iPhone
-============================================================ */
-.main {
-  margin-left: 0;
-  min-height: 100vh;
-  padding-bottom: calc(120px + env(safe-area-inset-bottom));
-}
-
-/* Header top bar */
-.top-bar {
-  position: fixed; top: 0; left: 0; right: 0;
-  height: 56px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 20px;
-  padding-top: env(safe-area-inset-top);
-  z-index: 100;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-.top-bar-logo {
-  display: flex; align-items: center; gap: 8px;
-}
-.top-bar-logo-icon {
-  width: 30px; height: 30px; background: var(--accent);
-  border-radius: 8px; display: flex; align-items: center;
-  justify-content: center; font-size: 15px;
-}
-.top-bar-logo-text {
-  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
-}
-.top-bar-actions { display: flex; gap: 10px; align-items: center; }
-.top-bar-btn {
-  width: 34px; height: 34px; border-radius: 10px;
-  background: var(--card); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; cursor: pointer; transition: all 0.15s;
-}
-.top-bar-btn:hover { background: var(--card2); }
-
-.section { display: none; padding: 24px 18px; padding-top: 76px; }
-.section.active { display: block; }
-.section.anim-in { animation: slideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(18px) scale(0.99); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 /* Ajustements mobile pour les grilles */
 .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; }
 .dashboard-row { grid-template-columns: 1fr !important; }
@@ -398,6 +161,10 @@ textarea, input, select { font-family: inherit; }
 .cours-grid { grid-template-columns: 1fr !important; }
 .famille-layout { grid-template-columns: 1fr !important; }
 .pomo-layout { grid-template-columns: 1fr !important; }
+.challenge-grid { grid-template-columns: 1fr !important; }
+.courses-layout { grid-template-columns: 1fr !important; }
+.wheel-layout { grid-template-columns: 1fr !important; }
+.famille-notes-grid { grid-template-columns: 1fr !important; }
 
 .page-title { font-size: 26px !important; }
 
@@ -485,6 +252,22 @@ textarea, input, select { font-family: inherit; }
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ============================================================
+   MAIN LAYOUT
+============================================================ */
+body {
+  padding-top: 56px;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+.main { padding: 0; }
+.section { display: none; padding: 20px 16px 32px; }
+.section.active { display: block; }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card, .stat-card { animation: cardIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
 .page-header {
   display: flex; align-items: flex-end; justify-content: space-between;
   margin-bottom: 32px; gap: 20px; flex-wrap: wrap;
@@ -1129,99 +912,136 @@ textarea, input, select { font-family: inherit; }
 .points-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
 .points-hero-right { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
 
-.challenge-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px; margin-bottom: 24px;
-}
-.challenge-card {
-  padding: 20px; border-radius: var(--radius);
-  background: var(--card); border: 1px solid var(--border);
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative; overflow: hidden;
-}
-.challenge-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.challenge-card.done { opacity: 0.65; }
-.challenge-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-}
-.challenge-card.daily::before { background: var(--accent3); }
-.challenge-card.weekly::before { background: var(--accent2); }
-.challenge-card.monthly::before { background: var(--accent6); }
-.challenge-card.done::before { background: var(--border); }
-.ch-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-.ch-icon {
-  width: 44px; height: 44px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
-}
-.ch-info { flex: 1; }
-.ch-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
-.ch-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-.ch-pts {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px; font-weight: 700; color: var(--accent);
-  display: flex; align-items: center; gap: 5px;
-}
-.ch-type {
-  font-size: 10px; font-weight: 600; padding: 3px 10px;
-  border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
-}
-.ch-type.daily { background: rgba(82,232,162,0.15); color: var(--accent3); }
-.ch-type.weekly { background: rgba(155,138,251,0.15); color: var(--accent2); }
-.ch-type.monthly { background: rgba(251,146,60,0.15); color: var(--accent6); }
-.ch-progress { margin: 10px 0 0; }
-.ch-progress-bar {
-  background: var(--border); border-radius: 10px; height: 6px; overflow: hidden;
-}
-.ch-progress-fill { height: 100%; border-radius: 10px; transition: width 0.4s ease; }
-.ch-progress-label { font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; justify-content: space-between; }
-.ch-complete-btn {
-  width: 100%; margin-top: 14px; padding: 10px;
-  border-radius: 10px; border: none; cursor: pointer;
-  font-family: inherit; font-size: 13px; font-weight: 600;
-  transition: all 0.18s;
-}
-.ch-complete-btn.todo { background: var(--accent); color: #0c0b14; }
-.ch-complete-btn.todo:hover { opacity: 0.88; transform: translateY(-1px); }
-.ch-complete-btn.completed { background: var(--border); color: var(--muted); cursor: default; }
 
-/* Leaderboard */
-.leaderboard { }
-.leaderboard-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 18px; border-radius: 14px;
-  margin-bottom: 8px; background: var(--card);
-  border: 1px solid var(--border);
-  transition: transform 0.15s;
+
+
+/* ============================================================
+   ANIMATIONS
+============================================================ */
+.anim-in {
+  animation: slideInUp 0.3s cubic-bezier(0.22,1,0.36,1) both;
 }
-.leaderboard-item:hover { transform: translateX(4px); }
-.leaderboard-item.me { border-color: var(--accent); background: rgba(240,193,75,0.06); }
-.lb-rank {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px; font-weight: 700; width: 32px; text-align: center;
-  flex-shrink: 0;
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.lb-rank.gold { color: #f0c14b; }
-.lb-rank.silver { color: #c0c0c0; }
-.lb-rank.bronze { color: #cd7f32; }
-.lb-avatar {
-  width: 42px; height: 42px; border-radius: 50%;
+.confetti-piece {
+  position: fixed; z-index: 9999; pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+.check-anim { animation: checkBounce 0.35s cubic-bezier(0.22,1,0.36,1); }
+@keyframes checkBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.xp-pop {
+  position: fixed; top: 80px; right: 16px; z-index: 999;
+  background: var(--accent); color: #0c0b14;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 16px;
+  padding: 10px 20px; border-radius: 20px;
+  animation: xpPopAnim 1.8s ease forwards;
+  pointer-events: none;
+}
+@keyframes xpPopAnim {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.8); }
+  20%  { opacity: 1; transform: translateY(0) scale(1); }
+  80%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+}
+
+/* ============================================================
+   TOP BAR
+============================================================ */
+.top-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px; background: var(--bg); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; gap: 12px;
+}
+.top-bar-logo { display: flex; align-items: center; gap: 8px; }
+.top-bar-logo-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--accent); color: #0c0b14;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0; border: 2px solid var(--border);
+  font-size: 14px; font-weight: 700;
 }
-.lb-info { flex: 1; }
-.lb-name { font-size: 14px; font-weight: 600; }
-.lb-pts-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.lb-pts {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px; font-weight: 700; color: var(--accent);
+.top-bar-logo-text { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; }
+.top-bar-actions { display: flex; gap: 8px; align-items: center; }
+.top-bar-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; cursor: pointer; transition: background 0.15s;
 }
-.lb-pts-word { font-size: 10px; color: var(--muted); }
-.add-friend-card { padding: 22px; margin-bottom: 16px; }
-.challenges-layout {
-  display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+.top-bar-btn:hover { background: var(--card2); }
+
+/* ============================================================
+   BOTTOM NAV & DRAWER
+============================================================ */
+.sidebar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
 }
+.bottom-nav-bar {
+  display: flex; background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 10px 4px 8px; cursor: pointer;
+  color: var(--muted); font-size: 10px; gap: 3px;
+  transition: color 0.15s; position: relative;
+}
+.nav-item.active { color: var(--accent); }
+.nav-emoji { font-size: 22px; line-height: 1; }
+.nav-badge {
+  position: absolute; top: 6px; right: calc(50% - 18px);
+  background: var(--accent4); color: #fff;
+  font-size: 9px; font-weight: 700; padding: 1px 5px;
+  border-radius: 10px; min-width: 16px; text-align: center;
+}
+/* More drawer */
+.more-drawer {
+  position: absolute; bottom: 100%; left: 0; right: 0;
+  background: var(--bg); border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 16px 8px;
+  transform: translateY(100%); opacity: 0; pointer-events: none;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.3);
+}
+.more-drawer.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+.more-drawer-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; margin-bottom: 14px;
+}
+.more-drawer-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 5px; padding: 12px 6px; border-radius: 14px;
+  cursor: pointer; font-size: 11px; font-weight: 600;
+  color: var(--muted); background: var(--card);
+  border: 1px solid var(--border); transition: all 0.15s;
+  text-align: center;
+}
+.more-drawer-item:hover, .more-drawer-item.active { color: var(--text); border-color: var(--accent2); background: var(--card2); }
+.di-emoji { font-size: 20px; }
+.more-drawer-sep { height: 1px; background: var(--border); margin: 8px 0; }
+.drawer-bottom-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 8px; }
+.drawer-logo { display: flex; align-items: center; gap: 8px; }
+.drawer-logo-icon { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); color: #0c0b14; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.drawer-logo-text { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; }
+.drawer-theme-swatches { display: flex; gap: 6px; }
+.drawer-theme-swatch {
+  width: 22px; height: 22px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent; transition: all 0.15s;
+}
+.drawer-theme-swatch.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
 
 /* ============================================================
    SOCIAL
@@ -1354,8 +1174,8 @@ textarea, input, select { font-family: inherit; }
 
 .famille-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 16px;
   margin-bottom: 24px;
 }
 .famille-card {
@@ -1487,47 +1307,49 @@ textarea, input, select { font-family: inherit; }
 }
 .lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
+
 /* ============================================================
    LISTE DE COURSES
 ============================================================ */
-.courses-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
-.courses-categories { display: flex; flex-direction: column; gap: 14px; }
-.courses-cat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.courses-cat-header {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 18px; cursor: pointer;
-  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+.course-cat-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--muted); white-space: nowrap; flex-shrink: 0; transition: all 0.15s;
 }
-.courses-cat-header .cat-count {
-  margin-left: auto; font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px; color: var(--muted); font-weight: 400;
+.course-cat-btn.selected { background: var(--accent); color: #0c0b14; border-color: var(--accent); }
+.courses-group { margin-bottom: 6px; }
+.courses-group-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 2px; font-size: 12px; font-weight: 700;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
 }
-.courses-items { padding: 0 18px 14px; display: flex; flex-direction: column; gap: 6px; }
+.courses-group-header .g-count {
+  margin-left: auto; font-size: 11px; font-weight: 500;
+  background: var(--surface); border-radius: 8px; padding: 2px 8px;
+}
 .course-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 12px; border-radius: 10px;
-  background: var(--surface); border: 1px solid var(--border);
-  transition: all 0.15s;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 14px;
+  margin-bottom: 8px; transition: all 0.2s; cursor: pointer;
 }
-.course-item.checked { opacity: 0.5; }
-.course-item.checked .course-name { text-decoration: line-through; color: var(--muted); }
+.course-item:active { transform: scale(0.98); }
+.course-item.checked { opacity: 0.4; }
+.course-item.checked .course-name { text-decoration: line-through; }
 .course-check {
-  width: 22px; height: 22px; border-radius: 6px;
-  border: 2px solid var(--border); background: var(--card);
+  width: 26px; height: 26px; border-radius: 8px;
+  border: 2px solid var(--border); background: var(--surface);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; font-size: 12px;
-  transition: all 0.15s;
+  flex-shrink: 0; font-size: 14px; transition: all 0.2s;
 }
 .course-item.checked .course-check { background: var(--accent3); border-color: var(--accent3); color: #0c0b14; }
-.course-name { flex: 1; font-size: 14px; }
-.course-qty { font-size: 12px; color: var(--muted); margin-right: 4px; }
-.course-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 4px; }
-.courses-progress {
-  padding: 16px 18px; border-top: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
+.course-name { flex: 1; font-size: 15px; font-weight: 500; }
+.course-qty {
+  font-size: 12px; color: var(--muted);
+  background: var(--surface); border-radius: 8px; padding: 3px 8px;
 }
-.courses-progress-bar { flex: 1; background: var(--border); border-radius: 10px; height: 6px; overflow: hidden; }
-.courses-progress-fill { height: 100%; background: var(--accent3); border-radius: 10px; transition: width 0.4s ease; }
+.course-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 4px; }
+
 
 /* ============================================================
    ROUE DU TIRAGE AU SORT
@@ -1577,6 +1399,150 @@ textarea, input, select { font-family: inherit; }
 .wheel-item-color { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
 .wheel-item-label { flex: 1; font-size: 14px; }
 .wheel-item-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; }
+
+.profile-avatar-big {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: var(--card); border: 3px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden; position: relative;
+  transition: border-color 0.2s;
+}
+.profile-avatar-big:hover { border-color: var(--accent); }
+.profile-avatar-edit {
+  position: absolute; bottom: 4px; right: 4px;
+  background: var(--accent); border-radius: 50%;
+  width: 28px; height: 28px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px;
+}
+.emoji-avatar-opt {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--surface); border: 2px solid transparent;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; cursor: pointer; transition: all 0.15s;
+}
+.emoji-avatar-opt:hover { border-color: var(--accent); transform: scale(1.1); }
+.emoji-avatar-opt.selected { border-color: var(--accent); background: var(--card2); }
+.theme-swatch-big {
+  flex: 1; min-width: 80px; height: 60px; border-radius: 14px;
+  display: flex; align-items: flex-end; padding: 8px;
+  cursor: pointer; border: 2px solid transparent; transition: all 0.15s;
+}
+.theme-swatch-big span { font-size: 11px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+.theme-swatch-big.active { border-color: white; box-shadow: 0 0 0 2px var(--accent); }
+.theme-swatch-big:hover { transform: scale(1.04); }
+
+/* ============================================================
+   INFOS
+============================================================ */
+.info-hero {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 32px 20px; margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(155,138,251,0.15), rgba(240,193,75,0.08));
+  border: 1px solid rgba(155,138,251,0.25); border-radius: 24px;
+  text-align: center;
+}
+.info-hero-icon {
+  font-size: 48px; margin-bottom: 10px;
+  background: var(--accent); -webkit-background-clip: text;
+  color: var(--accent); filter: drop-shadow(0 0 20px var(--accent));
+}
+.info-hero-name {
+  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 900;
+  letter-spacing: -1px; margin-bottom: 8px;
+}
+.info-version-badge {
+  background: var(--accent); color: #0c0b14;
+  font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;
+}
+.info-hero-sub { font-size: 14px; color: var(--muted); }
+.info-card { padding: 20px; }
+.info-section-title {
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  margin-bottom: 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.info-row {
+  display: flex; align-items: center; gap: 14px; padding: 8px 0;
+}
+.info-row-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--surface); display: flex; align-items: center;
+  justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.info-row-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.info-row-value { font-size: 15px; font-weight: 600; }
+.info-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.info-features-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.info-feature {
+  background: var(--surface); border-radius: 10px;
+  padding: 10px 12px; font-size: 13px; font-weight: 500;
+}
+.changelog-list { display: flex; flex-direction: column; gap: 10px; }
+.changelog-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.changelog-item:last-child { border-bottom: none; }
+.changelog-version {
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700;
+  background: var(--accent); color: #0c0b14;
+  padding: 3px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+}
+.changelog-desc { font-size: 13px; color: var(--muted); padding-top: 3px; }
+.info-storage-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.info-storage-row:last-child { border-bottom: none; }
+.info-storage-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent); }
+
+
+/* ============================================================
+   CHALLENGES & POINTS
+============================================================ */
+.xp-bar-wrap { background: var(--border); border-radius: 20px; height: 10px; overflow: hidden; margin: 8px 0 4px; }
+.xp-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.6s cubic-bezier(.4,0,.2,1); }
+.level-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 20px; background: linear-gradient(135deg, rgba(155,138,251,0.2), rgba(240,193,75,0.2)); border: 1px solid rgba(155,138,251,0.4); font-family: "Syne", sans-serif; font-weight: 700; font-size: 13px; }
+.level-badge .lvl-num { font-size: 18px; color: var(--accent); }
+.points-total { font-family: "Space Grotesk", sans-serif; font-size: 56px; font-weight: 700; line-height: 1; color: var(--accent); }
+.streak-fire { display: inline-flex; align-items: center; gap: 6px; font-family: "Space Grotesk", sans-serif; font-size: 22px; font-weight: 700; color: var(--accent6); }
+.challenge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.challenge-card { padding: 20px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
+.challenge-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.challenge-card.done { opacity: 0.65; }
+.challenge-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.challenge-card.daily::before { background: var(--accent3); }
+.challenge-card.weekly::before { background: var(--accent2); }
+.challenge-card.monthly::before { background: var(--accent6); }
+.challenge-card.done::before { background: var(--border); }
+.ch-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.ch-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.ch-info { flex: 1; }
+.ch-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.ch-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.ch-pts { font-family: "Space Grotesk", sans-serif; font-size: 16px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 5px; }
+.ch-type { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+.ch-type.daily { background: rgba(82,232,162,0.15); color: var(--accent3); }
+.ch-type.weekly { background: rgba(155,138,251,0.15); color: var(--accent2); }
+.ch-type.monthly { background: rgba(251,146,60,0.15); color: var(--accent6); }
+.ch-complete-btn { width: 100%; margin-top: 14px; padding: 10px; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; transition: all 0.18s; }
+.ch-complete-btn.todo { background: var(--accent); color: #0c0b14; }
+.ch-complete-btn.todo:hover { opacity: 0.88; transform: translateY(-1px); }
+.ch-complete-btn.completed { background: var(--border); color: var(--muted); cursor: default; }
+.leaderboard-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 14px; margin-bottom: 8px; background: var(--card); border: 1px solid var(--border); transition: transform 0.15s; }
+.leaderboard-item:hover { transform: translateX(4px); }
+.leaderboard-item.me { border-color: var(--accent); background: rgba(240,193,75,0.06); }
+.lb-rank { font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 700; width: 32px; text-align: center; flex-shrink: 0; }
+.lb-rank.gold { color: #f0c14b; } .lb-rank.silver { color: #c0c0c0; } .lb-rank.bronze { color: #cd7f32; }
+.lb-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 2px solid var(--border); }
+.lb-info { flex: 1; }
+.lb-name { font-size: 14px; font-weight: 600; }
+.lb-pts-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.lb-pts { font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 700; color: var(--accent); }
+.challenges-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
 
 /* ============================================================
    RESPONSIVE
@@ -1644,6 +1610,12 @@ textarea, input, select { font-family: inherit; }
       <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
         <span class="di-emoji">🎡</span>Roue
       </div>
+      <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
+        <span class="di-emoji">🎨</span>Apparence
+      </div>
+      <div class="more-drawer-item" data-section="infos" onclick="showFromDrawer('infos', this)">
+        <span class="di-emoji">ℹ️</span>Infos
+      </div>
       <div class="more-drawer-item" onclick="openPwaModal()">
         <span class="di-emoji">📲</span>Installer
       </div>
@@ -1698,7 +1670,7 @@ textarea, input, select { font-family: inherit; }
 <section id="dashboard" class="section active">
   <div class="page-header">
     <div>
-      <div class="page-title">Bonjour <span id="dash-greeting">👋</span></div>
+      <div class="page-title" id="dash-greeting">Bonjour 👋</div>
       <div class="page-sub" id="dash-date"></div>
     </div>
   </div>
@@ -1806,6 +1778,9 @@ textarea, input, select { font-family: inherit; }
     </div>
     <div class="agenda-right">
       <div id="agendaViewContainer"></div>
+      <div class="card" style="overflow:hidden">
+        <div class="events-list" id="eventsList"></div>
+      </div>
       <div class="card add-event-card">
         <h3>+ Nouvel événement</h3>
         <div class="form-row">
@@ -1835,9 +1810,6 @@ textarea, input, select { font-family: inherit; }
         <div class="field-label" style="margin-bottom:8px">Couleur</div>
         <div class="color-row" id="evtColorPicker"></div>
         <button class="btn btn-primary" style="width:100%" onclick="addEvent()">Ajouter à l'agenda</button>
-      </div>
-      <div class="card" style="overflow:hidden">
-        <div class="events-list" id="eventsList"></div>
       </div>
     </div>
   </div>
@@ -2032,7 +2004,6 @@ textarea, input, select { font-family: inherit; }
   </div>
 </section>
 
-<!-- ===================== CHALLENGES ===================== -->
 
 <!-- ===================== CHALLENGES ===================== -->
 <section id="challenges" class="section">
@@ -2137,31 +2108,54 @@ textarea, input, select { font-family: inherit; }
   <div class="page-header">
     <div>
       <div class="page-title">🛒 <span>Courses</span></div>
-      <div class="page-sub">Ta liste intelligente par catégorie</div>
+      <div class="page-sub" id="courses-sub">Ta liste de courses</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="clearCheckedCourses()">🗑 Cochés</button>
+  </div>
+
+  <!-- Barre progression -->
+  <div id="courses-progress-wrap" style="margin-bottom:16px;display:none">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px">
+      <span id="courses-progress-label">0 / 0 articles</span>
+      <span id="courses-progress-pct">0%</span>
+    </div>
+    <div style="background:var(--border);border-radius:10px;height:6px;overflow:hidden">
+      <div id="courses-progress-bar" style="height:100%;background:var(--accent3);border-radius:10px;transition:width 0.4s ease;width:0%"></div>
     </div>
   </div>
-  <div style="position:sticky;top:56px;z-index:50;background:var(--bg);padding-bottom:12px">
-    <div style="display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px 14px">
-      <input class="field-input" id="courseItemName" placeholder="Ajouter un article..." style="flex:1;background:transparent;border:none;padding:0;font-size:15px" onkeydown="if(event.key==='Enter')addCourseItem()">
-      <input class="field-input" id="courseItemQty" placeholder="Qté" style="width:60px;background:transparent;border:none;padding:0;font-size:13px;color:var(--muted)" onkeydown="if(event.key==='Enter')addCourseItem()">
-      <button onclick="addCourseItem()" style="background:var(--accent);color:#0c0b14;border:none;border-radius:10px;width:34px;height:34px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">+</button>
-    </div>
-    <div style="display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none" id="courseCatPicker">
-      <div class="cat-chip selected" data-cat="🥦 Fruits & Légumes" onclick="selectCourseCat(this)">🥦 F&L</div>
-      <div class="cat-chip" data-cat="🥛 Frigo" onclick="selectCourseCat(this)">🥛 Frigo</div>
-      <div class="cat-chip" data-cat="🥖 Boulangerie" onclick="selectCourseCat(this)">🥖 Boulangerie</div>
-      <div class="cat-chip" data-cat="🥩 Viande & Poisson" onclick="selectCourseCat(this)">🥩 Viande</div>
-      <div class="cat-chip" data-cat="🧴 Hygiène" onclick="selectCourseCat(this)">🧴 Hygiène</div>
-      <div class="cat-chip" data-cat="🍫 Snacks" onclick="selectCourseCat(this)">🍫 Snacks</div>
-      <div class="cat-chip" data-cat="🏠 Maison" onclick="selectCourseCat(this)">🏠 Maison</div>
-      <div class="cat-chip" data-cat="📦 Autre" onclick="selectCourseCat(this)">📦 Autre</div>
+
+  <!-- Ajout rapide sticky -->
+  <div style="position:sticky;top:56px;z-index:50;background:var(--bg);padding-bottom:10px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+      <div style="display:flex;align-items:center;padding:12px 14px;gap:10px">
+        <span style="font-size:18px">✏️</span>
+        <input class="field-input" id="courseItemName" placeholder="Ajouter un article…"
+          style="flex:1;background:transparent;border:none;padding:0;font-size:15px"
+          onkeydown="if(event.key==='Enter')addCourseItem()">
+        <input class="field-input" id="courseItemQty" placeholder="Qté"
+          style="width:52px;background:transparent;border:none;padding:0;font-size:13px;color:var(--muted);text-align:right"
+          onkeydown="if(event.key==='Enter')addCourseItem()">
+        <button onclick="addCourseItem()"
+          style="background:var(--accent);color:#0c0b14;border:none;border-radius:10px;width:32px;height:32px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">+</button>
+      </div>
+      <!-- Catégories scrollables -->
+      <div style="display:flex;gap:6px;overflow-x:auto;padding:0 12px 12px;scrollbar-width:none" id="courseCatPicker">
+        <div class="course-cat-btn selected" data-cat="🥦 Fruits & Légumes" onclick="selectCourseCat(this)">🥦 F&L</div>
+        <div class="course-cat-btn" data-cat="🥛 Frigo" onclick="selectCourseCat(this)">🥛 Frigo</div>
+        <div class="course-cat-btn" data-cat="🥖 Boulangerie" onclick="selectCourseCat(this)">🥖 Boulangerie</div>
+        <div class="course-cat-btn" data-cat="🥩 Viande & Poisson" onclick="selectCourseCat(this)">🥩 Viande</div>
+        <div class="course-cat-btn" data-cat="🧴 Hygiène" onclick="selectCourseCat(this)">🧴 Hygiène</div>
+        <div class="course-cat-btn" data-cat="🍫 Snacks" onclick="selectCourseCat(this)">🍫 Snacks</div>
+        <div class="course-cat-btn" data-cat="🏠 Maison" onclick="selectCourseCat(this)">🏠 Maison</div>
+        <div class="course-cat-btn" data-cat="📦 Autre" onclick="selectCourseCat(this)">📦 Autre</div>
+      </div>
     </div>
   </div>
-  <div class="courses-categories" id="coursesCats"></div>
-  <div style="display:flex;gap:8px;margin-top:16px">
-    <button class="btn btn-ghost btn-sm" style="flex:1" onclick="clearCheckedCourses()">🗑️ Vider cochés</button>
-    <button class="btn btn-ghost btn-sm" style="flex:1" onclick="resetAllCourses()">🔄 Tout décocher</button>
-  </div>
+
+  <!-- Liste articles -->
+  <div id="coursesCats"></div>
+
+  <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" onclick="resetAllCourses()">🔄 Tout décocher</button>
 </section>
 
 <!-- ===================== ROULETTE ===================== -->
@@ -2195,6 +2189,220 @@ textarea, input, select { font-family: inherit; }
       <button class="btn btn-primary btn-sm" onclick="addWheelItem()">+</button>
     </div>
     <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px" onclick="resetWheelItems()">🔄 Réinitialiser</button>
+  </div>
+</section>
+
+<!-- ===================== INFOS ===================== -->
+<!-- ===================== APPARENCE ===================== -->
+<section id="apparence" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🎨 <span>Apparence</span></div>
+      <div class="page-sub">Personnalise les couleurs de l'app</div>
+    </div>
+  </div>
+
+  <!-- Thèmes rapides -->
+  <div class="card" style="padding:22px;margin-bottom:16px">
+    <div class="dash-section-title" style="margin-bottom:14px">🎨 Thème rapide</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div onclick="applyPreset('default')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#16142a,#9b8afb);border:2px solid transparent;transition:all 0.2s" id="preset-default">
+        <div style="font-size:20px;margin-bottom:4px">🌙</div>
+        <div style="font-size:11px;color:#fff;font-weight:600">Défaut</div>
+      </div>
+      <div onclick="applyPreset('blue')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#0d1526,#60a5fa);border:2px solid transparent;transition:all 0.2s" id="preset-blue">
+        <div style="font-size:20px;margin-bottom:4px">💙</div>
+        <div style="font-size:11px;color:#fff;font-weight:600">Bleu nuit</div>
+      </div>
+      <div onclick="applyPreset('green')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#0d1a10,#4ade80);border:2px solid transparent;transition:all 0.2s" id="preset-green">
+        <div style="font-size:20px;margin-bottom:4px">🌿</div>
+        <div style="font-size:11px;color:#fff;font-weight:600">Forêt</div>
+      </div>
+      <div onclick="applyPreset('sunset')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#2a160a,#fb923c);border:2px solid transparent;transition:all 0.2s" id="preset-sunset">
+        <div style="font-size:20px;margin-bottom:4px">🌅</div>
+        <div style="font-size:11px;color:#fff;font-weight:600">Coucher</div>
+      </div>
+      <div onclick="applyPreset('rose')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#241224,#f472b6);border:2px solid transparent;transition:all 0.2s" id="preset-rose">
+        <div style="font-size:20px;margin-bottom:4px">🌸</div>
+        <div style="font-size:11px;color:#fff;font-weight:600">Rose</div>
+      </div>
+      <div onclick="applyPreset('light')" style="border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;background:linear-gradient(135deg,#f0eeff,#7c3aed);border:2px solid transparent;transition:all 0.2s" id="preset-light">
+        <div style="font-size:20px;margin-bottom:4px">☀️</div>
+        <div style="font-size:11px;color:#3b1f8c;font-weight:600">Clair</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sliders couleurs -->
+  <div class="card" style="padding:22px;margin-bottom:16px">
+    <div class="dash-section-title" style="margin-bottom:16px">🖌️ Couleurs personnalisées</div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600">Fond</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="preview-bg" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border)"></div>
+          <input type="color" id="color-bg" style="width:36px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none" onchange="applyCustomColor('bg', this.value)">
+        </div>
+      </div>
+      <input type="range" id="bright-bg" min="0" max="100" value="50" style="width:100%;accent-color:var(--accent)" oninput="adjustBrightness('bg', this.value)">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px"><span>Sombre</span><span>Clair</span></div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600">Cartes</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="preview-card" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border)"></div>
+          <input type="color" id="color-card" style="width:36px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none" onchange="applyCustomColor('card', this.value)">
+        </div>
+      </div>
+      <input type="range" id="bright-card" min="0" max="100" value="50" style="width:100%;accent-color:var(--accent)" oninput="adjustBrightness('card', this.value)">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px"><span>Sombre</span><span>Clair</span></div>
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600">Texte</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="preview-text" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border)"></div>
+          <input type="color" id="color-text" style="width:36px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none" onchange="applyCustomColor('text', this.value)">
+        </div>
+      </div>
+      <input type="range" id="bright-text" min="0" max="100" value="80" style="width:100%;accent-color:var(--accent)" oninput="adjustTextBrightness(this.value)">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px"><span>Gris</span><span>Blanc</span></div>
+    </div>
+
+    <div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:600">Couleur accent</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="preview-accent" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border)"></div>
+          <input type="color" id="color-accent" value="#f0c14b" style="width:36px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none" onchange="applyCustomColor('accent', this.value)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Taille du texte -->
+  <div class="card" style="padding:22px;margin-bottom:16px">
+    <div class="dash-section-title" style="margin-bottom:14px">🔡 Taille du texte</div>
+    <input type="range" id="font-size-slider" min="12" max="18" value="14" step="1" style="width:100%;accent-color:var(--accent)" oninput="adjustFontSize(this.value)">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px">
+      <span style="font-size:11px">Aa</span>
+      <span id="font-size-label" style="color:var(--accent);font-weight:600">14px</span>
+      <span style="font-size:17px">Aa</span>
+    </div>
+  </div>
+
+  <button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="resetApparence()">↺ Réinitialiser l'apparence</button>
+</section>
+
+<section id="infos" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">ℹ️ <span>À propos</span></div>
+      <div class="page-sub">StudySpace — Mon espace personnel</div>
+    </div>
+  </div>
+
+  <!-- Hero app -->
+  <div class="info-hero">
+    <div class="info-hero-icon">✦</div>
+    <div class="info-hero-name">StudySpace</div>
+    <div class="info-version-badge">v4.0</div>
+    <div class="info-hero-sub">Ton espace d'étude personnel</div>
+  </div>
+
+  <!-- Créateur -->
+  <div class="card info-card" style="margin-bottom:14px">
+    <div class="info-row">
+      <div class="info-row-icon">👨‍💻</div>
+      <div>
+        <div class="info-row-label">Créé par</div>
+        <div class="info-row-value">Léo-Paul Schmitt</div>
+      </div>
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-row">
+      <div class="info-row-icon">📅</div>
+      <div>
+        <div class="info-row-label">Date de création</div>
+        <div class="info-row-value">12 mars 2026</div>
+      </div>
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-row">
+      <div class="info-row-icon">🔖</div>
+      <div>
+        <div class="info-row-label">Version actuelle</div>
+        <div class="info-row-value">v4.0 — Mars 2026</div>
+      </div>
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-row">
+      <div class="info-row-icon">⚡</div>
+      <div>
+        <div class="info-row-label">Développé avec</div>
+        <div class="info-row-value">HTML · CSS · JavaScript</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fonctionnalités -->
+  <div class="card info-card" style="margin-bottom:14px">
+    <div class="info-section-title">🚀 Fonctionnalités</div>
+    <div class="info-features-grid">
+      <div class="info-feature">📚 Cours & chapitres</div>
+      <div class="info-feature">📅 Agenda</div>
+      <div class="info-feature">🎯 Objectifs</div>
+      <div class="info-feature">⏱ Chronomètre</div>
+      <div class="info-feature">📝 Notes rapides</div>
+      <div class="info-feature">🏠 Famille</div>
+      <div class="info-feature">🏆 Challenges & XP</div>
+      <div class="info-feature">🎂 Anniversaires</div>
+      <div class="info-feature">🛒 Liste de courses</div>
+      <div class="info-feature">🎡 Roue du sort</div>
+      <div class="info-feature">👤 Profil</div>
+      <div class="info-feature">🎨 6 thèmes</div>
+    </div>
+  </div>
+
+  <!-- Changelog -->
+  <div class="card info-card" style="margin-bottom:14px">
+    <div class="info-section-title">📋 Historique des versions</div>
+    <div class="changelog-list">
+      <div class="changelog-item">
+        <div class="changelog-version">v4.0</div>
+        <div class="changelog-desc">Suppression des Challenges, simplification de l'app</div>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-version">v3.7</div>
+        <div class="changelog-desc">Navigation 3 niveaux dans Cours, images pleine largeur</div>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-version">v3.6</div>
+        <div class="changelog-desc">Liste de courses intelligente, Roue du sort</div>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-version">v3.5</div>
+        <div class="changelog-desc">Challenges XP, Anniversaires, refonte UI mobile</div>
+      </div>
+      <div class="changelog-item">
+        <div class="changelog-version">v3.0</div>
+        <div class="changelog-desc">Navigation iPhone, splash screen, thèmes, animations</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats stockage -->
+  <div class="card info-card" style="margin-bottom:14px">
+    <div class="info-section-title">💾 Mes données</div>
+    <div id="info-storage-stats"></div>
+  </div>
+
+  <div style="text-align:center;padding:20px 0;color:var(--muted);font-size:12px">
+    Fait avec ❤️ pour Léo-Paul · StudySpace © 2026
   </div>
 </section>
 
@@ -2336,11 +2544,14 @@ function showFromDrawer(id, el) {
   next.classList.add('active', 'anim-in');
   next.addEventListener('animationend', () => next.classList.remove('anim-in'), { once: true });
   if (id === 'objectifs') renderObjs();
-  if (id === 'challenges') renderChallenges();
   if (id === 'famille') renderFamille();
+  if (id === 'challenges') renderChallenges();
   if (id === 'anniversaires') renderBdays();
   if (id === 'courses') renderCourses();
   if (id === 'roulette') renderWheel();
+  if (id === 'profil') renderProfil();
+  if (id === 'apparence') renderApparence();
+  if (id === 'infos') renderInfos();
 }
 
 function showSection(id, el) {
@@ -2358,8 +2569,8 @@ function showSection(id, el) {
   if (id === 'dashboard') renderDashboard();
   if (id === 'agenda') { renderCalendar(); renderAgendaView(); renderEvents(); }
   if (id === 'objectifs') renderObjs();
-  if (id === 'challenges') renderChallenges();
   if (id === 'famille') renderFamille();
+  if (id === 'challenges') renderChallenges();
   if (id === 'anniversaires') renderBdays();
 }
 
@@ -2404,7 +2615,11 @@ function renderDashboard() {
   const h = now.getHours();
   const greetings = [[5,'Bonne nuit'],[12,'Bonjour'],[18,'Bon après-midi'],[22,'Bonne soirée'],[24,'Bonne nuit']];
   const gr = greetings.find(([lim]) => h < lim);
-  document.getElementById('dash-greeting').textContent = gr ? gr[1] : 'Bonjour';
+  const profileName = store.get('profileName', '');
+  const greetWord = gr ? gr[1] : 'Bonjour';
+  document.getElementById('dash-greeting').innerHTML = profileName
+    ? `${greetWord} <span style="color:var(--accent)">${profileName}</span> 👋`
+    : `${greetWord} 👋`;
   const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
   const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
   document.getElementById('dash-date').textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
@@ -3166,6 +3381,7 @@ function goToSection(s) {
   if (drawerItem) showFromDrawer(s, drawerItem);
 }
 
+
 // ============================================================
 //  CHALLENGES & POINTS
 // ============================================================
@@ -3177,18 +3393,16 @@ const LEVELS = [
   { name: 'Expert', min: 1000, max: 1500, emoji: '🏆' },
   { name: 'Légende', min: 1500, max: 99999, emoji: '👑' },
 ];
-
 const DEFAULT_CHALLENGES = [
   { id: 'c1', title: 'Séance Pomodoro', desc: 'Complète une session de travail de 25 min', pts: 30, type: 'daily', icon: '⏱️', color: '#f0c14b', done: false, custom: false },
   { id: 'c2', title: 'Objectif du jour', desc: 'Coche un objectif quotidien', pts: 20, type: 'daily', icon: '🎯', color: '#52e8a2', done: false, custom: false },
   { id: 'c3', title: 'Notes de cours', desc: 'Ajoute une photo de cours', pts: 25, type: 'daily', icon: '📸', color: '#9b8afb', done: false, custom: false },
-  { id: 'c4', title: 'Hydratation', desc: 'Bois 8 verres d\'eau dans la journée', pts: 15, type: 'daily', icon: '💧', color: '#60a5fa', done: false, custom: false },
+  { id: 'c4', title: 'Hydratation', desc: "Bois 8 verres d'eau dans la journée", pts: 15, type: 'daily', icon: '💧', color: '#60a5fa', done: false, custom: false },
   { id: 'c5', title: 'Semaine parfaite', desc: 'Complète un défi chaque jour pendant 7 jours', pts: 150, type: 'weekly', icon: '🌟', color: '#fb923c', done: false, custom: false },
-  { id: 'c6', title: 'Agenda complet', desc: 'Ajoute 5 événements dans l\'agenda cette semaine', pts: 80, type: 'weekly', icon: '📅', color: '#a78bfa', done: false, custom: false },
+  { id: 'c6', title: 'Agenda complet', desc: "Ajoute 5 événements dans l'agenda cette semaine", pts: 80, type: 'weekly', icon: '📅', color: '#a78bfa', done: false, custom: false },
   { id: 'c7', title: 'Studieux du mois', desc: 'Complète 20 défis quotidiens ce mois-ci', pts: 300, type: 'monthly', icon: '🏆', color: '#f0c14b', done: false, custom: false },
   { id: 'c8', title: 'Social actif', desc: 'Publie 10 posts dans la section sociale', pts: 200, type: 'monthly', icon: '👥', color: '#52e8a2', done: false, custom: false },
 ];
-
 const BADGES_DEF = [
   { id: 'b1', name: 'Premier pas', emoji: '👶', desc: 'Premier défi complété', unlock: (s) => s.totalDone >= 1 },
   { id: 'b2', name: 'Sur la lancée', emoji: '🔥', desc: '5 défis complétés', unlock: (s) => s.totalDone >= 5 },
@@ -3197,17 +3411,15 @@ const BADGES_DEF = [
   { id: 'b5', name: 'Millionnaire XP', emoji: '💎', desc: '1000 points gagnés', unlock: (s) => s.totalPts >= 1000 },
   { id: 'b6', name: 'Série de feu', emoji: '🌋', desc: '7 jours de suite', unlock: (s) => s.streak >= 7 },
 ];
-
 let challenges = store.get('challenges', JSON.parse(JSON.stringify(DEFAULT_CHALLENGES)));
 let chStats = store.get('chStats', { totalPts: 0, totalDone: 0, streak: 0, lastDate: '', friends: [
   { name: 'Alex', pts: 420, emoji: '🐱' },
   { name: 'Léa', pts: 310, emoji: '🌟' },
   { name: 'Noah', pts: 180, emoji: '🎮' },
-] });
+]});
 let chFilter = 'all', selChType = 'daily';
 
 function saveChallenges() { store.set('challenges', challenges); store.set('chStats', chStats); updateBadges(); }
-
 function getLevel(pts) { return LEVELS.find(l => pts >= l.min && pts < l.max) || LEVELS[LEVELS.length-1]; }
 
 function completeChallenge(id) {
@@ -3218,22 +3430,17 @@ function completeChallenge(id) {
   chStats.totalDone++;
   const today = new Date().toISOString().split('T')[0];
   if (chStats.lastDate !== today) { chStats.streak++; chStats.lastDate = today; }
-  saveChallenges();
-  renderChallenges();
-  showXPPop(ch.pts);
-  launchConfetti();
+  saveChallenges(); renderChallenges(); showXPPop(ch.pts); launchConfetti();
   if (navigator.vibrate) navigator.vibrate([30, 50, 80]);
 }
 
 function showXPPop(pts) {
   const pop = document.createElement('div');
-  pop.textContent = `+${pts} XP 🎉`;
-  pop.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-    font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:#f0c14b;
-    z-index:9999;pointer-events:none;animation:popUp 1.2s ease forwards;`;
+  pop.textContent = '+' + pts + ' XP 🎉';
+  pop.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:"Syne",sans-serif;font-size:48px;font-weight:800;color:#f0c14b;z-index:9999;pointer-events:none;animation:popUp 1.2s ease forwards;';
   document.body.appendChild(pop);
   const style = document.createElement('style');
-  style.textContent = `@keyframes popUp{0%{opacity:0;transform:translate(-50%,-60%) scale(0.5)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-40%)}}`;
+  style.textContent = '@keyframes popUp{0%{opacity:0;transform:translate(-50%,-60%) scale(0.5)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}80%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-40%)}}';
   document.head.appendChild(style);
   setTimeout(() => { pop.remove(); style.remove(); }, 1200);
 }
@@ -3265,87 +3472,41 @@ function addCustomChallenge() {
   document.getElementById('chDesc').value = '';
 }
 
-function deleteChallenge(id) {
-  challenges = challenges.filter(c => c.id !== id);
-  saveChallenges(); renderChallenges();
-}
+function deleteChallenge(id) { challenges = challenges.filter(c => c.id !== id); saveChallenges(); renderChallenges(); }
 
 function addFriend() {
   const name = document.getElementById('friendName').value.trim();
   if (!name) return;
   const emojis = ['🐱','🌟','🎮','🐶','🦊','🐼','🎨','🎵'];
-  const pts = Math.floor(Math.random() * 200) + 50;
-  chStats.friends.push({ name, pts, emoji: emojis[Math.floor(Math.random()*emojis.length)] });
+  chStats.friends.push({ name, pts: Math.floor(Math.random()*200)+50, emoji: emojis[Math.floor(Math.random()*emojis.length)] });
   saveChallenges(); renderChallenges();
   document.getElementById('friendName').value = '';
 }
 
 function renderChallenges() {
-  // Points hero
   const lvl = getLevel(chStats.totalPts);
   const nextLvl = LEVELS[LEVELS.indexOf(lvl)+1];
   const pct = nextLvl ? Math.round((chStats.totalPts - lvl.min) / (nextLvl.min - lvl.min) * 100) : 100;
   document.getElementById('ch-total-pts').textContent = chStats.totalPts;
-  document.getElementById('ch-level-badge').innerHTML = `<div class="level-badge">${lvl.emoji} <span>Niveau </span><span class="lvl-num">${LEVELS.indexOf(lvl)+1}</span> — ${lvl.name}</div>`;
+  document.getElementById('ch-level-badge').innerHTML = '<div class="level-badge">' + lvl.emoji + ' <span>Niveau </span><span class="lvl-num">' + (LEVELS.indexOf(lvl)+1) + '</span> — ' + lvl.name + '</div>';
   document.getElementById('ch-xp-bar').style.width = pct + '%';
-  document.getElementById('ch-xp-label').textContent = nextLvl ? `${chStats.totalPts} / ${nextLvl.min} XP pour le niveau suivant` : 'Niveau maximum atteint ! 👑';
+  document.getElementById('ch-xp-label').textContent = nextLvl ? chStats.totalPts + ' / ' + nextLvl.min + ' XP pour le niveau suivant' : 'Niveau maximum atteint ! 👑';
   document.getElementById('ch-done-count').textContent = chStats.totalDone + ' 🎯';
   document.getElementById('ch-streak').textContent = chStats.streak + ' 🔥';
-
-  // Challenges grid
   const grid = document.getElementById('challengeGrid');
   const filtered = chFilter === 'all' ? challenges : chFilter === 'custom' ? challenges.filter(c=>c.custom) : challenges.filter(c=>c.type===chFilter);
   const TYPE_LABELS = { daily: 'Quotidien', weekly: 'Hebdomadaire', monthly: 'Mensuel' };
-  if (!filtered.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span class="empty-icon">🎯</span>Aucun défi ici.</div>`; }
-  else {
-    grid.innerHTML = filtered.map(ch => `
-      <div class="challenge-card ${ch.type}${ch.done?' done':''}">
-        <div class="ch-header">
-          <div class="ch-icon" style="background:${ch.color}22">${ch.icon}</div>
-          <div class="ch-info">
-            <div class="ch-title">${ch.title}</div>
-            <div class="ch-desc">${ch.desc}</div>
-          </div>
-        </div>
-        <div class="ch-meta">
-          <div class="ch-pts">⚡ ${ch.pts} XP</div>
-          <div class="ch-type ${ch.type}">${TYPE_LABELS[ch.type]}</div>
-        </div>
-        ${ch.done
-          ? `<button class="ch-complete-btn completed" disabled>✅ Défi accompli !</button>`
-          : `<button class="ch-complete-btn todo" onclick="completeChallenge('${ch.id}')">Marquer comme fait ✓</button>`
-        }
-        ${ch.custom ? `<button class="btn btn-danger btn-sm" style="margin-top:8px;width:100%" onclick="deleteChallenge('${ch.id}')">Supprimer</button>` : ''}
-      </div>`).join('');
-  }
-
-  // Leaderboard
-  const meEntry = { name: 'Moi 👤', pts: chStats.totalPts, emoji: store.get('profileData', {}).emoji || '🧑', isMe: true };
+  grid.innerHTML = !filtered.length ? '<div class="empty-state" style="grid-column:1/-1"><span class="empty-icon">🎯</span>Aucun défi ici.</div>' :
+    filtered.map(ch => '<div class="challenge-card ' + ch.type + (ch.done?' done':'') + '"><div class="ch-header"><div class="ch-icon" style="background:' + ch.color + '22">' + ch.icon + '</div><div class="ch-info"><div class="ch-title">' + ch.title + '</div><div class="ch-desc">' + ch.desc + '</div></div></div><div class="ch-meta"><div class="ch-pts">⚡ ' + ch.pts + ' XP</div><div class="ch-type ' + ch.type + '">' + TYPE_LABELS[ch.type] + '</div></div>' + (ch.done ? '<button class="ch-complete-btn completed" disabled>✅ Défi accompli !</button>' : '<button class="ch-complete-btn todo" onclick="completeChallenge(\'' + ch.id + '\')">Marquer comme fait ✓</button>') + (ch.custom ? '<button class="btn btn-danger btn-sm" style="margin-top:8px;width:100%" onclick="deleteChallenge(\'' + ch.id + '\')">Supprimer</button>' : '') + '</div>').join('');
+  const meEntry = { name: 'Moi 👤', pts: chStats.totalPts, emoji: '🧑', isMe: true };
   const all = [...chStats.friends, meEntry].sort((a,b) => b.pts - a.pts);
   const rankEmojis = ['🥇','🥈','🥉'];
   const rankClass = ['gold','silver','bronze'];
-  document.getElementById('leaderboard').innerHTML = all.map((f, i) => `
-    <div class="leaderboard-item${f.isMe?' me':''}">
-      <div class="lb-rank ${rankClass[i]||''}">${rankEmojis[i] || (i+1)}</div>
-      <div class="lb-avatar">${f.emoji}</div>
-      <div class="lb-info">
-        <div class="lb-name">${f.name}</div>
-        <div class="lb-pts-label">points XP</div>
-      </div>
-      <div style="text-align:right">
-        <div class="lb-pts">${f.pts}</div>
-      </div>
-    </div>`).join('');
-
-  // Badges
-  const badgesEl = document.getElementById('badges-grid');
-  badgesEl.innerHTML = BADGES_DEF.map(b => {
+  document.getElementById('leaderboard').innerHTML = all.map((f, i) => '<div class="leaderboard-item' + (f.isMe?' me':'') + '"><div class="lb-rank ' + (rankClass[i]||'') + '">' + (rankEmojis[i]||(i+1)) + '</div><div class="lb-avatar">' + f.emoji + '</div><div class="lb-info"><div class="lb-name">' + f.name + '</div><div class="lb-pts-label">points XP</div></div><div style="text-align:right"><div class="lb-pts">' + f.pts + '</div></div></div>').join('');
+  document.getElementById('badges-grid').innerHTML = BADGES_DEF.map(b => {
     const unlocked = b.unlock(chStats);
-    return `<div title="${b.desc}" style="width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:${unlocked?'rgba(240,193,75,0.15)':'var(--surface)'};border:1px solid ${unlocked?'rgba(240,193,75,0.4)':'var(--border)'};cursor:help;filter:${unlocked?'none':'grayscale(1) opacity(0.4)'}">
-      ${b.emoji}
-    </div>`;
+    return '<div title="' + b.desc + '" style="width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;background:' + (unlocked?'rgba(240,193,75,0.15)':'var(--surface)') + ';border:1px solid ' + (unlocked?'rgba(240,193,75,0.4)':'var(--border)') + ';cursor:help;filter:' + (unlocked?'none':'grayscale(1) opacity(0.4)') + '">' + b.emoji + '</div>';
   }).join('');
-
   updateBadges();
 }
 
@@ -3681,10 +3842,17 @@ if (!store.get('pwaHintShown', false)) {
 
 function updateBadges() {
   document.getElementById('badge-cours').textContent = store.get('matieres',[]).length;
+  document.getElementById('badge-ch') && (document.getElementById('badge-ch').textContent = store.get('challenges',[]).filter(c=>!c.done).length);
   document.getElementById('badge-agenda').textContent = store.get('agendaEvents',[]).length;
   document.getElementById('badge-obj').textContent = store.get('objectifs',[]).filter(o=>!o.done).length;
-  document.getElementById('badge-ch') && (document.getElementById('badge-ch').textContent = store.get('challenges',[]).filter(c=>!c.done).length);
-  
+}
+
+function showXPPop(msg) {
+  const el = document.createElement('div');
+  el.className = 'xp-pop';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1800);
 }
 
 // Keyboard shortcut for search
@@ -3705,20 +3873,23 @@ let courseItems = store.get('courseItems', []);
 let selCourseCat = '🥦 Fruits & Légumes';
 
 function selectCourseCat(el) {
-  document.querySelectorAll('#courseCatPicker .cat-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#courseCatPicker .course-cat-btn').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   selCourseCat = el.dataset.cat;
 }
 
 function addCourseItem() {
-  const name = document.getElementById('courseItemName').value.trim();
-  const qty = document.getElementById('courseItemQty').value.trim();
-  if (!name) return;
+  const nameEl = document.getElementById('courseItemName');
+  const qtyEl = document.getElementById('courseItemQty');
+  const name = nameEl.value.trim();
+  const qty = qtyEl.value.trim();
+  if (!name) { nameEl.focus(); return; }
   courseItems.push({ id: Date.now(), name, qty, cat: selCourseCat, checked: false });
   store.set('courseItems', courseItems);
   renderCourses();
-  document.getElementById('courseItemName').value = '';
-  document.getElementById('courseItemQty').value = '';
+  nameEl.value = ''; qtyEl.value = '';
+  nameEl.focus();
+  if (navigator.vibrate) navigator.vibrate(20);
 }
 
 function toggleCourseItem(id) {
@@ -3746,57 +3917,57 @@ function renderCourses() {
   const container = document.getElementById('coursesCats');
   if (!container) return;
 
-  // Group by category
-  const grouped = {};
-  COURSE_CATS_ORDER.forEach(cat => { grouped[cat] = courseItems.filter(i => i.cat === cat); });
-
   const total = courseItems.length;
   const done = courseItems.filter(i => i.checked).length;
   const pct = total ? Math.round(done / total * 100) : 0;
 
-  let html = '';
-
-  // Progress bar global
-  if (total > 0) {
-    html += `<div class="card" style="padding:16px 20px;margin-bottom:4px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div style="font-size:13px;font-weight:600">Progression</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--accent3)">${done}/${total}</div>
-      </div>
-      <div class="courses-progress-bar"><div class="courses-progress-fill" style="width:${pct}%"></div></div>
-    </div>`;
+  // Update progress bar
+  const progressWrap = document.getElementById('courses-progress-wrap');
+  if (progressWrap) {
+    progressWrap.style.display = total > 0 ? 'block' : 'none';
+    document.getElementById('courses-progress-label').textContent = `${done} / ${total} articles`;
+    document.getElementById('courses-progress-pct').textContent = `${pct}%`;
+    document.getElementById('courses-progress-bar').style.width = pct + '%';
   }
 
-  let hasAny = false;
+  // Update subtitle
+  const sub = document.getElementById('courses-sub');
+  if (sub) sub.textContent = total > 0 ? `${total - done} restant${total - done > 1 ? 's' : ''}` : 'Ta liste de courses';
+
+  // Group by category — unchecked first, checked last inside each group
+  const grouped = {};
   COURSE_CATS_ORDER.forEach(cat => {
-    const items = grouped[cat];
-    if (!items.length) return;
-    hasAny = true;
-    html += `<div class="courses-cat-card">
-      <div class="courses-cat-header">
-        <span>${cat}</span>
-        <span class="cat-count">${items.filter(i=>i.checked).length}/${items.length}</span>
-      </div>
-      <div class="courses-items">
-        ${items.map(item => `
-          <div class="course-item${item.checked?' checked':''}">
-            <div class="course-check" onclick="toggleCourseItem(${item.id})">${item.checked?'✓':''}</div>
-            <div class="course-name">${item.name}</div>
-            ${item.qty?`<div class="course-qty">${item.qty}</div>`:''}
-            <button class="course-del" onclick="deleteCourseItem(${item.id})">✕</button>
-          </div>`).join('')}
-      </div>
-    </div>`;
+    const items = courseItems.filter(i => i.cat === cat);
+    if (items.length) grouped[cat] = [...items.filter(i => !i.checked), ...items.filter(i => i.checked)];
   });
 
+  const hasAny = Object.keys(grouped).length > 0;
   if (!hasAny) {
-    html += `<div class="card" style="padding:40px;text-align:center">
-      <div style="font-size:36px;margin-bottom:12px">🛒</div>
-      <div style="color:var(--muted)">Ta liste est vide !<br>Ajoute des articles à droite.</div>
+    container.innerHTML = `<div style="text-align:center;padding:50px 20px">
+      <div style="font-size:48px;margin-bottom:12px">🛒</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:6px">Liste vide !</div>
+      <div style="color:var(--muted);font-size:13px">Tape un article ci-dessus et appuie sur +</div>
     </div>`;
+    return;
   }
 
-  container.innerHTML = html;
+  container.innerHTML = Object.entries(grouped).map(([cat, items]) => {
+    const doneInCat = items.filter(i => i.checked).length;
+    return `
+    <div class="courses-group">
+      <div class="courses-group-header">
+        <span>${cat}</span>
+        <span class="g-count">${doneInCat}/${items.length}</span>
+      </div>
+      ${items.map(item => `
+        <div class="course-item${item.checked ? ' checked' : ''}" onclick="toggleCourseItem(${item.id})">
+          <div class="course-check">${item.checked ? '✓' : ''}</div>
+          <div class="course-name">${item.name}</div>
+          ${item.qty ? `<div class="course-qty">${item.qty}</div>` : ''}
+          <button class="course-del" onclick="event.stopPropagation();deleteCourseItem(${item.id})">✕</button>
+        </div>`).join('')}
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
@@ -3981,6 +4152,15 @@ function animateCheck(el) {
 }
 
 // Init all
+// Reset any bad saved text colors from previous versions
+(function() {
+  const saved = store.get('apparenceCustom', {});
+  if (saved.text && saved.text !== '#ede9ff') {
+    delete saved.text;
+    store.set('apparenceCustom', saved);
+  }
+})();
+initApparence();
 renderDashboard();
 renderMatieres();
 renderCalendar();
@@ -3995,6 +4175,168 @@ renderWheel();
 updatePomoDisplay();
 updatePomoStats();
 updateBadges();
+
+// ============================================================
+//  APPARENCE
+// ============================================================
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return {r,g,b};
+}
+function rgbToHex(r,g,b) {
+  return '#' + [r,g,b].map(v => Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
+}
+function shiftBrightness(hex, pct) {
+  // pct 0-100, 50=original, <50=darker, >50=lighter
+  const {r,g,b} = hexToRgb(hex);
+  const factor = (pct - 50) / 50; // -1 to +1
+  const adjust = v => factor > 0 ? v + (255 - v) * factor * 0.8 : v + v * factor * 0.8;
+  return rgbToHex(adjust(r), adjust(g), adjust(b));
+}
+
+const APPARENCE_DEFAULTS = {
+  bg: '#16142a', card: '#272442', text: '#ede9ff', accent: '#f0c14b', fontSize: 14
+};
+
+function applyCustomColor(key, value) {
+  const map = { bg: '--bg', card: ['--card','--surface','--card2'], text: '--text', accent: '--accent' };
+  const root = document.documentElement;
+  if (key === 'card') {
+    const {r,g,b} = hexToRgb(value);
+    root.style.setProperty('--surface', rgbToHex(r-8,g-8,b-8));
+    root.style.setProperty('--card', value);
+    root.style.setProperty('--card2', rgbToHex(r+8,g+8,b+8));
+    root.style.setProperty('--border', rgbToHex(r+20,g+20,b+20));
+  } else {
+    root.style.setProperty(map[key], value);
+  }
+  document.getElementById('preview-' + key) && (document.getElementById('preview-' + key).style.background = value);
+  const saved = store.get('apparenceCustom', {});
+  saved[key] = value;
+  store.set('apparenceCustom', saved);
+}
+
+function adjustBrightness(key, pct) {
+  const base = key === 'bg' ? APPARENCE_DEFAULTS.bg : APPARENCE_DEFAULTS.card;
+  const color = shiftBrightness(base, parseInt(pct));
+  applyCustomColor(key, color);
+}
+
+function adjustTextBrightness(pct) {
+  const v = Math.round(150 + (pct / 100) * 105); // 150-255
+  const hex = rgbToHex(v, v - 10, v + 5);
+  applyCustomColor('text', hex);
+}
+
+function adjustFontSize(val) {
+  document.documentElement.style.setProperty('--font-base', val + 'px');
+  document.body.style.fontSize = val + 'px';
+  document.getElementById('font-size-label').textContent = val + 'px';
+  store.set('apparenceFontSize', parseInt(val));
+}
+
+function applyPreset(name) {
+  // Reset custom colors
+  document.documentElement.removeAttribute('data-palette');
+  const root = document.documentElement;
+  root.style.removeProperty('--bg');
+  root.style.removeProperty('--surface');
+  root.style.removeProperty('--card');
+  root.style.removeProperty('--card2');
+  root.style.removeProperty('--border');
+  root.style.removeProperty('--text');
+  root.style.removeProperty('--accent');
+  store.set('apparenceCustom', {});
+  // Apply palette
+  if (name === 'default') document.documentElement.removeAttribute('data-palette');
+  else document.documentElement.setAttribute('data-palette', name);
+  store.set('palette', name);
+  // Update preset UI
+  document.querySelectorAll('[id^="preset-"]').forEach(el => el.style.borderColor = 'transparent');
+  const el = document.getElementById('preset-' + name);
+  if (el) el.style.borderColor = 'var(--accent)';
+  // Sync swatches
+  document.querySelectorAll('.drawer-theme-swatch').forEach(s => s.classList.toggle('active', s.dataset.palette === name));
+  updateApparencePreviews();
+}
+
+function resetApparence() {
+  applyPreset('default');
+  document.body.style.fontSize = '';
+  document.getElementById('font-size-slider') && (document.getElementById('font-size-slider').value = 14);
+  document.getElementById('font-size-label') && (document.getElementById('font-size-label').textContent = '14px');
+  store.set('apparenceFontSize', 14);
+  store.set('apparenceCustom', {});
+  updateApparencePreviews();
+}
+
+function updateApparencePreviews() {
+  const styles = getComputedStyle(document.documentElement);
+  ['bg','card','text','accent'].forEach(k => {
+    const el = document.getElementById('preview-' + k);
+    if (el) el.style.background = styles.getPropertyValue('--' + (k === 'bg' ? 'bg' : k === 'card' ? 'card' : k === 'text' ? 'text' : 'accent')).trim();
+  });
+  const colorBg = document.getElementById('color-bg');
+  const colorCard = document.getElementById('color-card');
+  const colorText = document.getElementById('color-text');
+  const colorAccent = document.getElementById('color-accent');
+  if (colorBg) colorBg.value = rgbToHex(...styles.getPropertyValue('--bg').trim().slice(1).match(/.{2}/g).map(h=>parseInt(h,16))) || '#16142a';
+  if (colorAccent) colorAccent.value = styles.getPropertyValue('--accent').trim() || '#f0c14b';
+}
+
+function initApparence() {
+  // Restore saved custom colors
+  const saved = store.get('apparenceCustom', {});
+  Object.entries(saved).forEach(([k,v]) => applyCustomColor(k, v));
+  // Restore font size
+  const fs = store.get('apparenceFontSize', 14);
+  if (fs !== 14) {
+    document.body.style.fontSize = fs + 'px';
+  }
+  // Make sure text is always readable (never too dark)
+  const root = document.documentElement;
+  const currentText = getComputedStyle(root).getPropertyValue('--text').trim();
+  if (!currentText || currentText === '#000000' || currentText === 'black') {
+    root.style.setProperty('--text', '#ede9ff');
+  }
+}
+
+function renderApparence() {
+  updateApparencePreviews();
+  // Mark active preset
+  const p = store.get('palette', 'default');
+  document.querySelectorAll('[id^="preset-"]').forEach(el => el.style.borderColor = 'transparent');
+  const active = document.getElementById('preset-' + p);
+  if (active) active.style.borderColor = 'white';
+  // Set font slider
+  const fs = store.get('apparenceFontSize', 14);
+  const sl = document.getElementById('font-size-slider');
+  if (sl) { sl.value = fs; document.getElementById('font-size-label').textContent = fs + 'px'; }
+}
+
+function renderInfos() {
+  const el = document.getElementById('info-storage-stats');
+  if (!el) return;
+  const matieres = store.get('matieres', []);
+  const events = store.get('agendaEvents', []);
+  const objs = store.get('objectifs', []);
+  const notes = store.get('stickies', []);
+  const courses = store.get('courseItems', []);
+  const bdays = store.get('bdays', []);
+  // Estimate localStorage size
+  let total = 0;
+  try { for (let k in localStorage) { if (localStorage.hasOwnProperty(k)) total += localStorage[k].length * 2; } } catch(e) {}
+  const kb = (total / 1024).toFixed(1);
+  el.innerHTML = `
+    <div class="info-storage-row"><span>📚 Matières</span><span class="info-storage-val">${matieres.length}</span></div>
+    <div class="info-storage-row"><span>📅 Événements</span><span class="info-storage-val">${events.length}</span></div>
+    <div class="info-storage-row"><span>🎯 Objectifs</span><span class="info-storage-val">${objs.length}</span></div>
+    <div class="info-storage-row"><span>📝 Notes</span><span class="info-storage-val">${notes.length}</span></div>
+    <div class="info-storage-row"><span>🛒 Articles courses</span><span class="info-storage-val">${courses.length}</span></div>
+    <div class="info-storage-row"><span>🎂 Anniversaires</span><span class="info-storage-val">${bdays.length}</span></div>
+    <div class="info-storage-row"><span>💾 Espace utilisé</span><span class="info-storage-val">${kb} Ko</span></div>
+  `;
+}
 </script>
 </body>
 </html>
