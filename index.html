@@ -1547,6 +1547,28 @@ body {
 .challenges-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
 
 /* ============================================================
+   OUTILS
+============================================================ */
+.calc-btn {
+  padding: 14px 8px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--card2); color: var(--text); font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; font-family: 'Space Grotesk', sans-serif;
+}
+.calc-btn:hover { background: var(--border); }
+.calc-btn:active { transform: scale(0.94); }
+.calc-fn { background: var(--surface); color: var(--accent2); font-size: 13px; }
+.calc-op { background: rgba(155,138,251,0.15); color: var(--accent2); }
+.calc-eq { background: var(--accent); color: #0c0b14; font-size: 20px; }
+.calc-eq:hover { opacity: 0.88; }
+.formule-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+}
+.formule-titre { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--accent2); }
+.formule-expr { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.formule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ============================================================
    RESPONSIVE
 ============================================================ */
 
@@ -1612,6 +1634,9 @@ body {
       <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
         <span class="di-emoji">🎡</span>Roue
       </div>
+      <div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
+        <span class="di-emoji">🔧</span>Outils
+      </div>
       <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
         <span class="di-emoji">🎨</span>Apparence
       </div>
@@ -1675,6 +1700,7 @@ body {
       <div class="page-title" id="dash-greeting">Bonjour 👋</div>
       <div class="page-sub" id="dash-date"></div>
     </div>
+    <button class="btn btn-ghost btn-sm" onclick="showFromDrawer('outils', document.querySelector('[data-section=outils]'))" style="gap:6px;flex-shrink:0">🔧 Outils</button>
   </div>
 
   <div class="dashboard-grid" id="dash-stats"></div>
@@ -2195,6 +2221,173 @@ body {
 </section>
 
 <!-- ===================== INFOS ===================== -->
+<!-- ===================== OUTILS ===================== -->
+<section id="outils" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🔧 <span>Outils</span></div>
+      <div class="page-sub">Maths, sciences, français & pratique</div>
+    </div>
+  </div>
+
+  <!-- Onglets catégories -->
+  <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding-bottom:2px">
+    <div class="chip active" data-outil="maths" onclick="switchOutil(this)">📐 Maths</div>
+    <div class="chip" data-outil="sciences" onclick="switchOutil(this)">⚗️ Sciences</div>
+    <div class="chip" data-outil="francais" onclick="switchOutil(this)">📖 Français</div>
+    <div class="chip" data-outil="pratique" onclick="switchOutil(this)">🛠️ Pratique</div>
+  </div>
+
+  <!-- MATHS -->
+  <div id="outil-maths">
+    <!-- Calculatrice scientifique -->
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">🧮 Calculatrice scientifique</div>
+      <div id="calc-display" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;text-align:right;min-height:60px;word-break:break-all;margin-bottom:12px;color:var(--text)">0</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        <button class="calc-btn calc-fn" onclick="calcFn('sin(')">sin</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('cos(')">cos</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('tan(')">tan</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('Math.sqrt(')">√</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('Math.log10(')">log</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('Math.log(')">ln</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('Math.PI')">π</button>
+        <button class="calc-btn calc-fn" onclick="calcFn('**2')">x²</button>
+        <button class="calc-btn calc-op" onclick="calcClear()">C</button>
+        <button class="calc-btn calc-op" onclick="calcDel()">⌫</button>
+        <button class="calc-btn calc-op" onclick="calcInput('(')">(</button>
+        <button class="calc-btn calc-op" onclick="calcInput(')')">)</button>
+        <button class="calc-btn" onclick="calcInput('7')">7</button>
+        <button class="calc-btn" onclick="calcInput('8')">8</button>
+        <button class="calc-btn" onclick="calcInput('9')">9</button>
+        <button class="calc-btn calc-op" onclick="calcInput('/')">÷</button>
+        <button class="calc-btn" onclick="calcInput('4')">4</button>
+        <button class="calc-btn" onclick="calcInput('5')">5</button>
+        <button class="calc-btn" onclick="calcInput('6')">6</button>
+        <button class="calc-btn calc-op" onclick="calcInput('*')">×</button>
+        <button class="calc-btn" onclick="calcInput('1')">1</button>
+        <button class="calc-btn" onclick="calcInput('2')">2</button>
+        <button class="calc-btn" onclick="calcInput('3')">3</button>
+        <button class="calc-btn calc-op" onclick="calcInput('-')">−</button>
+        <button class="calc-btn" onclick="calcInput('0')">0</button>
+        <button class="calc-btn" onclick="calcInput('.')">.</button>
+        <button class="calc-btn calc-op" onclick="calcInput('+')">+</button>
+        <button class="calc-btn calc-eq" onclick="calcEqual()">=</button>
+      </div>
+    </div>
+    <!-- Formules géométrie -->
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">📐 Géométrie</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <div class="chip active" data-geo="cercle" onclick="switchGeo(this)">Cercle</div>
+        <div class="chip" data-geo="rectangle" onclick="switchGeo(this)">Rectangle</div>
+        <div class="chip" data-geo="triangle" onclick="switchGeo(this)">Triangle</div>
+        <div class="chip" data-geo="sphere" onclick="switchGeo(this)">Sphère</div>
+        <div class="chip" data-geo="cylindre" onclick="switchGeo(this)">Cylindre</div>
+      </div>
+      <div id="geo-inputs"></div>
+      <div id="geo-result" style="background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:12px;display:none"></div>
+    </div>
+    <!-- Convertisseur -->
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">🔄 Convertisseur</div>
+      <select class="field-input" id="conv-type" onchange="renderConverter()" style="margin-bottom:12px">
+        <option value="longueur">📏 Longueur</option>
+        <option value="masse">⚖️ Masse</option>
+        <option value="temperature">🌡️ Température</option>
+        <option value="vitesse">💨 Vitesse</option>
+        <option value="aire">📦 Aire</option>
+      </select>
+      <div id="conv-inputs"></div>
+      <div id="conv-result" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:10px;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--accent);display:none"></div>
+    </div>
+  </div>
+
+  <!-- SCIENCES -->
+  <div id="outil-sciences" style="display:none">
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">⚗️ Formules essentielles</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <div class="chip active" data-sci="physique" onclick="switchSci(this)">Physique</div>
+        <div class="chip" data-sci="chimie" onclick="switchSci(this)">Chimie</div>
+        <div class="chip" data-sci="svt" onclick="switchSci(this)">SVT</div>
+      </div>
+      <div id="sci-formulas"></div>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">🧪 Tableau périodique rapide</div>
+      <input class="field-input" id="element-search" placeholder="Cherche un élément (ex: Carbone, Fe, 6…)" oninput="searchElement(this.value)" style="margin-bottom:12px">
+      <div id="element-result"></div>
+    </div>
+  </div>
+
+  <!-- FRANÇAIS -->
+  <div id="outil-francais" style="display:none">
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">🔤 Conjugueur</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+        <input class="field-input" id="conj-verbe" placeholder="Verbe (ex: manger)" style="flex:2;min-width:120px">
+        <select class="field-input" id="conj-temps" style="flex:1;min-width:120px">
+          <option value="présent">Présent</option>
+          <option value="imparfait">Imparfait</option>
+          <option value="futur">Futur simple</option>
+          <option value="passé composé">Passé composé</option>
+          <option value="conditionnel">Conditionnel</option>
+          <option value="subjonctif">Subjonctif</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="conjuguer()">Conjuguer</button>
+      <div id="conj-result" style="margin-top:12px"></div>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">📝 Plan de dissertation</div>
+      <input class="field-input" id="diss-sujet" placeholder="Sujet ou thème…" style="margin-bottom:10px">
+      <button class="btn btn-primary" style="width:100%" onclick="genererPlan()">Générer un plan</button>
+      <div id="diss-result" style="margin-top:12px"></div>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">📚 Règles de grammaire</div>
+      <div id="grammaire-list"></div>
+    </div>
+  </div>
+
+  <!-- PRATIQUE -->
+  <div id="outil-pratique" style="display:none">
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">🎲 Dé & Pile ou Face</div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-primary" style="flex:1" onclick="lancerDe()">🎲 Lancer le dé</button>
+        <button class="btn btn-ghost" style="flex:1" onclick="pileOuFace()">🪙 Pile ou face</button>
+      </div>
+      <div id="de-result" style="text-align:center;font-size:64px;margin-top:16px;min-height:80px"></div>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">👥 Groupes aléatoires</div>
+      <textarea class="field-input" id="groupe-noms" placeholder="Un prénom par ligne…" style="resize:vertical;min-height:80px;margin-bottom:10px"></textarea>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input class="field-input" id="groupe-taille" type="number" placeholder="Taille groupe" min="2" max="10" value="2" style="flex:1">
+        <button class="btn btn-primary" style="flex:2" onclick="faireGroupes()">Créer les groupes</button>
+      </div>
+      <div id="groupe-result"></div>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">📊 Calculatrice de moyenne</div>
+      <div id="moyenne-notes"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input class="field-input" id="moy-note" type="number" placeholder="Note /20" min="0" max="20" step="0.5" style="flex:2">
+        <input class="field-input" id="moy-coef" type="number" placeholder="Coef" min="1" max="10" value="1" style="flex:1">
+        <button class="btn btn-primary" onclick="ajouterNote()">+</button>
+      </div>
+      <div id="moy-result" style="margin-top:12px;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--accent)"></div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" onclick="resetMoyenne()">Réinitialiser</button>
+    </div>
+    <div class="card" style="padding:20px;margin-bottom:14px">
+      <div class="dash-section-title" style="margin-bottom:14px">✅ Checklist examen</div>
+      <div id="checklist-exam"></div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== APPARENCE ===================== -->
 <section id="apparence" class="section">
   <div class="page-header">
@@ -2312,7 +2505,7 @@ body {
   <div class="info-hero">
     <div class="info-hero-icon">✦</div>
     <div class="info-hero-name">StudySpace</div>
-    <div class="info-version-badge">v4.0</div>
+    <div class="info-version-badge">v4.1</div>
     <div class="info-hero-sub">Ton espace d'étude personnel</div>
   </div>
 
@@ -2338,7 +2531,7 @@ body {
       <div class="info-row-icon">🔖</div>
       <div>
         <div class="info-row-label">Version actuelle</div>
-        <div class="info-row-value">v4.0 — Mars 2026</div>
+        <div class="info-row-value">v4.1 — Mars 2026</div>
       </div>
     </div>
     <div class="info-divider"></div>
@@ -2375,6 +2568,8 @@ body {
     <div class="info-section-title">📋 Historique des versions</div>
     <div class="changelog-list">
       <div class="changelog-item">
+        <div class="changelog-version">v4.1</div>
+        <div class="changelog-desc">Section Outils (calculatrice, géométrie, convertisseur, sciences, conjugueur, grammaire, moyenne, checklist), section Apparence, bouton Outils sur l'accueil</div>
         <div class="changelog-version">v4.0</div>
         <div class="changelog-desc">Suppression des Challenges, simplification de l'app</div>
       </div>
@@ -2552,6 +2747,7 @@ function showFromDrawer(id, el) {
   if (id === 'courses') renderCourses();
   if (id === 'roulette') renderWheel();
   if (id === 'profil') renderProfil();
+  if (id === 'outils') renderOutils();
   if (id === 'apparence') renderApparence();
   if (id === 'infos') renderInfos();
 }
@@ -4314,6 +4510,451 @@ function renderApparence() {
   const fs = store.get('apparenceFontSize', 14);
   const sl = document.getElementById('font-size-slider');
   if (sl) { sl.value = fs; document.getElementById('font-size-label').textContent = fs + 'px'; }
+}
+
+// ============================================================
+//  OUTILS
+// ============================================================
+
+// --- Navigation outils ---
+function switchOutil(el) {
+  document.querySelectorAll('[data-outil]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  ['maths','sciences','francais','pratique'].forEach(k => {
+    document.getElementById('outil-' + k).style.display = el.dataset.outil === k ? 'block' : 'none';
+  });
+}
+
+// ---- CALCULATRICE ----
+let calcExpr = '';
+function calcInput(v) {
+  if (calcExpr === '0' || calcExpr === 'Erreur') calcExpr = '';
+  calcExpr += v;
+  document.getElementById('calc-display').textContent = calcExpr || '0';
+}
+function calcFn(fn) {
+  if (calcExpr === 'Erreur') calcExpr = '';
+  calcExpr += fn;
+  document.getElementById('calc-display').textContent = calcExpr;
+}
+function calcClear() { calcExpr = ''; document.getElementById('calc-display').textContent = '0'; }
+function calcDel() {
+  calcExpr = calcExpr.slice(0, -1);
+  document.getElementById('calc-display').textContent = calcExpr || '0';
+}
+function calcEqual() {
+  try {
+    const expr = calcExpr
+      .replace(/sin\(/g, 'Math.sin(').replace(/cos\(/g, 'Math.cos(').replace(/tan\(/g, 'Math.tan(')
+      .replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+    let result = Function('"use strict"; return (' + expr + ')')();
+    result = Math.round(result * 1e10) / 1e10;
+    calcExpr = String(result);
+    document.getElementById('calc-display').textContent = calcExpr;
+  } catch {
+    calcExpr = 'Erreur';
+    document.getElementById('calc-display').textContent = 'Erreur';
+  }
+}
+
+// ---- GÉOMÉTRIE ----
+const GEO_SHAPES = {
+  cercle: {
+    inputs: [{ id: 'r', label: 'Rayon (r)', unit: 'cm' }],
+    calc: (v) => ({
+      'Périmètre': `${(2 * Math.PI * v.r).toFixed(4)} cm`,
+      'Aire': `${(Math.PI * v.r ** 2).toFixed(4)} cm²`,
+    })
+  },
+  rectangle: {
+    inputs: [{ id: 'l', label: 'Longueur', unit: 'cm' }, { id: 'w', label: 'Largeur', unit: 'cm' }],
+    calc: (v) => ({ 'Périmètre': `${2*(v.l+v.w)} cm`, 'Aire': `${v.l*v.w} cm²` })
+  },
+  triangle: {
+    inputs: [{ id: 'b', label: 'Base', unit: 'cm' }, { id: 'h', label: 'Hauteur', unit: 'cm' }, { id: 'a', label: 'Côté a', unit: 'cm' }, { id: 'c', label: 'Côté c', unit: 'cm' }],
+    calc: (v) => ({ 'Aire': `${(v.b * v.h / 2).toFixed(4)} cm²`, 'Périmètre': `${(v.b + (v.a||0) + (v.c||0)).toFixed(2)} cm` })
+  },
+  sphere: {
+    inputs: [{ id: 'r', label: 'Rayon (r)', unit: 'cm' }],
+    calc: (v) => ({ 'Surface': `${(4 * Math.PI * v.r ** 2).toFixed(4)} cm²`, 'Volume': `${((4/3) * Math.PI * v.r ** 3).toFixed(4)} cm³` })
+  },
+  cylindre: {
+    inputs: [{ id: 'r', label: 'Rayon (r)', unit: 'cm' }, { id: 'h', label: 'Hauteur (h)', unit: 'cm' }],
+    calc: (v) => ({ 'Surface latérale': `${(2 * Math.PI * v.r * v.h).toFixed(4)} cm²`, 'Volume': `${(Math.PI * v.r ** 2 * v.h).toFixed(4)} cm³` })
+  },
+};
+let currentGeo = 'cercle';
+function switchGeo(el) {
+  document.querySelectorAll('[data-geo]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentGeo = el.dataset.geo;
+  renderGeoInputs();
+  document.getElementById('geo-result').style.display = 'none';
+}
+function renderGeoInputs() {
+  const shape = GEO_SHAPES[currentGeo];
+  document.getElementById('geo-inputs').innerHTML = shape.inputs.map(inp => `
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+      <label style="font-size:13px;color:var(--muted);width:120px;flex-shrink:0">${inp.label}</label>
+      <input class="field-input" id="geo-${inp.id}" type="number" placeholder="0" style="flex:1">
+      <span style="font-size:12px;color:var(--muted)">${inp.unit}</span>
+    </div>`).join('') +
+    `<button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="calcGeo()">Calculer</button>`;
+}
+function calcGeo() {
+  const shape = GEO_SHAPES[currentGeo];
+  const vals = {};
+  shape.inputs.forEach(inp => { vals[inp.id] = parseFloat(document.getElementById('geo-' + inp.id)?.value) || 0; });
+  const results = shape.calc(vals);
+  const el = document.getElementById('geo-result');
+  el.style.display = 'block';
+  el.innerHTML = Object.entries(results).map(([k,v]) => `
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="color:var(--muted);font-size:13px">${k}</span>
+      <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--accent)">${v}</span>
+    </div>`).join('');
+}
+
+// ---- CONVERTISSEUR ----
+const CONV_DATA = {
+  longueur: {
+    units: ['mm','cm','m','km','pouce','pied','mile'],
+    toBase: [0.001, 0.01, 1, 1000, 0.0254, 0.3048, 1609.34],
+  },
+  masse: {
+    units: ['mg','g','kg','tonne','livre','once'],
+    toBase: [0.000001, 0.001, 1, 1000, 0.453592, 0.028349],
+  },
+  temperature: { units: ['°C','°F','K'], toBase: null },
+  vitesse: {
+    units: ['m/s','km/h','mph','nœud'],
+    toBase: [1, 0.277778, 0.44704, 0.514444],
+  },
+  aire: {
+    units: ['mm²','cm²','m²','km²','hectare'],
+    toBase: [0.000001, 0.0001, 1, 1000000, 10000],
+  },
+};
+function renderConverter() {
+  const type = document.getElementById('conv-type').value;
+  const data = CONV_DATA[type];
+  const units = data.units;
+  document.getElementById('conv-inputs').innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <input class="field-input" id="conv-val" type="number" placeholder="Valeur" style="flex:2;min-width:100px" oninput="convertir()">
+      <select class="field-input" id="conv-from" onchange="convertir()" style="flex:1;min-width:80px">
+        ${units.map(u => `<option>${u}</option>`).join('')}
+      </select>
+      <span style="color:var(--muted)">→</span>
+      <select class="field-input" id="conv-to" onchange="convertir()" style="flex:1;min-width:80px">
+        ${units.map((u,i) => `<option${i===1?' selected':''}>${u}</option>`).join('')}
+      </select>
+    </div>`;
+  document.getElementById('conv-result').style.display = 'none';
+}
+function convertir() {
+  const type = document.getElementById('conv-type').value;
+  const val = parseFloat(document.getElementById('conv-val')?.value);
+  if (isNaN(val)) return;
+  const from = document.getElementById('conv-from').value;
+  const to = document.getElementById('conv-to').value;
+  const data = CONV_DATA[type];
+  let result;
+  if (type === 'temperature') {
+    if (from === '°C' && to === '°F') result = val * 9/5 + 32;
+    else if (from === '°F' && to === '°C') result = (val - 32) * 5/9;
+    else if (from === '°C' && to === 'K') result = val + 273.15;
+    else if (from === 'K' && to === '°C') result = val - 273.15;
+    else if (from === '°F' && to === 'K') result = (val - 32) * 5/9 + 273.15;
+    else if (from === 'K' && to === '°F') result = (val - 273.15) * 9/5 + 32;
+    else result = val;
+  } else {
+    const fi = data.units.indexOf(from), ti = data.units.indexOf(to);
+    result = (val * data.toBase[fi]) / data.toBase[ti];
+  }
+  result = Math.round(result * 1e8) / 1e8;
+  const el = document.getElementById('conv-result');
+  el.style.display = 'block';
+  el.textContent = `${val} ${from} = ${result} ${to}`;
+}
+
+// ---- SCIENCES ----
+const SCI_FORMULAS = {
+  physique: [
+    { titre: 'Vitesse', expr: 'v = d / t', desc: 'v = vitesse (m/s), d = distance (m), t = temps (s)' },
+    { titre: 'Force (Newton)', expr: 'F = m × a', desc: 'F = force (N), m = masse (kg), a = accélération (m/s²)' },
+    { titre: 'Énergie cinétique', expr: 'Ec = ½ × m × v²', desc: 'm = masse (kg), v = vitesse (m/s)' },
+    { titre: 'Énergie potentielle', expr: 'Ep = m × g × h', desc: 'g = 9,81 m/s², h = hauteur (m)' },
+    { titre: 'Pression', expr: 'P = F / S', desc: 'P = pression (Pa), F = force (N), S = surface (m²)' },
+    { titre: 'Loi d\'Ohm', expr: 'U = R × I', desc: 'U = tension (V), R = résistance (Ω), I = intensité (A)' },
+    { titre: 'Puissance électrique', expr: 'P = U × I', desc: 'P = puissance (W), U = tension (V), I = intensité (A)' },
+    { titre: 'Période / Fréquence', expr: 'T = 1 / f', desc: 'T = période (s), f = fréquence (Hz)' },
+  ],
+  chimie: [
+    { titre: 'Concentration molaire', expr: 'C = n / V', desc: 'C (mol/L), n = quantité de matière (mol), V = volume (L)' },
+    { titre: 'Quantité de matière', expr: 'n = m / M', desc: 'n (mol), m = masse (g), M = masse molaire (g/mol)' },
+    { titre: 'pH', expr: 'pH = −log[H₃O⁺]', desc: 'pH < 7 = acide, pH = 7 = neutre, pH > 7 = basique' },
+    { titre: 'Loi de Boyle-Mariotte', expr: 'P₁V₁ = P₂V₂', desc: 'À température constante pour un gaz parfait' },
+    { titre: 'Masse volumique', expr: 'ρ = m / V', desc: 'ρ (g/cm³ ou kg/m³), m = masse, V = volume' },
+    { titre: 'Avancement', expr: 'x = (n₀ − n) / ν', desc: 'x = avancement (mol), ν = coefficient stœchiométrique' },
+  ],
+  svt: [
+    { titre: 'IMC', expr: 'IMC = m / t²', desc: 'm = masse (kg), t = taille (m). Normal: 18,5–24,9' },
+    { titre: 'Fréquence cardiaque max', expr: 'FCmax = 220 − âge', desc: 'Estimation de la fréquence cardiaque maximale' },
+    { titre: 'Débit cardiaque', expr: 'Q = FC × VS', desc: 'Q (L/min), FC = fréquence cardiaque, VS = volume systolique' },
+    { titre: 'Photosynthèse', expr: '6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂', desc: 'Réaction globale de la photosynthèse (lumière nécessaire)' },
+    { titre: 'Respiration cellulaire', expr: 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O', desc: 'Dégradation du glucose avec production d\'ATP' },
+  ],
+};
+let currentSci = 'physique';
+function switchSci(el) {
+  document.querySelectorAll('[data-sci]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentSci = el.dataset.sci;
+  renderSciFormulas();
+}
+function renderSciFormulas() {
+  const formulas = SCI_FORMULAS[currentSci] || [];
+  document.getElementById('sci-formulas').innerHTML = formulas.map(f => `
+    <div class="formule-card">
+      <div class="formule-titre">${f.titre}</div>
+      <div class="formule-expr">${f.expr}</div>
+      <div class="formule-desc">${f.desc}</div>
+    </div>`).join('');
+}
+
+// ---- TABLEAU PÉRIODIQUE ----
+const ELEMENTS = [
+  {n:1,s:'H',nom:'Hydrogène',m:1.008,cat:'non-métal'},{n:2,s:'He',nom:'Hélium',m:4.003,cat:'gaz noble'},
+  {n:3,s:'Li',nom:'Lithium',m:6.941,cat:'métal alcalin'},{n:4,s:'Be',nom:'Béryllium',m:9.012,cat:'métal alcalino-terreux'},
+  {n:5,s:'B',nom:'Bore',m:10.81,cat:'métalloïde'},{n:6,s:'C',nom:'Carbone',m:12.011,cat:'non-métal'},
+  {n:7,s:'N',nom:'Azote',m:14.007,cat:'non-métal'},{n:8,s:'O',nom:'Oxygène',m:15.999,cat:'non-métal'},
+  {n:9,s:'F',nom:'Fluor',m:18.998,cat:'halogène'},{n:10,s:'Ne',nom:'Néon',m:20.18,cat:'gaz noble'},
+  {n:11,s:'Na',nom:'Sodium',m:22.99,cat:'métal alcalin'},{n:12,s:'Mg',nom:'Magnésium',m:24.305,cat:'métal alcalino-terreux'},
+  {n:13,s:'Al',nom:'Aluminium',m:26.982,cat:'métal'},{n:14,s:'Si',nom:'Silicium',m:28.086,cat:'métalloïde'},
+  {n:15,s:'P',nom:'Phosphore',m:30.974,cat:'non-métal'},{n:16,s:'S',nom:'Soufre',m:32.06,cat:'non-métal'},
+  {n:17,s:'Cl',nom:'Chlore',m:35.45,cat:'halogène'},{n:18,s:'Ar',nom:'Argon',m:39.948,cat:'gaz noble'},
+  {n:19,s:'K',nom:'Potassium',m:39.098,cat:'métal alcalin'},{n:20,s:'Ca',nom:'Calcium',m:40.078,cat:'métal alcalino-terreux'},
+  {n:26,s:'Fe',nom:'Fer',m:55.845,cat:'métal de transition'},{n:29,s:'Cu',nom:'Cuivre',m:63.546,cat:'métal de transition'},
+  {n:30,s:'Zn',nom:'Zinc',m:65.38,cat:'métal de transition'},{n:47,s:'Ag',nom:'Argent',m:107.87,cat:'métal de transition'},
+  {n:79,s:'Au',nom:'Or',m:196.97,cat:'métal de transition'},{n:82,s:'Pb',nom:'Plomb',m:207.2,cat:'métal'},
+];
+function searchElement(q) {
+  const el = document.getElementById('element-result');
+  if (!q.trim()) { el.innerHTML = ''; return; }
+  const lq = q.toLowerCase();
+  const found = ELEMENTS.filter(e =>
+    e.nom.toLowerCase().includes(lq) || e.s.toLowerCase() === lq || String(e.n) === lq
+  );
+  if (!found.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0">Élément non trouvé.</div>'; return; }
+  el.innerHTML = found.map(e => `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:16px">
+      <div style="width:56px;height:56px;background:var(--accent)22;border:2px solid var(--accent);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0">
+        <div style="font-size:10px;color:var(--muted)">${e.n}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--accent)">${e.s}</div>
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700">${e.nom}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">Masse molaire : <strong>${e.m} g/mol</strong></div>
+        <div style="font-size:11px;color:var(--accent2);margin-top:2px">${e.cat}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ---- CONJUGUEUR ----
+const CONJ_DATA = {
+  'présent': { er: ['e','es','e','ons','ez','ent'], ir: ['is','is','it','issons','issez','issent'], re: ['s','s','','ons','ez','ent'] },
+  'imparfait': { all: ['ais','ais','ait','ions','iez','aient'] },
+  'futur': { all: ['rai','ras','ra','rons','rez','ront'] },
+  'conditionnel': { all: ['rais','rais','rait','rions','riez','raient'] },
+};
+const PRONOMS = ['Je','Tu','Il/Elle','Nous','Vous','Ils/Elles'];
+const IRREG = {
+  'être': { 'présent': ['suis','es','est','sommes','êtes','sont'], 'imparfait': ['étais','étais','était','étions','étiez','étaient'], 'futur': ['serai','seras','sera','serons','serez','seront'] },
+  'avoir': { 'présent': ['ai','as','a','avons','avez','ont'], 'imparfait': ['avais','avais','avait','avions','aviez','avaient'], 'futur': ['aurai','auras','aura','aurons','aurez','auront'] },
+  'aller': { 'présent': ['vais','vas','va','allons','allez','vont'], 'futur': ['irai','iras','ira','irons','irez','iront'] },
+  'faire': { 'présent': ['fais','fais','fait','faisons','faites','font'], 'futur': ['ferai','feras','fera','ferons','ferez','feront'] },
+  'pouvoir': { 'présent': ['peux','peux','peut','pouvons','pouvez','peuvent'] },
+  'vouloir': { 'présent': ['veux','veux','veut','voulons','voulez','veulent'] },
+  'venir': { 'présent': ['viens','viens','vient','venons','venez','viennent'] },
+  'prendre': { 'présent': ['prends','prends','prend','prenons','prenez','prennent'] },
+  'dire': { 'présent': ['dis','dis','dit','disons','dites','disent'] },
+};
+function conjuguer() {
+  const verbe = document.getElementById('conj-verbe').value.trim().toLowerCase();
+  const temps = document.getElementById('conj-temps').value;
+  const el = document.getElementById('conj-result');
+  if (!verbe) { el.innerHTML = ''; return; }
+
+  let formes;
+  if (IRREG[verbe] && IRREG[verbe][temps]) {
+    formes = IRREG[verbe][temps];
+  } else if (temps === 'passé composé') {
+    const aux = ['partir','venir','aller','naître','mourir','rester','arriver','partir','entrer','sortir'].includes(verbe) ? ['suis','es','est','sommes','êtes','sont'] : ['ai','as','a','avons','avez','ont'];
+    const pp = verbe.endsWith('er') ? verbe.slice(0,-2) + 'é' : verbe.endsWith('ir') ? verbe.slice(0,-1) : verbe.slice(0,-2) + 'u';
+    formes = aux.map(a => a + ' ' + pp);
+  } else if (temps === 'subjonctif') {
+    const rad = verbe.endsWith('er') ? verbe.slice(0,-2) : verbe.endsWith('ir') ? verbe.slice(0,-1) : verbe.slice(0,-2);
+    formes = ['e','es','e','ions','iez','ent'].map(t => 'que ' + rad + t);
+  } else if (CONJ_DATA[temps]) {
+    const d = CONJ_DATA[temps];
+    let term;
+    if (d.all) { const rad = verbe.endsWith('er') ? verbe.slice(0,-2) : verbe.endsWith('ir') ? verbe.slice(0,-2) : verbe.slice(0,-2); term = d.all.map(t => rad + t); }
+    else { const g = verbe.endsWith('er') ? 'er' : verbe.endsWith('ir') ? 'ir' : 're'; const t2 = d[g] || d.er; const rad = verbe.slice(0, -(g.length)); term = t2.map(t => rad + t); }
+    formes = term;
+  } else { el.innerHTML = '<div style="color:var(--muted)">Temps non disponible pour ce verbe.</div>'; return; }
+
+  el.innerHTML = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+    <div style="font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:12px;text-transform:capitalize">${verbe} — ${temps}</div>
+    ${PRONOMS.map((p,i) => `<div style="display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--border)">
+      <span style="color:var(--muted);font-size:13px;width:90px;flex-shrink:0">${p}</span>
+      <span style="font-size:14px;font-weight:600">${formes[i] || '—'}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ---- DISSERTATION ----
+function genererPlan() {
+  const sujet = document.getElementById('diss-sujet').value.trim();
+  const el = document.getElementById('diss-result');
+  if (!sujet) return;
+  el.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:12px">Plan dialectique — "${sujet}"</div>
+      ${[
+        ['I. Thèse', 'Défends une première position. Apporte des arguments, des exemples concrets, une citation si possible.'],
+        ['II. Antithèse', 'Nuance ou contredis la thèse. Montre les limites, les contre-exemples, une autre perspective.'],
+        ['III. Synthèse', 'Dépasse l\'opposition. Propose une vision plus nuancée, une ouverture sur un aspect nouveau.'],
+      ].map(([titre, desc]) => `
+        <div style="margin-bottom:14px">
+          <div style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:4px">${titre}</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">${desc}</div>
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+            ${['Argument 1 :','Exemple :','Argument 2 :'].map(l => `<div style="font-size:12px;padding:6px 10px;background:var(--card);border-radius:8px;color:var(--muted)">${l} <em>à compléter…</em></div>`).join('')}
+          </div>
+        </div>`).join('')}
+      <div style="font-size:12px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">💡 Introduction : accroche → définition des termes → problématique → annonce du plan</div>
+    </div>`;
+}
+
+// ---- GRAMMAIRE ----
+const GRAMMAIRE_RULES = [
+  { titre: 'Accord du participe passé', contenu: 'Avec "être" : s\'accorde avec le sujet. Avec "avoir" : s\'accorde avec le COD si placé avant.' },
+  { titre: 'Tout / Tous / Toute / Toutes', contenu: '"Tout" est adverbe (invariable) devant adjectif. "Tous/Toutes" sont adjectifs/pronoms (variables).' },
+  { titre: 'Ces / Ses / C\'est / S\'est', contenu: '"Ces" = déterminant pluriel. "Ses" = possessif pluriel. "C\'est" = c\'est. "S\'est" = verbe pronominal.' },
+  { titre: 'Leur / Leurs', contenu: '"Leur" (sans s) = pronom COI invariable. "Leurs" (avec s) = déterminant possessif pluriel.' },
+  { titre: 'Ou / Où', contenu: '"Ou" = conjonction (ou bien). "Où" = lieu ou temps.' },
+  { titre: 'On / Ont', contenu: '"On" = pronom sujet (remplaçable par "il"). "Ont" = verbe avoir (remplaçable par "avaient").' },
+  { titre: 'Si / S\'y', contenu: '"Si" = conjonction ou adverbe. "S\'y" = se + y (pronom).' },
+  { titre: 'Quand / Quant / Qu\'en', contenu: '"Quand" = temps. "Quant à" = en ce qui concerne. "Qu\'en" = que + en.' },
+];
+function renderGrammaireList() {
+  const el = document.getElementById('grammaire-list');
+  if (!el) return;
+  el.innerHTML = GRAMMAIRE_RULES.map(r => `
+    <div style="border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden">
+      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'"
+        style="padding:14px 16px;cursor:pointer;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center">
+        ${r.titre} <span style="color:var(--muted)">›</span>
+      </div>
+      <div style="display:none;padding:0 16px 14px;font-size:13px;color:var(--muted);line-height:1.6">${r.contenu}</div>
+    </div>`).join('');
+}
+
+// ---- PRATIQUE ----
+function lancerDe() {
+  const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+  const val = Math.floor(Math.random() * 6);
+  const el = document.getElementById('de-result');
+  el.style.animation = 'none'; void el.offsetWidth;
+  el.style.animation = 'splashPop 0.4s ease both';
+  el.innerHTML = `<div>${faces[val]}</div><div style="font-size:18px;font-weight:700;color:var(--accent)">${val+1}</div>`;
+  if (navigator.vibrate) navigator.vibrate(40);
+}
+function pileOuFace() {
+  const val = Math.random() < 0.5;
+  const el = document.getElementById('de-result');
+  el.style.animation = 'none'; void el.offsetWidth;
+  el.style.animation = 'splashPop 0.4s ease both';
+  el.innerHTML = `<div>${val ? '🪙' : '🔵'}</div><div style="font-size:18px;font-weight:700;color:var(--accent)">${val ? 'Pile !' : 'Face !'}</div>`;
+  if (navigator.vibrate) navigator.vibrate(40);
+}
+
+function faireGroupes() {
+  const noms = document.getElementById('groupe-noms').value.trim().split('\n').map(n => n.trim()).filter(Boolean);
+  const taille = parseInt(document.getElementById('groupe-taille').value) || 2;
+  if (noms.length < 2) return;
+  const shuffled = [...noms].sort(() => Math.random() - 0.5);
+  const groupes = [];
+  for (let i = 0; i < shuffled.length; i += taille) groupes.push(shuffled.slice(i, i + taille));
+  document.getElementById('groupe-result').innerHTML = groupes.map((g, i) => `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:6px">GROUPE ${i+1}</div>
+      <div style="font-size:14px">${g.join(' · ')}</div>
+    </div>`).join('');
+}
+
+let moyenneNotes = [];
+function ajouterNote() {
+  const note = parseFloat(document.getElementById('moy-note').value);
+  const coef = parseFloat(document.getElementById('moy-coef').value) || 1;
+  if (isNaN(note) || note < 0 || note > 20) return;
+  moyenneNotes.push({ note, coef });
+  document.getElementById('moy-note').value = '';
+  renderMoyenne();
+}
+function resetMoyenne() { moyenneNotes = []; renderMoyenne(); }
+function renderMoyenne() {
+  const el = document.getElementById('moyenne-notes');
+  el.innerHTML = moyenneNotes.map((n, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:14px;font-weight:600">${n.note}/20</span>
+      <span style="font-size:12px;color:var(--muted)">coef ${n.coef}</span>
+      <button onclick="moyenneNotes.splice(${i},1);renderMoyenne()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px">✕</button>
+    </div>`).join('');
+  if (!moyenneNotes.length) { document.getElementById('moy-result').textContent = ''; return; }
+  const total = moyenneNotes.reduce((a,n) => a + n.note * n.coef, 0);
+  const coefs = moyenneNotes.reduce((a,n) => a + n.coef, 0);
+  const moy = (total / coefs).toFixed(2);
+  const color = moy >= 10 ? 'var(--accent3)' : 'var(--accent4)';
+  document.getElementById('moy-result').innerHTML = `<span style="color:${color}">${moy}/20</span>`;
+}
+
+const CHECKLIST_ITEMS = [
+  'Carte d\'identité / convocation','Stylos (au moins 2)','Règle + compas + rapporteur',
+  'Calculatrice (piles vérifiées)','Effaceur + correcteur','Bouteille d\'eau',
+  'Montre (sans connexion)','Papier brouillon','Réviser les formules clés',
+  'Bien dormi la veille','Petit déjeuner pris','Arriver 15 min en avance',
+];
+function renderChecklist() {
+  const el = document.getElementById('checklist-exam');
+  if (!el) return;
+  const saved = store.get('checklistExam', {});
+  el.innerHTML = CHECKLIST_ITEMS.map((item, i) => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"
+      onclick="toggleChecklist(${i})">
+      <div style="width:22px;height:22px;border-radius:6px;border:2px solid ${saved[i]?'var(--accent3)':'var(--border)'};background:${saved[i]?'var(--accent3)':'transparent'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#0c0b14">
+        ${saved[i] ? '✓' : ''}
+      </div>
+      <span style="font-size:13px;${saved[i]?'text-decoration:line-through;color:var(--muted)':''}">${item}</span>
+    </div>`).join('') +
+    `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px" onclick="store.set('checklistExam',{});renderChecklist()">↺ Tout décocher</button>`;
+}
+function toggleChecklist(i) {
+  const saved = store.get('checklistExam', {});
+  saved[i] = !saved[i];
+  store.set('checklistExam', saved);
+  renderChecklist();
+  if (navigator.vibrate) navigator.vibrate(30);
+}
+
+function renderOutils() {
+  renderSciFormulas();
+  renderGrammaireList();
+  renderGeoInputs();
+  renderConverter();
+  renderMoyenne();
+  renderChecklist();
 }
 
 function renderInfos() {
