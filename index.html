@@ -1839,6 +1839,7 @@ body {
       <div class="chip" data-mat="histoire" onclick="switchBrevetMat(this)">🌍 Hist-Géo</div>
       <div class="chip" data-mat="svt" onclick="switchBrevetMat(this)">🌱 SVT</div>
       <div class="chip" data-mat="physchim" onclick="switchBrevetMat(this)">⚗️ Physique</div>
+      <div class="chip" data-mat="techno" onclick="switchBrevetMat(this)">⚙️ Techno</div>
     </div>
     <div id="brevet-liste"></div>
     <div id="brevet-chapitre" style="display:none">
@@ -2593,7 +2594,7 @@ body {
   <div class="info-hero">
     <div class="info-hero-icon">✦</div>
     <div class="info-hero-name">StudySpace</div>
-    <div class="info-version-badge">v4.4</div>
+    <div class="info-version-badge">v4.6</div>
     <div class="info-hero-sub">Ton espace d'étude personnel</div>
   </div>
 
@@ -2619,7 +2620,7 @@ body {
       <div class="info-row-icon">🔖</div>
       <div>
         <div class="info-row-label">Version actuelle</div>
-        <div class="info-row-value">v4.4 — Mars 2026</div>
+        <div class="info-row-value">v4.6 — Mars 2026</div>
       </div>
     </div>
     <div class="info-divider"></div>
@@ -2656,7 +2657,7 @@ body {
     <div class="info-section-title">📋 Historique des versions</div>
     <div class="changelog-list">
       <div class="changelog-item">
-        <div class="changelog-version">v4.4</div>
+        <div class="changelog-version">v4.6</div>
         <div class="changelog-desc">Révisions Brevet 3ème — cours complets Maths, Français, Histoire-Géo, SVT, Physique-Chimie (30+ chapitres)</div>
         <div class="changelog-version">v4.1</div>
         <div class="changelog-desc">Section Outils (calculatrice, géométrie, convertisseur, sciences, conjugueur, grammaire, moyenne, checklist), section Apparence, bouton Outils sur l'accueil</div>
@@ -5755,6 +5756,77 @@ Ex : A(1;2) et B(4;6) → AB⃗ = (3 ; 4) → ||AB⃗|| = √(9+16) = 5</p>
 La translation conserve : distances, angles, parallélisme<br>
 Milieu d'un segment : M = ((xA+xB)/2 ; (yA+yB)/2)</p>`
       },
+      {
+        titre: 'Équations du 2nd degré',
+        resume: 'Discriminant Δ, racines, forme factorisée',
+        contenu: `<h3>📐 Forme générale</h3>
+<p>ax² + bx + c = 0 (avec a ≠ 0)<br>
+<strong>Discriminant</strong> : Δ = b² − 4ac<br>
+• Δ > 0 → 2 solutions : x₁ = (−b − √Δ)/2a et x₂ = (−b + √Δ)/2a<br>
+• Δ = 0 → 1 solution (double) : x = −b/2a<br>
+• Δ < 0 → pas de solution réelle</p>
+<h3>📊 Exemple</h3>
+<p>x² − 5x + 6 = 0 → Δ = 25 − 24 = 1 > 0<br>
+x₁ = (5−1)/2 = 2 · x₂ = (5+1)/2 = 3<br>
+<strong>Forme factorisée</strong> : (x−2)(x−3) = 0<br>
+Règle du produit nul : A×B = 0 ⟹ A=0 ou B=0</p>
+<h3>🔢 Somme et produit des racines</h3>
+<p>x₁ + x₂ = −b/a | x₁ × x₂ = c/a</p>`
+      },
+      {
+        titre: 'Transformations géométriques',
+        resume: 'Translation, symétries, rotation, homothétie',
+        contenu: `<h3>➡️ Translation</h3>
+<p>Définie par un vecteur u⃗(a;b)<br>
+Image de A(x;y) : A'(x+a ; y+b)<br>
+Conserve : distances, angles, parallélisme, orientation</p>
+<h3>🪞 Symétrie axiale</h3>
+<p>Axe de symétrie : milieu de [AA'] sur l'axe, AA' ⊥ axe<br>
+Conserve distances et angles · Inverse l'orientation</p>
+<h3>⭕ Symétrie centrale</h3>
+<p>Centre O : milieu de [AA']<br>
+A'(2xO−xA ; 2yO−yA)<br>
+Rotation de 180° = symétrie centrale</p>
+<h3>📏 Homothétie</h3>
+<p>Centre O, rapport k : OA' = k×OA<br>
+Longueurs ×|k| · Aires ×k²<br>
+k=1 : identité | k=−1 : symétrie centrale | k=2 : agrandissement</p>`
+      },
+      {
+        titre: 'Trigonométrie — valeurs et applications',
+        resume: 'Valeurs usuelles, arcsin/arccos, sin²+cos²=1',
+        contenu: `<h3>📊 Valeurs à connaître par cœur</h3>
+<p>sin 0° = 0 | cos 0° = 1 | tan 0° = 0<br>
+sin 30° = 1/2 | cos 30° = √3/2 | tan 30° = √3/3<br>
+sin 45° = √2/2 | cos 45° = √2/2 | tan 45° = 1<br>
+sin 60° = √3/2 | cos 60° = 1/2 | tan 60° = √3<br>
+sin 90° = 1 | cos 90° = 0 | tan 90° = indéfinie</p>
+<h3>🔍 Trouver un angle</h3>
+<p>sin α = 0,5 → α = arcsin(0,5) = 30°<br>
+cos α = √2/2 → α = arccos(√2/2) = 45°<br>
+Sur calculatrice : sin⁻¹, cos⁻¹, tan⁻¹<br>
+⚠️ Vérifier que la calc est en <strong>DEGRÉS</strong> (pas radians !)</p>
+<h3>🔗 Relation fondamentale</h3>
+<p><strong>sin²α + cos²α = 1</strong> pour tout angle α<br>
+tan α = sin α / cos α</p>`
+      },
+      {
+        titre: 'Raisonnement et démonstrations',
+        resume: 'Méthodes de preuve, réciproques, rédaction brevet',
+        contenu: `<h3>📝 Structure d'une démonstration</h3>
+<p>1. Énoncer les <strong>hypothèses</strong> (données)<br>
+2. Raisonner <strong>étape par étape</strong> en citant les théorèmes<br>
+3. <strong>Conclure</strong> clairement<br>
+Formules : "D'après le théorème de…" · "Or" · "Donc"</p>
+<h3>🔁 Réciproques essentielles</h3>
+<p>• Pythagore : BC²=AB²+AC² ⟹ angle droit en A<br>
+• Thalès : AD/AB=AE/AC ⟹ (DE)∥(BC)<br>
+• Médiatrice : MA=MB ⟺ M sur la médiatrice de [AB]</p>
+<h3>🔍 Types de raisonnement</h3>
+<p><strong>Par cas</strong> : couvrir tous les cas (ex : n pair / n impair)<br>
+<strong>Par l'absurde</strong> : supposer le contraire → contradiction<br>
+<strong>Contre-exemple</strong> : un seul suffit pour réfuter</p>`
+      },
 
     ]
   },
@@ -5955,6 +6027,43 @@ Ex : "Le roi des animaux" (= le lion)</p>`
 • Conséquence : donc, ainsi, c'est pourquoi<br>
 • Illustration : par exemple, notamment, c'est le cas de</p>`
       },
+      {
+        titre: 'Classes grammaticales',
+        resume: 'Nature des mots : variables et invariables',
+        contenu: `<h3>📌 Mots variables (s'accordent)</h3>
+<p><strong>Nom</strong> : commun (minuscule) ou propre (majuscule)<br>
+<strong>Déterminant</strong> : défini (le/la/les), indéfini (un/une/des), possessif (mon/ton/son…), démonstratif (ce/cette/ces)<br>
+<strong>Adjectif qualificatif</strong> : qualifie un nom, s'accorde en genre et nombre<br>
+• Épithète : directement lié au nom ("une belle maison")<br>
+• Attribut : via verbe d'état ("la maison est belle")<br>
+<strong>Pronom</strong> : personnel (je/tu/il), relatif (qui/que/dont/où), démonstratif (celui-ci), possessif (le mien)<br>
+<strong>Verbe</strong> : d'action (courir, manger) ou d'état (être, paraître, sembler, devenir, rester)</p>
+<h3>🔒 Mots invariables</h3>
+<p><strong>Adverbe</strong> : vite, très, bien, hier, souvent<br>
+<strong>Préposition</strong> : à, dans, par, pour, avec, de, en<br>
+<strong>Conjonction de coordination</strong> : mais, ou, et, donc, or, ni, car (MOEDONC)<br>
+<strong>Conjonction de subordination</strong> : que, si, quand, parce que, bien que<br>
+<strong>Interjection</strong> : oh !, ah !, aïe !</p>
+<h3>⭐ Moyen mnémotechnique</h3>
+<p>Variables : <strong>NADAPV</strong> (Nom, Adjectif, Déterminant, Adverbe(?), Pronom, Verbe)<br>
+Conj. coordination : <strong>MOEDONC</strong> (Mais, Ou, Et, Donc, Or, Ni, Car)</p>`
+      },
+      {
+        titre: 'Le nom — nature et formation',
+        resume: 'Commun/propre, genre, nombre, pluriels irréguliers',
+        contenu: `<h3>🏷️ Types de noms</h3>
+<p><strong>Commun</strong> : désigne une catégorie (minuscule) → un chat, la liberté<br>
+<strong>Propre</strong> : désigne un individu unique (majuscule) → Paris, Marie<br>
+<strong>Concret</strong> : perçu par les sens → une table, le bruit<br>
+<strong>Abstrait</strong> : idée, sentiment → la bonté, la tristesse<br>
+<strong>Simple</strong> : un seul mot → arbre | <strong>Composé</strong> : arc-en-ciel, porte-monnaie</p>
+<h3>📊 Pluriels irréguliers</h3>
+<p>• Général : ajouter −s (chat → chats)<br>
+• Noms en −s, −x, −z : invariables (bras → bras)<br>
+• Noms en −eau, −au, −eu : prennent −x (gâteau → gâteaux)<br>
+• Noms en −al : → −aux (cheval → chevaux)<br>
+• 7 noms en −ou avec −x : bijou, caillou, chou, genou, hibou, joujou, pou</p>`
+      },
     ]
   },
   histoire: {
@@ -6152,6 +6261,69 @@ Principales puissances : France, RU, Belgique, Portugal<br>
 • <strong>Littoraux</strong> : attractivité, tourisme, risques (érosion, submersion)<br>
 • <strong>Montagnes</strong> : tourisme, hydroélectricité, espaces protégés<br>
 • Transition énergétique : énergies renouvelables, nucléaire (75% de l'électricité)</p>`
+      },
+      {
+        titre: 'EMC — Démocratie et République',
+        resume: 'Valeurs républicaines, institutions, droits et devoirs',
+        contenu: `<h3>🇫🇷 Valeurs républicaines</h3>
+<p><strong>Devise</strong> : Liberté · Égalité · Fraternité<br>
+<strong>Laïcité</strong> : séparation de l'Église et de l'État (loi de 1905)<br>
+À l'école : signes religieux ostensibles interdits (loi 2004)<br>
+<strong>Suffrage universel</strong> : droit de vote dès 18 ans, 1 personne = 1 voix</p>
+<h3>🏛️ Institutions de la Vème République</h3>
+<p>• <strong>Président de la République</strong> : chef de l'État, élu au SUU (5 ans)<br>
+• <strong>Premier ministre</strong> : chef du gouvernement<br>
+• <strong>Assemblée nationale</strong> : 577 députés (5 ans)<br>
+• <strong>Sénat</strong> : 348 sénateurs (6 ans)<br>
+• <strong>Conseil constitutionnel</strong> : vérifie la conformité des lois<br>
+Démocratie directe (référendum) vs représentative (élus)</p>
+<h3>⚖️ Droits et libertés fondamentaux</h3>
+<p>• <strong>DDHC 1789</strong> : Déclaration des Droits de l'Homme et du Citoyen<br>
+• <strong>DUDH 1948</strong> : Déclaration Universelle (30 articles)<br>
+Droits civils (liberté expression, presse) · politiques (voter) · économiques et sociaux (travail, logement)<br>
+<strong>Devoirs</strong> : respecter les lois, payer les impôts, voter</p>`
+      },
+      {
+        titre: 'EMC — Citoyenneté et engagement',
+        resume: 'Être citoyen, laïcité, justice, engagement',
+        contenu: `<h3>👤 Droits et devoirs du citoyen</h3>
+<p><strong>Droits</strong> : voter et être élu, liberté d'expression, éducation gratuite, protection sociale<br>
+<strong>Devoirs</strong> : payer ses impôts, respecter les lois, participer à la vie civique<br>
+<strong>Présomption d'innocence</strong> : innocent jusqu'à preuve du contraire<br>
+<strong>Mineur</strong> : tribunal pour enfants (juge des enfants)</p>
+<h3>🤝 L'engagement citoyen</h3>
+<p>• Voter aux élections<br>
+• Participation associative et bénévolat<br>
+• Service National Universel (SNU)<br>
+• Grève et manifestation (droits démocratiques)<br>
+<strong>Citoyenneté européenne</strong> : libre circulation dans l'UE + vote aux élections européennes</p>
+<h3>⚠️ Menaces sur la démocratie</h3>
+<p>• Populisme, désinformation, fake news<br>
+• Abstentionnisme (désaffection politique)<br>
+• Inégalités sociales remettant en cause l'égalité réelle</p>`
+      },
+      {
+        titre: 'Les Trente Glorieuses et Mai 68',
+        resume: 'Croissance économique, société de consommation, crise de 68',
+        contenu: `<h3>📈 Les Trente Glorieuses (1945-1975)</h3>
+<p>Forte croissance économique (~5%/an) après la Seconde Guerre Mondiale<br>
+• Exode rural → urbanisation massive<br>
+• <strong>État-providence</strong> : Sécurité sociale, allocations, retraites<br>
+• Immigration pour reconstruire la France (Maghreb, Afrique, Europe du Sud)<br>
+• <strong>Société de consommation</strong> : télé, voiture, réfrigérateur, machine à laver<br>
+• Fin marquée par le <strong>choc pétrolier de 1973</strong> → chômage de masse</p>
+<h3>✊ Mai 1968</h3>
+<p>Mouvement étudiant → critique de la société et de l'autorité<br>
+→ Grève générale : <strong>9 millions de grévistes</strong><br>
+<strong>Accords de Grenelle</strong> : hausse des salaires, amélioration des conditions de travail<br>
+Conséquences : libération des mœurs, féminisme, remise en cause des valeurs traditionnelles<br>
+De Gaulle dissout l'Assemblée, remporte les élections, mais démissionne en 1969</p>
+<h3>🌍 Le monde depuis 1991</h3>
+<p>• <strong>11 septembre 2001</strong> : attentats → guerre contre le terrorisme<br>
+• <strong>Daech</strong> (2013-2019) : terrorisme islamiste, attentats en France (Charlie Hebdo janv. 2015, 13 nov. 2015)<br>
+• <strong>Crise 2008</strong> : crise des subprimes → récession mondiale<br>
+• <strong>Accord de Paris 2015</strong> : limiter le réchauffement à +2°C<br>
+• UE : 27 membres (après Brexit 2020), 20 pays utilisent l'euro</p>`
       },
     ]
   },
@@ -6364,6 +6536,54 @@ Ex : VIH, grippe, Covid-19, varicelle → traitement par antiviraux ou vaccin<br
 • Fécale-orale : gastro-entérite | Vecteur (moustique) : paludisme, dengue<br>
 <strong>Prévention</strong> : lavage des mains (le plus efficace !), vaccination, préservatifs, masques</p>`
       },
+      {
+        titre: 'Évolution et biodiversité',
+        resume: 'Darwin, sélection naturelle, classification du vivant',
+        contenu: `<h3>🌳 La biodiversité</h3>
+<p>Diversité à 3 niveaux : <strong>espèces</strong> + <strong>génétique</strong> + <strong>écosystèmes</strong><br>
+6ème extinction de masse en cours → causes humaines (déforestation, pollution, climat)<br>
+Aires protégées, réserves naturelles → conservation</p>
+<h3>🔬 Théorie de l'évolution (Darwin)</h3>
+<p>• Les êtres vivants descendent d'<strong>ancêtres communs</strong><br>
+• <strong>Sélection naturelle</strong> : individus mieux adaptés → survivent et se reproduisent plus<br>
+• Accumulation des changements → nouvelles espèces<br>
+<strong>Preuves</strong> :<br>
+• Fossiles → traces d'êtres disparus<br>
+• Anatomie comparée → membres homologues (bras / aile de chauve-souris)<br>
+• Génétique → similitudes d'ADN entre espèces proches</p>
+<h3>🌿 Écosystèmes et chaînes alimentaires</h3>
+<p>Producteurs (végétaux) → consommateurs primaires → secondaires → décomposeurs<br>
+<strong>Photosynthèse</strong> : CO₂ + H₂O + lumière → glucose + O₂<br>
+<strong>Respiration</strong> : glucose + O₂ → CO₂ + H₂O + énergie<br>
+Perturbations : espèces invasives, surexploitation, pollution</p>
+<h3>🧫 Classification du vivant</h3>
+<p>Classification phylogénétique (basée sur l'évolution)<br>
+Règne → Embranchement → Classe → Ordre → Famille → Genre → Espèce<br>
+<em>Homo sapiens</em> : Homo (genre) + sapiens (espèce)<br>
+Espèce = individus qui peuvent se reproduire entre eux</p>`
+      },
+      {
+        titre: 'Astronomie et univers',
+        resume: 'Système solaire, étoiles, Big Bang, conquête spatiale',
+        contenu: `<h3>☀️ Le système solaire</h3>
+<p>8 planètes autour du Soleil :<br>
+<strong>Rocheuses</strong> : Mercure, Vénus, Terre, Mars<br>
+<strong>Gazeuses</strong> : Jupiter, Saturne, Uranus, Neptune<br>
+1 UA = 150 millions km (distance Terre-Soleil)</p>
+<h3>⭐ Les étoiles</h3>
+<p>Boule de gaz (H et He) → <strong>fusion nucléaire</strong> : H → He → énergie<br>
+Vie du Soleil : nébuleuse → étoile → géante rouge → naine blanche<br>
+Étoiles massives → supernova → étoile à neutrons ou trou noir</p>
+<h3>💥 Le Big Bang</h3>
+<p>Origine de l'Univers il y a ~<strong>13,8 milliards d'années</strong><br>
+Expansion de l'Univers (Hubble : galaxies s'éloignent)<br>
+Voie Lactée : ~100 000 années-lumière, 200 milliards d'étoiles</p>
+<h3>🚀 Conquête spatiale</h3>
+<p>1957 : Spoutnik (1er satellite) · 1961 : Gagarine (1er homme dans l'espace)<br>
+<strong>1969 : Neil Armstrong, 1er homme sur la Lune (Apollo 11)</strong><br>
+ISS (depuis 1998) · Télescope James Webb (2022)<br>
+Mars : Curiosity, Perseverance → recherche de traces de vie</p>`
+      },
     ]
   },
   physchim: {
@@ -6530,6 +6750,143 @@ Ex : 2H₂ + O₂ → 2H₂O</p>
 <strong>Transition énergétique</strong> : réduire les fossiles, développer les renouvelables<br>
 France : ~75% électricité = nucléaire<br>
 <strong>Rendement</strong> = énergie utile / énergie totale (toujours < 100%)</p>`
+      },
+      {
+        titre: 'Mécanique — Ondes et lumière',
+        resume: 'Son, lumière, réfraction, lentilles, énergie mécanique',
+        contenu: `<h3>🔊 Les ondes sonores</h3>
+<p>Son = vibration mécanique se propageant dans un milieu matériel<br>
+Vitesse : ~340 m/s dans l'air, plus vite dans l'eau et les solides<br>
+<strong>Fréquence</strong> (Hz) : grave (basse) / aigu (haute)<br>
+Audibles pour l'humain : 20 Hz à 20 000 Hz<br>
+Infrasons < 20 Hz | Ultrasons > 20 000 Hz</p>
+<h3>💡 La lumière</h3>
+<p>Onde électromagnétique, vitesse dans le vide : c = 300 000 km/s<br>
+Lumière visible : 400 nm (violet) à 700 nm (rouge)<br>
+<strong>Réflexion</strong> : angle incident = angle réfléchi<br>
+<strong>Réfraction</strong> : déviation en changeant de milieu<br>
+Loi de Snell-Descartes : n₁ × sin i₁ = n₂ × sin i₂</p>
+<h3>🔍 Lentilles convergentes</h3>
+<p>Vergence = 1/f' (dioptries) · font converger vers le foyer F'<br>
+Applications : lunettes, loupe, œil (lentille naturelle)</p>
+<h3>⚡ Énergie mécanique</h3>
+<p>Ec = ½mv² · Ep = mgh · Em = Ec + Ep<br>
+Sans frottements : Em = constante (conservation)<br>
+Avec frottements : Em diminue → chaleur</p>`
+      },
+      {
+        titre: 'Électromagnétisme et sécurité',
+        resume: 'Champ magnétique, moteur, puissance, sécurité électrique',
+        contenu: `<h3>🧲 Électromagnétisme</h3>
+<p>Courant électrique → <strong>champ magnétique</strong><br>
+Variation de flux magnétique → <strong>courant induit</strong> (induction)<br>
+<strong>Moteur électrique</strong> : courant + champ magnétique → mouvement<br>
+<strong>Générateur/alternateur</strong> : mouvement → courant (inverse)</p>
+<h3>⚡ Puissance et énergie</h3>
+<p>P = U × I (Watts) | E = P × t (Joules)<br>
+1 kWh = 3 600 000 J<br>
+Effet Joule : résistance → chaleur (P = R × I²)</p>
+<h3>⚠️ Sécurité électrique</h3>
+<p>Dangereux au-delà de 25 V (humide) ou 50 V (sec)<br>
+Fusible/disjoncteur → protection surcharges<br>
+Mise à la terre → protection contre l'électrocution</p>`
+      },
+    ]
+  },
+  techno: {
+    label: '⚙️ Technologie', color: '#e879f9',
+    chapitres: [
+      {
+        titre: 'Objets et systèmes techniques',
+        resume: 'Analyse fonctionnelle, chaîne fonctionnelle, cycle de vie',
+        contenu: `<h3>📌 Définitions clés</h3>
+<p><strong>Objet technique</strong> : objet fabriqué par l'homme pour répondre à un besoin<br>
+<strong>Système technique</strong> : ensemble d'objets qui interagissent<br>
+<strong>Prototype</strong> : premier exemplaire avant fabrication en série</p>
+<h3>🎯 Analyse fonctionnelle</h3>
+<p><strong>Fonction principale (FP)</strong> : ce pour quoi l'objet a été créé<br>
+<strong>Fonctions contraintes (FC)</strong> : contraintes à respecter (sécurité, normes…)<br>
+<strong>Bête à cornes</strong> : À qui rend-il service ? Sur quoi agit-il ? → Dans quel but ?<br>
+<strong>Diagramme pieuvre</strong> : relations entre l'objet et son milieu extérieur</p>
+<h3>📐 Chaîne fonctionnelle</h3>
+<p>Alimenter → <strong>Acquérir</strong> (capteur) → <strong>Traiter</strong> (processeur) → <strong>Communiquer</strong> → <strong>Agir</strong> (actionneur)<br>
+Ex : aspirateur robot → capteur obstacle → microcontrôleur → moteur</p>
+<h3>🔄 Cycle de vie d'un produit</h3>
+<p>Conception → Fabrication → Distribution → Utilisation → Fin de vie<br>
+À chaque étape : penser à l'impact environnemental (matières premières, énergie, déchets)</p>`
+      },
+      {
+        titre: 'Les matériaux',
+        resume: '5 familles, propriétés, choix, recyclage',
+        contenu: `<h3>📦 Les 5 familles de matériaux</h3>
+<p><strong>Métaux et alliages</strong> : acier, aluminium, cuivre → résistants, conducteurs, recyclables<br>
+<strong>Plastiques</strong> : PET, PVC, polyéthylène → légers, isolants, moulables<br>
+<strong>Céramiques et verres</strong> : porcelaine, verre, béton → durs, résistants à la chaleur<br>
+<strong>Bois et dérivés</strong> : chêne, contreplaqué → renouvelable, isolant<br>
+<strong>Composites</strong> : fibre de carbone → légers et très résistants</p>
+<h3>🔬 Propriétés des matériaux</h3>
+<p>• <strong>Mécaniques</strong> : résistance, dureté, élasticité<br>
+• <strong>Physiques</strong> : conductivité thermique/électrique, densité<br>
+• <strong>Chimiques</strong> : résistance à la corrosion<br>
+• <strong>Environnementales</strong> : recyclabilité, biodégradabilité</p>
+<h3>♻️ Recyclage</h3>
+<p>Métaux : très recyclables (aluminium : 95% d'énergie économisée)<br>
+Verre : 100% recyclable à l'infini<br>
+Plastiques : triés par type (codes 1 à 7)<br>
+<strong>ACV</strong> (Analyse du Cycle de Vie) : mesure l'impact environnemental total</p>`
+      },
+      {
+        titre: 'Programmation et numérique',
+        resume: 'Algorithmes, variables, boucles, conditions, Python/Scratch',
+        contenu: `<h3>🧠 Algorithme</h3>
+<p>Suite d'instructions précises pour résoudre un problème<br>
+Entrées → Traitement → Sorties<br>
+Propriétés : <strong>fini</strong> (se termine), <strong>déterministe</strong> (même résultat), <strong>général</strong></p>
+<h3>📝 Structures de base (Python)</h3>
+<p><strong>Variable</strong> : x = 5 · nom = "Léo" · liste = [1, 2, 3]<br>
+<strong>Condition</strong> :<br>
+if x > 0:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("positif")<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("négatif")<br>
+<strong>Boucle</strong> :<br>
+for i in range(10): # répète 10 fois<br>
+while x > 0: # tant que x est positif</p>
+<h3>🔢 Numération binaire</h3>
+<p>Informatique = langage binaire (0 et 1 = bits)<br>
+1 octet = 8 bits · 1 ko = 1024 octets · 1 Mo = 1024 ko<br>
+Conversion : 1010 en binaire = 1×8 + 0×4 + 1×2 + 0×1 = 10 en décimal</p>
+<h3>🌐 Réseaux et internet</h3>
+<p>Internet = réseau mondial de réseaux<br>
+<strong>IP</strong> : adresse unique de chaque appareil (ex : 192.168.1.1)<br>
+<strong>HTTP/HTTPS</strong> : protocole web (S = sécurisé)<br>
+<strong>DNS</strong> : traduit les noms de domaine en adresses IP<br>
+Chiffrement, mot de passe fort, protection des données (RGPD)</p>`
+      },
+      {
+        titre: 'Développement durable en technologie',
+        resume: 'Éco-conception, empreinte carbone, économie circulaire',
+        contenu: `<h3>🌱 Développement durable</h3>
+<p>Satisfaire les besoins du présent <strong>sans compromettre l'avenir</strong><br>
+3 piliers : économique + social + environnemental<br>
+<strong>ODD</strong> : 17 Objectifs de Développement Durable de l'ONU (à horizon 2030)</p>
+<h3>♻️ Économie circulaire</h3>
+<p>Modèle opposé à l'économie linéaire (extraire → produire → jeter)<br>
+• Réduire à la source<br>
+• Réutiliser et réparer<br>
+• Recycler les matériaux<br>
+• Valoriser les déchets (énergie)</p>
+<h3>🌍 Éco-conception</h3>
+<p>Intégrer l'environnement dès la conception du produit :<br>
+• Choisir des matériaux recyclables<br>
+• Réduire la consommation d'énergie<br>
+• Augmenter la durée de vie<br>
+• Faciliter la réparation et le démontage<br>
+<strong>Empreinte carbone</strong> : quantité de CO₂ émise par un produit ou une activité</p>
+<h3>⚡ Énergie et systèmes durables</h3>
+<p>Rendement = énergie utile / énergie consommée × 100%<br>
+Bâtiments : isolation thermique, panneaux solaires, domotique<br>
+Transports : véhicules électriques, covoiturage, transports en commun</p>`
       },
     ]
   }
@@ -7051,6 +7408,69 @@ function showBrevetCoursOnly(chIdx) {
 let currentBrevetMat = 'maths';
 let currentBrevetCh = null;
 
+// ============================================================
+//  BREVET — SYSTÈME COMPLET (suivi, progression, streak, exam blanc)
+// ============================================================
+
+// Storage helpers for brevet progress
+function getBrevetProgress() { return store.get('brevetProgress', {}); }
+function setBrevetProgress(p) { store.set('brevetProgress', p); }
+function getChapterStatus(mat, idx) {
+  const p = getBrevetProgress();
+  return p[mat + '_' + idx] || { seen: false, mastered: false, bookmarked: false, lastScore: null };
+}
+function setChapterStatus(mat, idx, updates) {
+  const p = getBrevetProgress();
+  const key = mat + '_' + idx;
+  p[key] = { ...getChapterStatus(mat, idx), ...updates };
+  setBrevetProgress(p);
+}
+function getBrevetStreak() { return store.get('brevetStreak', { count: 0, lastDate: '' }); }
+function updateBrevetStreak() {
+  const today = new Date().toISOString().split('T')[0];
+  const s = getBrevetStreak();
+  if (s.lastDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  s.count = s.lastDate === yesterday ? s.count + 1 : 1;
+  s.lastDate = today;
+  store.set('brevetStreak', s);
+}
+function getBrevetStats() {
+  const p = getBrevetProgress();
+  let seen = 0, mastered = 0, bookmarked = 0, total = 0;
+  Object.values(BREVET_DATA).forEach(mat => {
+    mat.chapitres.forEach((_, i) => {
+      total++;
+      const st = p[Object.keys(BREVET_DATA).find(k => BREVET_DATA[k] === mat) + '_' + i] || {};
+      if (st.seen) seen++;
+      if (st.mastered) mastered++;
+      if (st.bookmarked) bookmarked++;
+    });
+  });
+  return { seen, mastered, bookmarked, total };
+}
+function getBrevetExamDate() {
+  // Brevet 2026: ~19 juin 2026
+  const exam = new Date(2026, 5, 19);
+  const now = new Date();
+  const diff = Math.ceil((exam - now) / 86400000);
+  return Math.max(0, diff);
+}
+function getBreviMatiereStats(matKey) {
+  const mat = BREVET_DATA[matKey];
+  const p = getBrevetProgress();
+  let seen = 0, mastered = 0, totalScore = 0, scoreCount = 0;
+  mat.chapitres.forEach((_, i) => {
+    const st = p[matKey + '_' + i] || {};
+    if (st.seen) seen++;
+    if (st.mastered) mastered++;
+    if (st.lastScore !== null && st.lastScore !== undefined) { totalScore += st.lastScore; scoreCount++; }
+  });
+  const pct = Math.round(seen / mat.chapitres.length * 100);
+  const avgScore = scoreCount > 0 ? Math.round(totalScore / scoreCount * 10) / 10 : null;
+  return { seen, mastered, total: mat.chapitres.length, pct, avgScore };
+}
+
 function switchBrevetMat(el) {
   document.querySelectorAll('[data-mat]').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
@@ -7063,51 +7483,195 @@ function switchBrevetMat(el) {
 
 function renderBrevetListe() {
   const mat = BREVET_DATA[currentBrevetMat];
+  const stats = getBreviMatiereStats(currentBrevetMat);
+  const streak = getBrevetStreak();
+  const daysLeft = getBrevetExamDate();
+  const globalStats = getBrevetStats();
+  const p = getBrevetProgress();
   const el = document.getElementById('brevet-liste');
-  el.innerHTML = `
-    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px">
-      <div style="font-size:36px">${mat.label.split(' ')[0]}</div>
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">${mat.label.slice(3)}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:3px">${mat.chapitres.length} chapitres — Programme de 3ème</div>
-      </div>
-    </div>
-    ${mat.chapitres.map((ch, i) => `
-      <div onclick="openBrevetChapitre(${i})" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:10px;transition:all 0.15s" onmouseover="this.style.borderColor='${mat.color}'" onmouseout="this.style.borderColor='var(--border)'">
-        <div style="width:40px;height:40px;border-radius:10px;background:${mat.color}22;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:${mat.color};flex-shrink:0">${i+1}</div>
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:700">${ch.titre}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">${ch.resume}</div>
-        </div>
-        <div style="font-size:20px;color:var(--muted)">›</div>
-      </div>`).join('')}`;
+
+  // Header with global dashboard
+  let headerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'
+    + '<div style="background:linear-gradient(135deg,rgba(240,193,75,0.2),rgba(240,193,75,0.05));border:1px solid rgba(240,193,75,0.4);border-radius:14px;padding:14px;text-align:center">'
+      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:800;color:var(--accent)">' + daysLeft + '</div>'
+      + '<div style="font-size:11px;color:var(--muted);margin-top:2px">jours avant le brevet 📅</div>'
+    + '</div>'
+    + '<div style="background:linear-gradient(135deg,rgba(251,146,60,0.2),rgba(251,146,60,0.05));border:1px solid rgba(251,146,60,0.4);border-radius:14px;padding:14px;text-align:center">'
+      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:800;color:var(--accent6)">' + streak.count + ' 🔥</div>'
+      + '<div style="font-size:11px;color:var(--muted);margin-top:2px">jours de révision</div>'
+    + '</div>'
+  + '</div>'
+  // Global progress bar
+  + '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+      + '<div style="font-size:13px;font-weight:700">📊 Progression globale</div>'
+      + '<div style="font-size:13px;font-weight:700;color:var(--accent)">' + globalStats.seen + '/' + globalStats.total + ' chapitres vus</div>'
+    + '</div>'
+    + '<div style="background:var(--border);border-radius:10px;height:8px;overflow:hidden">'
+      + '<div style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:10px;width:' + Math.round(globalStats.seen/globalStats.total*100) + '%;transition:width 0.5s"></div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px">'
+      + '<span>✅ Maîtrisés : ' + globalStats.mastered + '</span>'
+      + '<span>🔖 Marque-pages : ' + globalStats.bookmarked + '</span>'
+      + '<span><button class="btn btn-ghost btn-sm" style="padding:4px 10px;font-size:11px" onclick="startExamBlanc()">📝 Examen blanc</button></span>'
+    + '</div>'
+  + '</div>';
+
+  // Matière header with its own stats
+  let matHeader = '<div style="background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:18px;margin-bottom:12px">'
+    + '<div style="display:flex;align-items:center;gap:14px">'
+      + '<div style="font-size:36px">' + mat.label.split(' ')[0] + '</div>'
+      + '<div style="flex:1">'
+        + '<div style="font-family:\'Syne\',sans-serif;font-size:18px;font-weight:800">' + mat.label.slice(3) + '</div>'
+        + '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + stats.seen + '/' + stats.total + ' chapitres vus' + (stats.avgScore ? ' · Moy: ' + stats.avgScore + '/20' : '') + '</div>'
+        + '<div style="background:var(--surface);border-radius:6px;height:4px;margin-top:8px;overflow:hidden"><div style="height:100%;background:' + mat.color + ';width:' + stats.pct + '%;transition:width 0.5s"></div></div>'
+      + '</div>'
+    + '</div>'
+  + '</div>';
+
+  // Chapter list
+  let chaptersHTML = mat.chapitres.map((ch, i) => {
+    const st = p[currentBrevetMat + '_' + i] || {};
+    const statusIcon = st.mastered ? '✅' : st.seen ? '👁️' : '○';
+    const statusColor = st.mastered ? 'var(--accent3)' : st.seen ? 'var(--accent2)' : 'var(--border)';
+    const bookmarkIcon = st.bookmarked ? '🔖' : '';
+    const scoreText = st.lastScore !== null && st.lastScore !== undefined ? st.lastScore + '/20' : '';
+    return '<div onclick="openBrevetChapitre(' + i + ')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border:1px solid ' + (st.seen ? mat.color + '44' : 'var(--border)') + ';border-radius:14px;cursor:pointer;margin-bottom:8px;transition:all 0.15s">'
+      + '<div style="width:32px;height:32px;border-radius:10px;background:' + statusColor + '22;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:' + statusColor + ';font-family:\'Space Grotesk\',sans-serif;font-weight:700">' + (st.mastered || st.seen ? statusIcon : (i+1)) + '</div>'
+      + '<div style="flex:1;min-width:0">'
+        + '<div style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px">' + ch.titre + (bookmarkIcon ? ' <span>' + bookmarkIcon + '</span>' : '') + '</div>'
+        + '<div style="font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ch.resume + '</div>'
+      + '</div>'
+      + (scoreText ? '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:12px;font-weight:700;color:' + (parseFloat(scoreText) >= 10 ? 'var(--accent3)' : 'var(--accent4)') + ';flex-shrink:0">' + scoreText + '</div>' : '')
+      + '<div style="font-size:18px;color:var(--muted);flex-shrink:0">›</div>'
+    + '</div>';
+  }).join('');
+
+  el.innerHTML = headerHTML + matHeader + chaptersHTML;
 }
 
 function openBrevetChapitre(idx) {
   currentBrevetCh = idx;
   const mat = BREVET_DATA[currentBrevetMat];
   const ch = mat.chapitres[idx];
+  const st = getChapterStatus(currentBrevetMat, idx);
+
+  // Mark as seen + update streak
+  setChapterStatus(currentBrevetMat, idx, { seen: true });
+  updateBrevetStreak();
+
   document.getElementById('brevet-liste').style.display = 'none';
   document.getElementById('brevet-chapitre').style.display = 'block';
-  document.getElementById('brevet-chapitre-content').innerHTML = `
-    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:20px;margin-bottom:20px">
-      <div style="font-size:11px;font-weight:700;color:${mat.color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${mat.label} — Chapitre ${idx+1}</div>
-      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">${ch.titre}</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:4px">${ch.resume}</div>
-    </div>
-    <div class="brevet-cours-content">${ch.contenu}</div>
-    <!-- Bouton Quiz -->
-    <div style="margin-top:28px;padding:20px;background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;text-align:center">
-      <div style="font-size:24px;margin-bottom:8px">🎯</div>
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px">Prêt à te tester ?</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px">10 questions aléatoires — Note sur 20</div>
-      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;border-radius:14px" onclick="startQuiz('${currentBrevetMat}', ${idx})">🚀 Lancer le quiz !</button>
-    </div>`;
+
+  const fontSize = store.get('brevetFontSize', 15);
+
+  document.getElementById('brevet-chapitre-content').innerHTML =
+    // Header
+    '<div style="background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:18px;margin-bottom:16px">'
+      + '<div style="font-size:11px;font-weight:700;color:' + mat.color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">' + mat.label + ' — Chapitre ' + (idx+1) + '</div>'
+      + '<div style="font-family:\'Syne\',sans-serif;font-size:20px;font-weight:800">' + ch.titre + '</div>'
+      + '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + ch.resume + '</div>'
+    + '</div>'
+    // Controls bar
+    + '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">'
+      + '<button class="btn btn-ghost btn-sm" onclick="toggleBookmark(' + idx + ')" id="bookmark-btn">' + (st.bookmarked ? '🔖 Marqué' : '🔖 Marquer') + '</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="toggleMastered(' + idx + ')" id="mastered-btn">' + (st.mastered ? '✅ Maîtrisé' : '○ À maîtriser') + '</button>'
+      + '<div style="display:flex;align-items:center;gap:6px;margin-left:auto">'
+        + '<span style="font-size:11px;color:var(--muted)">Aa</span>'
+        + '<input type="range" min="13" max="18" value="' + fontSize + '" style="width:80px;accent-color:var(--accent)" oninput="setBrevFontSize(this.value)" id="font-slider">'
+        + '<span style="font-size:15px;color:var(--muted)">Aa</span>'
+      + '</div>'
+    + '</div>'
+    // Course content
+    + '<div class="brevet-cours-content" id="brevet-cours-text" style="font-size:' + fontSize + 'px">' + ch.contenu + '</div>'
+    // Navigation between chapters
+    + '<div style="display:flex;gap:10px;margin-top:20px">'
+      + (idx > 0 ? '<button class="btn btn-ghost" style="flex:1" onclick="openBrevetChapitre(' + (idx-1) + ')">‹ Précédent</button>' : '<div style="flex:1"></div>')
+      + (idx < mat.chapitres.length - 1 ? '<button class="btn btn-ghost" style="flex:1" onclick="openBrevetChapitre(' + (idx+1) + ')">Suivant ›</button>' : '<div style="flex:1"></div>')
+    + '</div>'
+    // Quiz section
+    + '<div style="margin-top:20px;padding:20px;background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;text-align:center">'
+      + '<div style="font-size:24px;margin-bottom:8px">🎯</div>'
+      + '<div style="font-family:\'Syne\',sans-serif;font-size:16px;font-weight:800;margin-bottom:4px">Prêt à te tester ?</div>'
+      + '<div style="font-size:13px;color:var(--muted);margin-bottom:14px">10 questions aléatoires — Note sur 20</div>'
+      + '<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;border-radius:14px" onclick="startQuiz(\'' + currentBrevetMat + '\', ' + idx + ')">🚀 Lancer le quiz !</button>'
+    + '</div>';
+}
+
+function setBrevFontSize(val) {
+  store.set('brevetFontSize', parseInt(val));
+  const el = document.getElementById('brevet-cours-text');
+  if (el) el.style.fontSize = val + 'px';
+}
+
+function toggleBookmark(idx) {
+  const st = getChapterStatus(currentBrevetMat, idx);
+  setChapterStatus(currentBrevetMat, idx, { bookmarked: !st.bookmarked });
+  const btn = document.getElementById('bookmark-btn');
+  if (btn) btn.textContent = !st.bookmarked ? '🔖 Marqué' : '🔖 Marquer';
+  if (navigator.vibrate) navigator.vibrate(30);
+}
+
+function toggleMastered(idx) {
+  const st = getChapterStatus(currentBrevetMat, idx);
+  setChapterStatus(currentBrevetMat, idx, { mastered: !st.mastered });
+  const btn = document.getElementById('mastered-btn');
+  if (btn) btn.textContent = !st.mastered ? '✅ Maîtrisé' : '○ À maîtriser';
+  if (!st.mastered) launchConfetti();
+  if (navigator.vibrate) navigator.vibrate(40);
 }
 
 function closeBrevetchapitre() {
   document.getElementById('brevet-liste').style.display = 'block';
   document.getElementById('brevet-chapitre').style.display = 'none';
+  renderBrevetListe(); // refresh to show updated status
+}
+
+// Override startQuiz to save score to chapter status
+const _origStartQuiz = startQuiz;
+function startQuiz(matKey, chIdx) {
+  window._quizMatKey = matKey;
+  window._quizChIdx = chIdx;
+  _origStartQuiz(matKey, chIdx);
+}
+// Override renderQuizResult to save score
+const _origRenderQuizResult = renderQuizResult;
+function renderQuizResult() {
+  _origRenderQuizResult();
+  const { score, questions } = quizState;
+  const note = Math.round((score / questions.length) * 20 * 10) / 10;
+  if (window._quizMatKey !== undefined && window._quizChIdx !== undefined) {
+    setChapterStatus(window._quizMatKey, window._quizChIdx, {
+      lastScore: note,
+      mastered: note >= 14
+    });
+  }
+}
+
+// EXAMEN BLANC — 20 questions aléatoires toutes matières
+function startExamBlanc() {
+  // Pick questions from all subjects that have quiz data
+  const allQ = [];
+  Object.keys(QUIZ_DATA).forEach(mat => {
+    QUIZ_DATA[mat].forEach((chQuestions, chIdx) => {
+      chQuestions.forEach(q => allQ.push({ ...q, _mat: mat, _ch: chIdx }));
+    });
+  });
+  const shuffled = allQ.sort(() => Math.random() - 0.5).slice(0, 20);
+  shuffled.forEach(q => {
+    const correctAns = q.choices[q.correct];
+    const mixed = [...q.choices].sort(() => Math.random() - 0.5);
+    q.shuffledChoices = mixed;
+    q.shuffledCorrect = mixed.indexOf(correctAns);
+  });
+  quizState = { matKey: 'exam', chIdx: -1, questions: shuffled, current: 0, score: 0, answers: [] };
+  window._quizMatKey = undefined;
+  window._quizChIdx = undefined;
+
+  // Show in brevet chapitre view
+  document.getElementById('brevet-liste').style.display = 'none';
+  document.getElementById('brevet-chapitre').style.display = 'block';
+  renderQuizQuestion();
 }
 
 function renderBrevet() {
