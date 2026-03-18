@@ -1547,6 +1547,22 @@ body {
 .challenges-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
 
 /* ============================================================
+   BREVET
+============================================================ */
+.brevet-cours-content h3 {
+  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
+  color: var(--accent2); margin: 20px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.brevet-cours-content h3:first-child { margin-top: 0; }
+.brevet-cours-content p {
+  font-size: 13px; line-height: 1.8; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+}
+.brevet-cours-content strong { color: var(--accent); }
+.brevet-cours-content em { color: var(--accent3); font-style: normal; font-weight: 600; }
+
+/* ============================================================
    OUTILS
 ============================================================ */
 .calc-btn {
@@ -1633,6 +1649,9 @@ body {
       </div>
       <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
         <span class="di-emoji">🎡</span>Roue
+      </div>
+      <div class="more-drawer-item" data-section="brevet" onclick="showFromDrawer('brevet', this)">
+        <span class="di-emoji">🎓</span>Brevet
       </div>
       <div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
         <span class="di-emoji">🔧</span>Outils
@@ -2221,6 +2240,34 @@ body {
 </section>
 
 <!-- ===================== INFOS ===================== -->
+<!-- ===================== BREVET ===================== -->
+<section id="brevet" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🎓 <span>Révisions Brevet</span></div>
+      <div class="page-sub">Cours complets 3ème — Tout ce qu'il faut savoir</div>
+    </div>
+  </div>
+
+  <!-- Matières nav -->
+  <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding-bottom:4px" id="brevet-matiere-tabs">
+    <div class="chip active" data-mat="maths" onclick="switchBrevetMat(this)">📐 Maths</div>
+    <div class="chip" data-mat="francais" onclick="switchBrevetMat(this)">📖 Français</div>
+    <div class="chip" data-mat="histoire" onclick="switchBrevetMat(this)">🌍 Histoire-Géo</div>
+    <div class="chip" data-mat="svt" onclick="switchBrevetMat(this)">🌱 SVT</div>
+    <div class="chip" data-mat="physchim" onclick="switchBrevetMat(this)">⚗️ Physique-Chimie</div>
+  </div>
+
+  <!-- Vue liste des chapitres -->
+  <div id="brevet-liste"></div>
+
+  <!-- Vue contenu d'un chapitre -->
+  <div id="brevet-chapitre" style="display:none">
+    <button class="cours-back-btn" onclick="closeBrevetchapitre()" style="margin-bottom:16px">‹ Retour</button>
+    <div id="brevet-chapitre-content"></div>
+  </div>
+</section>
+
 <!-- ===================== OUTILS ===================== -->
 <section id="outils" class="section">
   <div class="page-header">
@@ -2505,7 +2552,7 @@ body {
   <div class="info-hero">
     <div class="info-hero-icon">✦</div>
     <div class="info-hero-name">StudySpace</div>
-    <div class="info-version-badge">v4.1</div>
+    <div class="info-version-badge">v4.3</div>
     <div class="info-hero-sub">Ton espace d'étude personnel</div>
   </div>
 
@@ -2531,7 +2578,7 @@ body {
       <div class="info-row-icon">🔖</div>
       <div>
         <div class="info-row-label">Version actuelle</div>
-        <div class="info-row-value">v4.1 — Mars 2026</div>
+        <div class="info-row-value">v4.3 — Mars 2026</div>
       </div>
     </div>
     <div class="info-divider"></div>
@@ -2568,6 +2615,8 @@ body {
     <div class="info-section-title">📋 Historique des versions</div>
     <div class="changelog-list">
       <div class="changelog-item">
+        <div class="changelog-version">v4.3</div>
+        <div class="changelog-desc">Révisions Brevet 3ème — cours complets Maths, Français, Histoire-Géo, SVT, Physique-Chimie (30+ chapitres)</div>
         <div class="changelog-version">v4.1</div>
         <div class="changelog-desc">Section Outils (calculatrice, géométrie, convertisseur, sciences, conjugueur, grammaire, moyenne, checklist), section Apparence, bouton Outils sur l'accueil</div>
         <div class="changelog-version">v4.0</div>
@@ -2747,6 +2796,7 @@ function showFromDrawer(id, el) {
   if (id === 'courses') renderCourses();
   if (id === 'roulette') renderWheel();
   if (id === 'profil') renderProfil();
+  if (id === 'brevet') renderBrevet();
   if (id === 'outils') renderOutils();
   if (id === 'apparence') renderApparence();
   if (id === 'infos') renderInfos();
@@ -4955,6 +5005,1436 @@ function renderOutils() {
   renderConverter();
   renderMoyenne();
   renderChecklist();
+}
+
+// ============================================================
+//  BREVET — COURS COMPLETS 3ÈME
+// ============================================================
+const BREVET_DATA = {
+  maths: {
+    label: '📐 Mathématiques', color: '#f0c14b',
+    chapitres: [
+      {
+        titre: 'Nombres et calculs',
+        resume: 'Entiers, fractions, puissances, racines, priorités',
+        contenu: `<h3>🔢 Les types de nombres</h3>
+<p><strong>Entiers naturels (ℕ)</strong> : 0, 1, 2, 3… <br>
+<strong>Entiers relatifs (ℤ)</strong> : …−2, −1, 0, 1, 2… <br>
+<strong>Décimaux (𝔻)</strong> : nombres à virgule finie (ex : 3,14) <br>
+<strong>Rationnels (ℚ)</strong> : fractions a/b avec b≠0 <br>
+<strong>Réels (ℝ)</strong> : tous les nombres, y compris √2, π</p>
+
+<h3>⚡ Puissances</h3>
+<p><strong>Définition</strong> : aⁿ = a × a × … × a (n fois)<br>
+<strong>a⁰ = 1</strong> pour tout a ≠ 0<br>
+<strong>a⁻ⁿ = 1/aⁿ</strong><br>
+<strong>Règles de calcul</strong> :<br>
+• aⁿ × aᵐ = aⁿ⁺ᵐ<br>
+• aⁿ ÷ aᵐ = aⁿ⁻ᵐ<br>
+• (aⁿ)ᵐ = aⁿˣᵐ<br>
+• (a×b)ⁿ = aⁿ × bⁿ</p>
+<p><strong>Notation scientifique</strong> : a × 10ⁿ avec 1 ≤ a < 10<br>
+Ex : 3 400 000 = 3,4 × 10⁶ | 0,0052 = 5,2 × 10⁻³</p>
+
+<h3>√ Racines carrées</h3>
+<p>√a est le nombre positif dont le carré vaut a<br>
+√(a×b) = √a × √b | √(a/b) = √a / √b<br>
+Simplifier : √12 = √(4×3) = 2√3</p>
+
+<h3>➗ Fractions</h3>
+<p><strong>Addition/soustraction</strong> : même dénominateur obligatoire<br>
+<strong>Multiplication</strong> : a/b × c/d = ac/bd<br>
+<strong>Division</strong> : a/b ÷ c/d = a/b × d/c<br>
+<strong>Simplification</strong> : diviser numérateur et dénominateur par leur PGCD</p>
+
+<h3>📊 Priorités opératoires</h3>
+<p>1. Parenthèses<br>2. Puissances et racines<br>3. × et ÷ (de gauche à droite)<br>4. + et − (de gauche à droite)</p>`
+      },
+      {
+        titre: 'Algèbre et équations',
+        resume: 'Développer, factoriser, résoudre équations et inéquations',
+        contenu: `<h3>🔤 Expressions algébriques</h3>
+<p><strong>Développer</strong> : supprimer les parenthèses<br>
+k(a+b) = ka + kb<br>
+(a+b)(c+d) = ac + ad + bc + bd</p>
+
+<h3>⭐ Identités remarquables</h3>
+<p><strong>(a+b)² = a² + 2ab + b²</strong><br>
+<strong>(a−b)² = a² − 2ab + b²</strong><br>
+<strong>(a+b)(a−b) = a² − b²</strong><br><br>
+Ex : (x+3)² = x² + 6x + 9<br>
+Ex : (2x−1)(2x+1) = 4x² − 1</p>
+
+<h3>🔧 Factoriser</h3>
+<p>• Facteur commun : 6x² + 9x = 3x(2x + 3)<br>
+• Identité remarquable : x² − 9 = (x−3)(x+3)<br>
+• Règle : A×B = 0 ⟹ A = 0 ou B = 0</p>
+
+<h3>⚖️ Équations du 1er degré</h3>
+<p>Forme : ax + b = 0 → x = −b/a<br>
+Règle : ce qu'on fait d'un côté, on le fait de l'autre<br>
+Ex : 3x − 6 = 0 → 3x = 6 → x = 2</p>
+
+<h3>📉 Inéquations</h3>
+<p>Même méthode que les équations SAUF :<br>
+<strong>Si on multiplie/divise par un nombre négatif → on inverse le sens !</strong><br>
+Ex : −2x < 4 → x > −2</p>
+
+<h3>🔢 Systèmes de deux équations</h3>
+<p>Méthode par substitution ou combinaison :<br>
+{ x + y = 5<br>
+{ x − y = 1<br>
+Addition : 2x = 6 → x = 3 → y = 2</p>`
+      },
+      {
+        titre: 'Géométrie plane',
+        resume: 'Triangles, parallèles, Pythagore, Thalès, trigonométrie',
+        contenu: `<h3>📐 Théorème de Pythagore</h3>
+<p>Dans un triangle rectangle en A :<br>
+<strong>BC² = AB² + AC²</strong> (BC = hypoténuse)<br>
+Réciproque : si BC² = AB² + AC² alors le triangle est rectangle en A<br>
+Contraposée : si BC² ≠ AB² + AC² alors le triangle n'est pas rectangle</p>
+
+<h3>📏 Théorème de Thalès</h3>
+<p>Si (DE) ∥ (BC) avec D sur [AB] et E sur [AC] :<br>
+<strong>AD/AB = AE/AC = DE/BC</strong><br>
+Réciproque : si AD/AB = AE/AC alors (DE) ∥ (BC)</p>
+
+<h3>📐 Trigonométrie (triangle rectangle)</h3>
+<p>Dans un triangle rectangle en A, pour l'angle B :<br>
+<strong>cos B = côté adjacent / hypoténuse</strong><br>
+<strong>sin B = côté opposé / hypoténuse</strong><br>
+<strong>tan B = côté opposé / côté adjacent</strong><br>
+Moyen mnémotechnique : <em>SOH-CAH-TOA</em></p>
+
+<h3>🔺 Angles</h3>
+<p>Droites parallèles coupées par une sécante :<br>
+• Angles alternes-internes : égaux<br>
+• Angles correspondants : égaux<br>
+• Angles co-internes : supplémentaires (somme = 180°)<br>
+Somme des angles d'un triangle = 180°</p>
+
+<h3>📐 Aires et périmètres</h3>
+<p>• Carré : A = c² | P = 4c<br>
+• Rectangle : A = L×l | P = 2(L+l)<br>
+• Triangle : A = base × hauteur / 2<br>
+• Disque : A = πr² | C = 2πr<br>
+• Trapèze : A = (b₁+b₂) × h / 2</p>`
+      },
+      {
+        titre: 'Géométrie dans l\'espace',
+        resume: 'Solides, volumes, sections',
+        contenu: `<h3>📦 Volumes des solides</h3>
+<p><strong>Cube</strong> : V = a³ | Saire = 6a²<br>
+<strong>Pavé droit</strong> : V = L × l × h<br>
+<strong>Cylindre</strong> : V = πr²h | Slat = 2πrh<br>
+<strong>Cône</strong> : V = πr²h / 3<br>
+<strong>Sphère</strong> : V = 4πr³/3 | S = 4πr²<br>
+<strong>Pyramide</strong> : V = Abase × h / 3</p>
+
+<h3>✂️ Sections de solides</h3>
+<p>Section d'un cube par un plan parallèle à une face → rectangle<br>
+Section d'une sphère par un plan → disque<br>
+Section d'un cône par un plan parallèle à la base → disque</p>
+
+<h3>📐 Représentation en perspective</h3>
+<p>• Faces cachées : traits pointillés<br>
+• Arêtes visibles : traits pleins<br>
+• Patron : développement à plat du solide</p>`
+      },
+      {
+        titre: 'Fonctions',
+        resume: 'Définition, tableaux de valeurs, représentation graphique',
+        contenu: `<h3>📈 Définition</h3>
+<p>Une fonction f associe à chaque valeur de x <strong>une unique valeur</strong> f(x)<br>
+Notation : y = f(x), x = variable, f(x) = image de x<br>
+Antécédent de y : valeur de x telle que f(x) = y</p>
+
+<h3>📊 Fonctions de référence</h3>
+<p><strong>Fonction linéaire</strong> : f(x) = ax (droite passant par O)<br>
+<strong>Fonction affine</strong> : f(x) = ax + b (droite, pente a, ordonnée à l'origine b)<br>
+<strong>Fonction carrée</strong> : f(x) = x² (parabole)<br>
+<strong>Fonction inverse</strong> : f(x) = 1/x (hyperbole, x ≠ 0)</p>
+
+<h3>📉 Sens de variation</h3>
+<p>• f croissante sur [a,b] : quand x augmente, f(x) augmente<br>
+• f décroissante : quand x augmente, f(x) diminue<br>
+• Tableau de variation : résume les intervalles de croissance/décroissance</p>
+
+<h3>📐 Lecture graphique</h3>
+<p>• Image de a : partir de x=a, monter jusqu'à la courbe, lire y<br>
+• Antécédent de b : partir de y=b, aller horizontalement jusqu'à la courbe, lire x<br>
+• Racine : valeur de x où f(x) = 0 (intersection avec l'axe des x)</p>`
+      },
+      {
+        titre: 'Statistiques & Probabilités',
+        resume: 'Moyenne, médiane, quartiles, probabilités',
+        contenu: `<h3>📊 Statistiques descriptives</h3>
+<p><strong>Moyenne</strong> : somme des valeurs ÷ effectif total<br>
+<strong>Médiane</strong> : valeur qui partage la série en deux moitiés égales<br>
+<strong>Mode</strong> : valeur la plus fréquente<br>
+<strong>Étendue</strong> : valeur max − valeur min</p>
+
+<h3>📦 Quartiles</h3>
+<p><strong>Q1</strong> : médiane de la première moitié (25% des données en dessous)<br>
+<strong>Q2</strong> : médiane de toute la série (= médiane)<br>
+<strong>Q3</strong> : médiane de la deuxième moitié (75% des données en dessous)<br>
+<strong>Écart interquartile</strong> : Q3 − Q1</p>
+
+<h3>🎲 Probabilités</h3>
+<p><strong>Définition</strong> : P(A) = nombre de cas favorables / nombre de cas possibles<br>
+0 ≤ P(A) ≤ 1<br>
+P(certain) = 1 | P(impossible) = 0<br>
+<strong>Événement contraire</strong> : P(Ā) = 1 − P(A)</p>
+
+<h3>🌲 Arbre de probabilités</h3>
+<p>• Probabilités sur les branches se multiplient (chemin)<br>
+• Probabilités des chemins d'un même résultat s'additionnent<br>
+• Somme de toutes les branches issues d'un même nœud = 1</p>`
+      },
+    ]
+  },
+  francais: {
+    label: '📖 Français', color: '#9b8afb',
+    chapitres: [
+      {
+        titre: 'Grammaire — La phrase',
+        resume: 'Types, formes, propositions, fonctions grammaticales',
+        contenu: `<h3>📝 Types de phrases</h3>
+<p><strong>Déclarative</strong> : affirme quelque chose → "Il fait beau."<br>
+<strong>Interrogative</strong> : pose une question → "Fait-il beau ?"<br>
+<strong>Impérative</strong> : donne un ordre → "Regarde !"<br>
+<strong>Exclamative</strong> : exprime un sentiment → "Quel beau temps !"</p>
+
+<h3>✅ Formes de phrases</h3>
+<p><strong>Affirmative / Négative</strong> : ne…pas, ne…jamais, ne…plus, ne…rien<br>
+<strong>Active / Passive</strong> : "Le chat mange la souris" → "La souris est mangée par le chat"<br>
+<strong>Personnelle / Impersonnelle</strong> : "Il pleut", "Il faut"</p>
+
+<h3>🔗 Propositions</h3>
+<p><strong>Indépendante</strong> : phrase simple, un seul verbe conjugué<br>
+<strong>Principale</strong> : phrase dont dépend une subordonnée<br>
+<strong>Subordonnée relative</strong> : introduite par qui, que, dont, où → complète un nom<br>
+<strong>Subordonnée conjonctive</strong> : introduite par que, quand, parce que, si…</p>
+
+<h3>🎯 Fonctions grammaticales</h3>
+<p><strong>Sujet</strong> : fait l'action, s'identifie par "Qui est-ce qui ?"<br>
+<strong>COD</strong> : complément direct, "Qui ? Quoi ?" après le verbe<br>
+<strong>COI</strong> : complément indirect, "à qui ? de qui ?" après le verbe<br>
+<strong>Attribut du sujet</strong> : après être, sembler, paraître…<br>
+<strong>Épithète</strong> : adjectif directement lié au nom<br>
+<strong>Complément circonstanciel</strong> : lieu, temps, manière, cause, but</p>`
+      },
+      {
+        titre: 'Conjugaison',
+        resume: 'Tous les temps essentiels du brevet',
+        contenu: `<h3>⏰ Les temps du passé</h3>
+<p><strong>Passé composé</strong> : action passée et achevée, liée au présent<br>
+Auxiliaire avoir/être + participe passé<br>
+"J'ai mangé", "Je suis parti"</p>
+<p><strong>Imparfait</strong> : action passée et habituelle, description, arrière-plan<br>
+Radical du présent (nous) + ais, ais, ait, ions, iez, aient<br>
+"Je mangeais", "Il dormait"</p>
+<p><strong>Plus-que-parfait</strong> : action antérieure à une autre action passée<br>
+Avoir/être à l'imparfait + participe passé<br>
+"J'avais mangé quand il est arrivé"</p>
+<p><strong>Passé simple</strong> : temps du récit littéraire (3ème surtout)<br>
+-er → a, âmes, âtes, èrent | -ir → it, îmes, îtes, irent</p>
+
+<h3>⏳ Les temps du présent et futur</h3>
+<p><strong>Présent</strong> : action en cours, vérité générale, habitude<br>
+<strong>Futur simple</strong> : infinitif + rai, ras, ra, rons, rez, ront<br>
+<strong>Conditionnel présent</strong> : infinitif + ais, ais, ait, ions, iez, aient (hypothèse)</p>
+
+<h3>🔧 Le subjonctif</h3>
+<p>Utilisé après : vouloir que, il faut que, bien que, pour que, avant que…<br>
+Que je sois, que tu aies, qu'il fasse, que nous allions</p>
+
+<h3>📌 Accord du participe passé</h3>
+<p><strong>Avec être</strong> : s'accorde en genre et nombre avec le sujet<br>
+"Elle est partie" | "Ils sont arrivés"<br>
+<strong>Avec avoir</strong> : s'accorde avec le COD si placé AVANT<br>
+"La lettre que j'ai écrite" (lettre = COD avant)<br>
+"J'ai écrit des lettres" (COD après → pas d'accord)</p>`
+      },
+      {
+        titre: 'Orthographe',
+        resume: 'Homophones, accords, pièges classiques',
+        contenu: `<h3>⚠️ Homophones grammaticaux</h3>
+<p><strong>a / à</strong> : "a" = verbe avoir (remplacer par "avait") | "à" = préposition<br>
+<strong>est / et / es</strong> : "est/es" = verbe être | "et" = conjonction<br>
+<strong>on / ont</strong> : "ont" = verbe avoir (remplacer par "avaient")<br>
+<strong>son / sont</strong> : "sont" = verbe être (remplacer par "étaient")<br>
+<strong>ces / ses</strong> : "ces livres-là" | "ses propres livres"<br>
+<strong>leur / leurs</strong> : "leur" invariable (pronom) | "leurs" (adjectif possessif pluriel)<br>
+<strong>ou / où</strong> : "ou" = ou bien | "où" = lieu/temps<br>
+<strong>mais / mes / met / mets</strong> : attention au contexte<br>
+<strong>quand / quant / qu'en</strong> : "quand" = temps | "quant à" = en ce qui concerne</p>
+
+<h3>📏 Accords dans le groupe nominal</h3>
+<p>L'adjectif s'accorde en <strong>genre et nombre</strong> avec le nom qu'il qualifie<br>
+Féminin : généralement + e | Pluriel : généralement + s<br>
+Exceptions : beau/bel/belle, vieux/vieil/vieille, nouveau/nouvel/nouvelle</p>
+
+<h3>✍️ Accords sujet-verbe</h3>
+<p>Le verbe s'accorde avec son sujet<br>
+Attention aux sujets inversés, aux sujets éloignés<br>
+"Chacun des élèves <em>travaille</em>" (sujet = chacun → singulier)</p>`
+      },
+      {
+        titre: 'Figures de style',
+        resume: 'Toutes les figures à connaître pour le brevet',
+        contenu: `<h3>🎨 Figures d'analogie (comparaison)</h3>
+<p><strong>Comparaison</strong> : rapproche deux éléments avec un outil (comme, tel, pareil à…)<br>
+Ex : "Il est fort <em>comme</em> un bœuf"<br>
+<strong>Métaphore</strong> : comparaison sans outil de comparaison<br>
+Ex : "Il est <em>un lion</em> au combat"<br>
+<strong>Métaphore filée</strong> : métaphore développée sur plusieurs lignes<br>
+<strong>Personnification</strong> : donner des caractéristiques humaines à un objet/animal<br>
+Ex : "Le vent <em>gémissait</em>"<br>
+<strong>Allégorie</strong> : représenter une idée abstraite par une image concrète</p>
+
+<h3>📢 Figures d'insistance</h3>
+<p><strong>Anaphore</strong> : répétition d'un mot/groupe en début de phrase<br>
+<strong>Gradation</strong> : termes de plus en plus forts (ou faibles)<br>
+Ex : "Un souffle, une voix, un cri, un tonnerre"<br>
+<strong>Hyperbole</strong> : exagération volontaire<br>
+Ex : "Je meurs de faim"<br>
+<strong>Répétition</strong> : même mot répété pour insister</p>
+
+<h3>🔤 Figures sonores</h3>
+<p><strong>Allitération</strong> : répétition de consonnes<br>
+Ex : "Pour qui sont ces serpents qui sifflent sur vos têtes ?"<br>
+<strong>Assonance</strong> : répétition de voyelles<br>
+<strong>Onomatopée</strong> : mot qui imite un son (crac, boum, splash)</p>
+
+<h3>⚡ Figures d'opposition</h3>
+<p><strong>Antithèse</strong> : opposition de deux idées dans la même phrase<br>
+Ex : "Il est grand dans ses défauts, petit dans ses qualités"<br>
+<strong>Oxymore</strong> : alliance de mots contradictoires<br>
+Ex : "Cette obscure clarté", "un silence éloquent"<br>
+<strong>Paradoxe</strong> : affirmation qui semble contradictoire mais révèle une vérité</p>
+
+<h3>💬 Autres figures importantes</h3>
+<p><strong>Euphémisme</strong> : atténuer une réalité dure<br>
+Ex : "Il nous a quittés" (= il est mort)<br>
+<strong>Litote</strong> : dire moins pour suggérer plus<br>
+Ex : "Ce n'est pas mal" (= c'est très bien)<br>
+<strong>Ironie</strong> : dire le contraire de ce qu'on pense<br>
+<strong>Périphrase</strong> : remplacer un mot par une expression<br>
+Ex : "Le roi des animaux" (= le lion)</p>`
+      },
+      {
+        titre: 'Textes & Genres littéraires',
+        resume: 'Roman, poésie, théâtre, argumentation',
+        contenu: `<h3>📚 Le Roman</h3>
+<p><strong>Narrateur</strong> :<br>
+• 1ère personne (je) : narrateur interne, récit autobiographique<br>
+• 3ème personne : narrateur externe (omniscient ou observateur)<br>
+<strong>Focalisation</strong> : interne (dans la tête d'un personnage), externe (observateur), zéro (omniscient)<br>
+<strong>Registres</strong> : réaliste, fantastique, merveilleux, historique, policier, science-fiction</p>
+
+<h3>🎭 Le Théâtre</h3>
+<p><strong>Structure</strong> : actes → scènes<br>
+<strong>Didascalies</strong> : indications de mise en scène (en italique)<br>
+<strong>Monologue</strong> : un personnage seul qui parle<br>
+<strong>Dialogue</strong> : échange entre personnages<br>
+<strong>Aparté</strong> : un personnage parle au public sans être entendu des autres<br>
+<strong>Registres</strong> : tragique (destin fatal), comique (faire rire), tragi-comique</p>
+
+<h3>🎵 La Poésie</h3>
+<p><strong>Vers</strong> : alexandrin (12 syllabes), décasyllabe (10), octosyllabe (8)<br>
+<strong>Rime</strong> : embrassée (ABBA), croisée (ABAB), suivie (AABB)<br>
+<strong>Strophe</strong> : tercet (3v), quatrain (4v), quintil (5v), sizain (6v)<br>
+<strong>Diérèse/synérèse</strong> : découpage des syllabes<br>
+<strong>Coupe/césure</strong> : pause dans le vers</p>
+
+<h3>💬 L'Argumentation</h3>
+<p><strong>Thèse</strong> : position défendue<br>
+<strong>Argument</strong> : raison qui soutient la thèse<br>
+<strong>Exemple/illustration</strong> : preuve concrète de l'argument<br>
+<strong>Concession</strong> : reconnaître un argument adverse pour mieux le réfuter<br>
+<strong>Connecteurs logiques</strong> :<br>
+• Addition : de plus, en outre, par ailleurs<br>
+• Opposition : mais, cependant, néanmoins, or<br>
+• Cause : car, en effet, puisque<br>
+• Conséquence : donc, ainsi, c'est pourquoi<br>
+• Illustration : par exemple, notamment, c'est le cas de</p>`
+      },
+    ]
+  },
+  histoire: {
+    label: '🌍 Histoire-Géographie', color: '#52e8a2',
+    chapitres: [
+      {
+        titre: 'La Première Guerre Mondiale',
+        resume: '1914-1918 : causes, déroulement, bilan',
+        contenu: `<h3>🔥 Les causes (1914)</h3>
+<p><strong>Causes profondes</strong> :<br>
+• Nationalisme exacerbé en Europe<br>
+• Rivalités impérialistes entre grandes puissances<br>
+• Course aux armements (France vs Allemagne)<br>
+• Alliances militaires : Triple-Entente (France, Royaume-Uni, Russie) vs Triple-Alliance (Allemagne, Autriche-Hongrie, Italie)<br>
+<strong>Cause déclenchante</strong> : assassinat de l'archiduc François-Ferdinand à Sarajevo le 28 juin 1914</p>
+
+<h3>⚔️ Le déroulement</h3>
+<p><strong>1914</strong> : guerre de mouvement, échec du Plan Schlieffen, début de la guerre de tranchées<br>
+<strong>1916</strong> : batailles de Verdun et de la Somme (boucheries, des millions de morts)<br>
+<strong>1917</strong> : entrée en guerre des États-Unis, mutineries, révolution russe (sortie de Russie)<br>
+<strong>1918</strong> : offensive alliée, armistice le 11 novembre 1918 à 11h</p>
+
+<h3>💀 Un conflit total</h3>
+<p>• Mobilisation de toute la société (économie de guerre)<br>
+• Femmes dans les usines et les champs<br>
+• Propagande massive des deux côtés<br>
+• Génocide arménien (1915) par l'Empire ottoman<br>
+• Nouvelles armes : gaz, chars, avions, sous-marins</p>
+
+<h3>📜 Le bilan</h3>
+<p>• ~18 millions de morts (dont 8 millions de soldats)<br>
+• Traité de Versailles (juin 1919) : humiliation de l'Allemagne<br>
+• Redécoupage de la carte de l'Europe<br>
+• Création de la Société des Nations (SDN)<br>
+• Séquelles économiques, psychologiques (les "gueules cassées")</p>`
+      },
+      {
+        titre: 'La Seconde Guerre Mondiale',
+        resume: '1939-1945 : totalitarismes, génocide, Résistance',
+        contenu: `<h3>⚡ Les origines</h3>
+<p>• Crise économique de 1929 → montée des totalitarismes<br>
+• <strong>Nazisme</strong> : Hitler au pouvoir en 1933, idéologie raciste et antisémite<br>
+• Politique expansionniste d'Hitler (Anschluss 1938, Sudètes)<br>
+• Pacte germano-soviétique (août 1939)<br>
+• Invasion de la Pologne le 1er septembre 1939 → déclaration de guerre</p>
+
+<h3>🗺️ Le déroulement</h3>
+<p><strong>1939-1940</strong> : défaite française, armistice de juin 1940<br>
+<strong>France sous occupation</strong> : zone occupée (nord) / zone libre (sud, Vichy)<br>
+<strong>Régime de Vichy</strong> : collaboration avec l'Allemagne nazie, Révolution nationale<br>
+<strong>1941</strong> : opération Barbarossa (invasion URSS), entrée en guerre des USA (Pearl Harbor)<br>
+<strong>1942-1943</strong> : tournant avec Stalingrad, débarquement en AFN<br>
+<strong>6 juin 1944</strong> : Débarquement en Normandie (D-Day)<br>
+<strong>8 mai 1945</strong> : capitulation de l'Allemagne | <strong>2 sept. 1945</strong> : capitulation du Japon</p>
+
+<h3>💀 La Shoah</h3>
+<p>• Génocide des Juifs d'Europe par les nazis : 6 millions de victimes<br>
+• Camps d'extermination : Auschwitz, Treblinka, Sobibor…<br>
+• Conférence de Wannsee (1942) : décision de la "Solution finale"<br>
+• Génocide des Tziganes, handicapés, homosexuels, opposants politiques</p>
+
+<h3>🏅 La Résistance française</h3>
+<p>• <strong>De Gaulle</strong> : appel du 18 juin 1940 depuis Londres, France Libre<br>
+• Résistance intérieure : sabotages, presse clandestine, aide aux Juifs<br>
+• Jean Moulin : unifie la Résistance en 1943, arrêté et mort sous la torture<br>
+• Conseil National de la Résistance (CNR)</p>`
+      },
+      {
+        titre: 'La Guerre Froide',
+        resume: '1947-1991 : affrontement USA/URSS, blocs, crises',
+        contenu: `<h3>🌐 Définition et origines</h3>
+<p>Affrontement indirect entre les <strong>États-Unis</strong> (bloc occidental, capitalisme, démocratie) et l'<strong>URSS</strong> (bloc soviétique, communisme, parti unique)<br>
+"Froide" : pas de guerre directe entre les deux superpuissances<br>
+Début : discours de Churchill sur le "rideau de fer" (1946), doctrine Truman (1947)</p>
+
+<h3>🧱 Les deux blocs</h3>
+<p><strong>Bloc occidental</strong> : Plan Marshall (aide économique USA), OTAN (alliance militaire 1949)<br>
+<strong>Bloc soviétique</strong> : Comecon (économie), Pacte de Varsovie (militaire 1955)<br>
+<strong>Tiers-Monde</strong> : pays non-alignés (conférence de Bandung 1955)</p>
+
+<h3>💥 Les crises principales</h3>
+<p><strong>Berlin</strong> : blocus soviétique 1948-49, construction du mur (1961), chute du mur (1989)<br>
+<strong>Corée 1950-53</strong> : première guerre de la Guerre Froide<br>
+<strong>Cuba 1962</strong> : crise des missiles, monde au bord du conflit nucléaire<br>
+<strong>Vietnam 1955-75</strong> : guerre USA vs Viêt-Cong, défaite américaine</p>
+
+<h3>🕊️ Détente et fin</h3>
+<p>• Années 1970 : détente (accords SALT sur les armes nucléaires)<br>
+• 1985 : Gorbatchev au pouvoir (glasnost, perestroïka)<br>
+• 1989 : chute du mur de Berlin, révolutions en Europe de l'Est<br>
+• 25 décembre 1991 : dissolution de l'URSS → fin de la Guerre Froide</p>`
+      },
+      {
+        titre: 'La France depuis 1958',
+        resume: 'Ve République, décolonisation, société française',
+        contenu: `<h3>🏛️ La Ve République</h3>
+<p>• Fondée par De Gaulle en 1958, Constitution du 4 octobre 1958<br>
+• Régime semi-présidentiel : président fort élu au suffrage universel direct (depuis 1962)<br>
+• Institutions : Président, Premier ministre, Parlement (Assemblée nationale + Sénat), Conseil constitutionnel<br>
+• Présidents : De Gaulle, Pompidou, Giscard d'Estaing, Mitterrand, Chirac, Sarkozy, Hollande, Macron</p>
+
+<h3>🌍 La décolonisation</h3>
+<p>• Années 1950-60 : indépendances africaines (souvent négociées)<br>
+• <strong>Guerre d'Algérie</strong> (1954-1962) : conflit violent, accords d'Évian, indépendance<br>
+• Accueil de populations immigrées (Maghreb, Afrique)<br>
+• Francophonie : liens culturels maintenus</p>
+
+<h3>✊ Mai 1968</h3>
+<p>• Révolte étudiante et grève générale (10 millions de grévistes)<br>
+• Revendications : liberté, contre la société de consommation<br>
+• Accords de Grenelle : augmentation des salaires<br>
+• Rupture culturelle et sociale profonde</p>
+
+<h3>🇪🇺 La construction européenne</h3>
+<p>• 1951 : CECA (charbon et acier)<br>
+• 1957 : Traité de Rome, création de la CEE (6 pays)<br>
+• 1992 : Traité de Maastricht → Union Européenne<br>
+• 2002 : passage à l'euro<br>
+• Aujourd'hui : 27 membres</p>`
+      },
+      {
+        titre: 'Géographie — Le monde',
+        resume: 'Mondialisation, puissances, développement',
+        contenu: `<h3>🌐 La mondialisation</h3>
+<p>Processus d'intégration croissante des économies et des sociétés à l'échelle mondiale<br>
+<strong>Acteurs</strong> : FMN (firmes multinationales), États, organisations internationales (ONU, OMC, FMI)<br>
+<strong>Flux</strong> : marchandises, capitaux, informations, personnes<br>
+<strong>Inégalités</strong> : le commerce mondial profite surtout aux pays du Nord et aux pays émergents</p>
+
+<h3>💪 Les grandes puissances</h3>
+<p><strong>USA</strong> : 1ère puissance mondiale, PIB le plus élevé, puissance militaire, culturelle (soft power)<br>
+<strong>Chine</strong> : 2ème puissance économique, usine du monde, ambitions mondiales croissantes<br>
+<strong>UE</strong> : 1er espace commercial mondial, puissance normative<br>
+<strong>Pays émergents</strong> : BRICS (Brésil, Russie, Inde, Chine, Afrique du Sud)</p>
+
+<h3>📊 Développement et inégalités</h3>
+<p><strong>IDH</strong> (Indice de Développement Humain) : espérance de vie + éducation + revenu<br>
+<strong>Pays du Nord</strong> : IDH élevé, économies développées<br>
+<strong>Pays du Sud</strong> : IDH variable, économies en développement<br>
+<strong>PMA</strong> : Pays les Moins Avancés (Afrique subsaharienne surtout)</p>
+
+<h3>🌆 Urbanisation mondiale</h3>
+<p>• Plus de 50% de la population mondiale vit en ville<br>
+• <strong>Mégapoles</strong> : Tokyo, Shanghai, Delhi, São Paulo, Mumbai…<br>
+• Étalement urbain, bidonvilles (favelas, shanty-towns)<br>
+• Métropolisation : concentration des fonctions dans les grandes villes</p>`
+      },
+      {
+        titre: 'Géographie — La France',
+        resume: 'Territoire, aménagement, espaces',
+        contenu: `<h3>🗺️ Le territoire français</h3>
+<p><strong>France métropolitaine</strong> : 551 000 km², 6ème pays d'Europe<br>
+<strong>DROM-COM</strong> : Guadeloupe, Martinique, Guyane, Réunion, Mayotte + collectivités d'outre-mer<br>
+<strong>ZEE</strong> (Zone Économique Exclusive) : 2ème au monde grâce aux territoires ultramarins<br>
+<strong>Frontières</strong> : 6 pays voisins, façades atlantique et méditerranéenne</p>
+
+<h3>👥 Population et démographie</h3>
+<p>• ~68 millions d'habitants (2024)<br>
+• Vieillissement de la population<br>
+• Inégale répartition : concentration littoral, vallées, métropoles<br>
+• Désertification des campagnes (diagonale du vide)</p>
+
+<h3>🏙️ Les métropoles françaises</h3>
+<p><strong>Paris</strong> : 1ère métropole (12M hab en Île-de-France), hyper-centralisme français<br>
+<strong>Lyon, Marseille, Toulouse, Bordeaux</strong> : métropoles régionales<br>
+<strong>Aménagement</strong> : TGV, autoroutes, rééquilibrage territorial<br>
+<strong>DATAR puis CGET</strong> : politiques d'aménagement du territoire</p>
+
+<h3>🌱 Espaces et environnement</h3>
+<p>• <strong>Espaces ruraux</strong> : agriculture intensive, zones périurbaines, tourisme vert<br>
+• <strong>Littoraux</strong> : attractivité, tourisme, risques (érosion, submersion)<br>
+• <strong>Montagnes</strong> : tourisme, hydroélectricité, espaces protégés<br>
+• Transition énergétique : énergies renouvelables, nucléaire (75% de l'électricité)</p>`
+      },
+    ]
+  },
+  svt: {
+    label: '🌱 SVT', color: '#34d399',
+    chapitres: [
+      {
+        titre: 'La cellule et le vivant',
+        resume: 'Organisation du vivant, cellule, ADN',
+        contenu: `<h3>🔬 La cellule, unité du vivant</h3>
+<p>Tout être vivant est composé de cellules (1 à des milliards)<br>
+<strong>Cellule procaryote</strong> : pas de noyau (bactéries)<br>
+<strong>Cellule eucaryote</strong> : avec noyau (animaux, plantes, champignons)</p>
+
+<h3>🧫 Structure d'une cellule animale</h3>
+<p>• <strong>Membrane plasmique</strong> : frontière de la cellule, sélective<br>
+• <strong>Cytoplasme</strong> : milieu aqueux intracellulaire<br>
+• <strong>Noyau</strong> : contient l'ADN, centre de contrôle<br>
+• <strong>Mitochondries</strong> : productrices d'énergie (respiration cellulaire)<br>
+• <strong>Ribosomes</strong> : synthèse des protéines</p>
+
+<h3>🧬 L'ADN</h3>
+<p>• ADN = Acide DésoxyriboNucléique<br>
+• Molécule en double hélice, constituée de nucléotides (A, T, G, C)<br>
+• Porteur de l'information génétique<br>
+• Organisé en <strong>chromosomes</strong> dans le noyau<br>
+• Humain : 46 chromosomes (23 paires)<br>
+• <strong>Gène</strong> : séquence d'ADN codant pour une protéine</p>
+
+<h3>🔄 Division cellulaire</h3>
+<p><strong>Mitose</strong> : division qui donne 2 cellules identiques (croissance, réparation)<br>
+<strong>Méiose</strong> : division qui donne 4 cellules à 23 chromosomes (gamètes)<br>
+<strong>Fécondation</strong> : fusion de 2 gamètes → 46 chromosomes restaurés</p>`
+      },
+      {
+        titre: 'Génétique et hérédité',
+        resume: 'Gènes, allèles, transmission des caractères',
+        contenu: `<h3>🧬 Vocabulaire génétique</h3>
+<p><strong>Gène</strong> : portion d'ADN codant un caractère, situé à un locus sur un chromosome<br>
+<strong>Allèle</strong> : version différente d'un même gène<br>
+<strong>Génotype</strong> : constitution génétique (ex : Aa)<br>
+<strong>Phénotype</strong> : caractères observables (ex : yeux marrons)<br>
+<strong>Homozygote</strong> : deux allèles identiques (AA ou aa)<br>
+<strong>Hétérozygote</strong> : deux allèles différents (Aa)</p>
+
+<h3>📊 Dominance et récessivité</h3>
+<p><strong>Allèle dominant</strong> (noté en majuscule A) : s'exprime même si un seul exemplaire<br>
+<strong>Allèle récessif</strong> (noté en minuscule a) : ne s'exprime que si deux exemplaires (aa)<br>
+Ex : A = yeux marrons (dominant) | a = yeux bleus (récessif)<br>
+• AA → yeux marrons | Aa → yeux marrons | aa → yeux bleus</p>
+
+<h3>🎲 Tableaux de croisements</h3>
+<p>Parent 1 : Aa × Parent 2 : Aa<br>
+<table style="border-collapse:collapse;width:100%;font-size:13px;margin:8px 0">
+<tr><td style="border:1px solid var(--border);padding:6px"></td><td style="border:1px solid var(--border);padding:6px"><strong>A</strong></td><td style="border:1px solid var(--border);padding:6px"><strong>a</strong></td></tr>
+<tr><td style="border:1px solid var(--border);padding:6px"><strong>A</strong></td><td style="border:1px solid var(--border);padding:6px;color:var(--accent)">AA</td><td style="border:1px solid var(--border);padding:6px;color:var(--accent)">Aa</td></tr>
+<tr><td style="border:1px solid var(--border);padding:6px"><strong>a</strong></td><td style="border:1px solid var(--border);padding:6px;color:var(--accent)">Aa</td><td style="border:1px solid var(--border);padding:6px;color:var(--accent2)">aa</td></tr>
+</table>
+Probabilités : 1/4 AA, 2/4 Aa, 1/4 aa → 3/4 phénotype dominant, 1/4 phénotype récessif</p>
+
+<h3>🧬 Mutations</h3>
+<p>Modification de la séquence d'ADN<br>
+Causes : UV, rayonnements, produits chimiques, erreur de copie<br>
+Conséquences : silencieuse, protéine modifiée, cancer possible<br>
+Certaines mutations sont héréditaires (dans les gamètes)</p>`
+      },
+      {
+        titre: 'Le corps humain — Nutrition et digestion',
+        resume: 'Digestion, nutriments, santé',
+        contenu: `<h3>🍎 Les nutriments</h3>
+<p><strong>Glucides</strong> : source d'énergie principale (sucres simples et complexes)<br>
+<strong>Lipides</strong> : réserves d'énergie, membranes cellulaires<br>
+<strong>Protides</strong> : construction et réparation des tissus<br>
+<strong>Vitamines et minéraux</strong> : régulateurs (vitamine C, calcium, fer…)<br>
+<strong>Eau</strong> : indispensable, 60% du corps humain</p>
+
+<h3>🔄 La digestion</h3>
+<p>Transformation des aliments en nutriments assimilables<br>
+<strong>Bouche</strong> : mastication + amylase salivaire (glucides)<br>
+<strong>Estomac</strong> : brassage + acide chlorhydrique + pepsine (protéines)<br>
+<strong>Intestin grêle</strong> : digestion finale + absorption des nutriments<br>
+<strong>Gros intestin</strong> : absorption de l'eau, formation des fèces<br>
+<strong>Foie</strong> : production de bile (émulsification des graisses)<br>
+<strong>Pancréas</strong> : enzymes digestives + insuline</p>
+
+<h3>💉 Absorption et circulation</h3>
+<p>Les nutriments passent dans le sang par les villosités intestinales<br>
+Transported vers le foie par la veine porte<br>
+Distribution à tout l'organisme par la circulation sanguine</p>`
+      },
+      {
+        titre: 'Le corps humain — Système nerveux et reproduction',
+        resume: 'Cerveau, réflexes, puberté, reproduction',
+        contenu: `<h3>🧠 Le système nerveux</h3>
+<p><strong>SNC</strong> (Système Nerveux Central) : cerveau + moelle épinière<br>
+<strong>SNP</strong> (Système Nerveux Périphérique) : nerfs, capteurs sensoriels<br>
+<strong>Neurone</strong> : cellule nerveuse, transmet l'influx nerveux<br>
+<strong>Synapse</strong> : jonction entre deux neurones (neurotransmetteurs)</p>
+
+<h3>⚡ L'arc réflexe</h3>
+<p>Stimulus → récepteur sensoriel → nerf sensitif → moelle épinière → nerf moteur → muscle effecteur<br>
+Réflexe = réponse automatique et involontaire (ex : rotule, main sur feu)</p>
+
+<h3>🌸 La puberté</h3>
+<p>Modifications physiques et psychologiques à l'adolescence<br>
+<strong>Filles</strong> : développement des seins, pilosité, règles, élargissement bassin<br>
+<strong>Garçons</strong> : développement des organes génitaux, pilosité, mue de la voix, éjaculations<br>
+Déclenchée par les hormones : œstrogènes (filles), testostérone (garçons)</p>
+
+<h3>🧬 La reproduction humaine</h3>
+<p><strong>Spermatogenèse</strong> : production de spermatozoïdes dans les testicules<br>
+<strong>Ovogenèse</strong> : production d'ovules dans les ovaires (cycle menstruel ~28 jours)<br>
+<strong>Fécondation</strong> : fusion spermatozoïde + ovule → zygote<br>
+<strong>Développement</strong> : zygote → embryon → fœtus → naissance (9 mois)</p>`
+      },
+      {
+        titre: 'Écologie et environnement',
+        resume: 'Écosystèmes, biodiversité, impact humain',
+        contenu: `<h3>🌿 Les écosystèmes</h3>
+<p><strong>Écosystème</strong> : ensemble formé par une communauté d'êtres vivants + son environnement<br>
+<strong>Biocénose</strong> : ensemble des êtres vivants d'un écosystème<br>
+<strong>Biotope</strong> : environnement physique (sol, eau, air, climat)<br>
+<strong>Chaîne alimentaire</strong> : producteurs → consommateurs primaires → secondaires → tertiaires<br>
+<strong>Réseau trophique</strong> : ensemble des chaînes alimentaires d'un écosystème</p>
+
+<h3>🌱 Les cycles biogéochimiques</h3>
+<p><strong>Cycle du carbone</strong> :<br>
+• Photosynthèse : CO₂ + H₂O → matière organique + O₂<br>
+• Respiration : matière organique + O₂ → CO₂ + H₂O<br>
+• Combustion des fossiles → augmentation du CO₂ atmosphérique</p>
+
+<h3>🦋 La biodiversité</h3>
+<p>Diversité des espèces, des gènes et des écosystèmes<br>
+<strong>6ème extinction de masse</strong> en cours (causée par l'humain)<br>
+Causes : déforestation, pollution, changement climatique, espèces invasives<br>
+Conséquences : fragilisation des écosystèmes, perte de services écosystémiques</p>
+
+<h3>🌡️ Le changement climatique</h3>
+<p>• Augmentation des GES (CO₂, CH₄) → effet de serre renforcé<br>
+• Réchauffement moyen de +1,1°C depuis l'ère préindustrielle<br>
+• Conséquences : fonte des glaces, montée des eaux, événements extrêmes<br>
+• Accords de Paris (2015) : limiter à +1,5°C</p>`
+      },
+      {
+        titre: 'Géologie',
+        resume: 'Structure de la Terre, tectonique des plaques, séismes',
+        contenu: `<h3>🌍 Structure interne de la Terre</h3>
+<p><strong>Croûte terrestre</strong> : couche externe (5-70 km)<br>
+• Croûte continentale : granit, épaisse (30-70 km)<br>
+• Croûte océanique : basalte, fine (5-10 km)<br>
+<strong>Manteau</strong> : silicates, partiellement liquide en profondeur (~2900 km)<br>
+<strong>Noyau externe</strong> : fer et nickel liquides (~5100 km)<br>
+<strong>Noyau interne</strong> : fer et nickel solides</p>
+
+<h3>🏔️ La tectonique des plaques</h3>
+<p>La lithosphère est découpée en ~12 grandes plaques tectoniques<br>
+Ces plaques "flottent" sur l'asthénosphère (manteau plastique)<br>
+<strong>Déplacement</strong> : quelques cm/an (convection mantellique)<br>
+<strong>Frontières</strong> :<br>
+• Divergentes : écartement, création de plancher océanique (dorsales)<br>
+• Convergentes : collision (chaînes de montagnes) ou subduction (fosses)<br>
+• Transformantes : coulissement (failles)</p>
+
+<h3>⚡ Séismes et volcans</h3>
+<p><strong>Séisme</strong> : libération brutale d'énergie par rupture de roches<br>
+Foyer (hypocentre) → ondes sismiques → épicentre (surface)<br>
+Mesure : échelle de Richter (magnitude) ou Mercalli (intensité)<br>
+<strong>Volcanisme</strong> : remontée de magma à la surface<br>
+• Effusif : lave fluide, peu dangereux (Hawaï)<br>
+• Explosif : lave visqueuse, très dangereux (Vésuve)</p>`
+      },
+    ]
+  },
+  physchim: {
+    label: '⚗️ Physique-Chimie', color: '#60a5fa',
+    chapitres: [
+      {
+        titre: 'Mécanique — Mouvements et forces',
+        resume: 'Vitesse, forces, Newton, énergie mécanique',
+        contenu: `<h3>🏃 Le mouvement</h3>
+<p><strong>Référentiel</strong> : système de référence par rapport auquel on décrit le mouvement<br>
+<strong>Trajectoire</strong> : chemin suivi par le centre de masse (rectiligne, circulaire, curviligne)<br>
+<strong>Vitesse</strong> : v = d/t (m/s ou km/h)<br>
+Conversion : v (m/s) × 3,6 = v (km/h)<br>
+<strong>Vitesse moyenne</strong> ≠ vitesse instantanée</p>
+
+<h3>⚖️ Les forces</h3>
+<p>Force = action d'un objet sur un autre<br>
+Représentée par un vecteur (point d'application, direction, sens, valeur)<br>
+Unité : Newton (N)<br>
+<strong>Poids</strong> : P = m × g (g = 9,8 N/kg sur Terre, 1,6 sur Lune)<br>
+<strong>Réaction normale</strong> : force exercée par un support<br>
+<strong>Frottements</strong> : s'opposent au mouvement<br>
+<strong>Force de gravitation</strong> : F = G × m₁ × m₂ / d²</p>
+
+<h3>📐 Lois de Newton</h3>
+<p><strong>1ère loi (inertie)</strong> : si les forces se compensent, le mouvement est uniforme (ou repos)<br>
+<strong>2ème loi</strong> : F = m × a (la résultante des forces = masse × accélération)<br>
+<strong>3ème loi (réciprocité)</strong> : action = réaction (même valeur, sens opposés)</p>
+
+<h3>⚡ Énergie mécanique</h3>
+<p><strong>Énergie cinétique</strong> : Ec = ½mv² (J)<br>
+<strong>Énergie potentielle</strong> : Ep = mgh (J)<br>
+<strong>Énergie mécanique</strong> : Em = Ec + Ep<br>
+Sans frottements : Em = constante (conservation)<br>
+Avec frottements : Em diminue (transformée en chaleur)</p>`
+      },
+      {
+        titre: 'Électricité',
+        resume: 'Circuits, tension, intensité, lois, résistance',
+        contenu: `<h3>🔌 Les circuits électriques</h3>
+<p><strong>Circuit série</strong> : composants bout à bout, même courant partout<br>
+<strong>Circuit dérivation</strong> : composants en parallèle, même tension aux bornes<br>
+<strong>Court-circuit</strong> : fil conducteur court-circuitant un dipôle (très dangereux !)</p>
+
+<h3>⚡ Grandeurs électriques</h3>
+<p><strong>Tension U</strong> : différence de potentiel, mesurée en Volts (V) avec un voltmètre (en parallèle)<br>
+<strong>Intensité I</strong> : débit de charges, mesurée en Ampères (A) avec un ampèremètre (en série)<br>
+<strong>Résistance R</strong> : opposition au passage du courant, en Ohms (Ω)</p>
+
+<h3>📏 Loi d'Ohm et lois de Kirchhoff</h3>
+<p><strong>Loi d'Ohm</strong> : U = R × I<br>
+<strong>Loi des tensions (mailles)</strong> :<br>
+• Série : Utotal = U1 + U2 + U3<br>
+• Dérivation : U = U1 = U2 = U3<br>
+<strong>Loi des intensités (nœuds)</strong> :<br>
+• Série : I = I1 = I2 = I3<br>
+• Dérivation : Itotal = I1 + I2 + I3</p>
+
+<h3>💡 Puissance et énergie</h3>
+<p><strong>Puissance</strong> : P = U × I (Watts)<br>
+<strong>Énergie</strong> : E = P × t (Joules ou kWh)<br>
+1 kWh = 3 600 000 J<br>
+Effet Joule : l'électricité produit de la chaleur dans un résistance</p>`
+      },
+      {
+        titre: 'Optique',
+        resume: 'Lumière, réflexion, réfraction, lentilles',
+        contenu: `<h3>💡 La lumière</h3>
+<p>La lumière se propage en ligne droite dans un milieu homogène<br>
+Vitesse dans le vide : c = 3 × 10⁸ m/s<br>
+<strong>Lumière visible</strong> : longueurs d'onde entre 400 nm (violet) et 700 nm (rouge)<br>
+<strong>Dispersion</strong> : prisme décompose la lumière blanche en spectre</p>
+
+<h3>🪞 Réflexion</h3>
+<p>Angle d'incidence = angle de réflexion (par rapport à la normale)<br>
+<strong>Miroir plan</strong> : image droite, symétrique, virtuelle<br>
+<strong>Réflexion totale</strong> : si angle > angle critique → base des fibres optiques</p>
+
+<h3>🌊 Réfraction</h3>
+<p>Changement de direction de la lumière en changeant de milieu<br>
+<strong>Loi de Snell-Descartes</strong> : n₁ × sin(i₁) = n₂ × sin(i₂)<br>
+n = indice de réfraction du milieu<br>
+Si on passe d'un milieu peu dense à dense → rayon se rapproche de la normale</p>
+
+<h3>🔍 Lentilles convergentes</h3>
+<p>Lentille convergente : fait converger les rayons parallèles en un foyer F'<br>
+<strong>Distance focale f'</strong> : distance entre la lentille et le foyer<br>
+<strong>Vergence</strong> : V = 1/f' (dioptries)<br>
+<strong>Construction de l'image</strong> :<br>
+• Rayon parallèle → passe par F'<br>
+• Rayon passant par le centre optique → non dévié<br>
+• Rayon passant par F → ressort parallèle</p>`
+      },
+      {
+        titre: 'Chimie — Atomes et molécules',
+        resume: 'Modèle atomique, liaisons, molécules, ions',
+        contenu: `<h3>⚛️ Le modèle de l'atome</h3>
+<p><strong>Noyau</strong> : protons (charge +) + neutrons (charge neutre)<br>
+<strong>Électrons</strong> : charge −, gravitent autour du noyau<br>
+<strong>Nombre atomique Z</strong> : nombre de protons (définit l'élément)<br>
+<strong>Nombre de masse A</strong> : protons + neutrons<br>
+Notation : ᴬzX (ex : ¹²₆C = carbone avec 6p et 6n)<br>
+Atome neutre : nombre d'électrons = nombre de protons</p>
+
+<h3>🔗 Configuration électronique</h3>
+<p>Électrons répartis sur des couches : K(2), L(8), M(8+…)<br>
+Ex : Carbone (Z=6) : K²L⁴<br>
+<strong>Règle de l'octet</strong> : les atomes tendent à avoir 8 électrons sur leur couche externe<br>
+Gaz nobles : configuration stable (He:2, Ne:8, Ar:8)</p>
+
+<h3>🧪 Ions et liaisons</h3>
+<p><strong>Ion</strong> : atome ayant gagné ou perdu des électrons<br>
+Cation : perd des e⁻ (charge +) | Anion : gagne des e⁻ (charge −)<br>
+<strong>Liaison covalente</strong> : partage d'électrons entre deux atomes<br>
+<strong>Liaison ionique</strong> : attraction entre ions de charges opposées</p>
+
+<h3>⚗️ Les molécules</h3>
+<p>H₂O : eau | CO₂ : dioxyde de carbone | O₂ : dioxygène<br>
+CH₄ : méthane | HCl : acide chlorhydrique | NaCl : sel<br>
+<strong>Représentation de Lewis</strong> : doublets liants et non-liants autour des atomes</p>`
+      },
+      {
+        titre: 'Chimie — Réactions et solutions',
+        resume: 'Équations chimiques, acides, bases, pH',
+        contenu: `<h3>⚖️ Les réactions chimiques</h3>
+<p>Transformation de réactifs en produits<br>
+<strong>Conservation de la masse</strong> : masse des réactifs = masse des produits (Lavoisier)<br>
+<strong>Équation bilan</strong> : doit être équilibrée (même nombre d'atomes de chaque côté)<br>
+Ex : 2H₂ + O₂ → 2H₂O</p>
+
+<h3>🔥 Types de réactions</h3>
+<p><strong>Combustion</strong> : réaction avec O₂, produit CO₂ + H₂O (combustion complète)<br>
+<strong>Oxydation</strong> : réaction avec O₂ (ex : rouille = oxydation du fer)<br>
+<strong>Précipitation</strong> : formation d'un solide dans une solution<br>
+<strong>Neutralisation</strong> : acide + base → sel + eau</p>
+
+<h3>🧪 Les solutions</h3>
+<p><strong>Concentration molaire</strong> : C = n/V (mol/L)<br>
+<strong>Concentration massique</strong> : Cm = m/V (g/L)<br>
+<strong>Dilution</strong> : C₁V₁ = C₂V₂</p>
+
+<h3>🔴🔵 Acides et bases</h3>
+<p><strong>pH</strong> : mesure de l'acidité (0-14)<br>
+• pH < 7 : acide (ion H₃O⁺ dominant)<br>
+• pH = 7 : neutre<br>
+• pH > 7 : basique (ion HO⁻ dominant)<br>
+<strong>Acides courants</strong> : HCl (acide chlorhydrique), H₂SO₄ (sulfurique), CH₃COOH (acétique)<br>
+<strong>Bases courantes</strong> : NaOH (soude), NH₃ (ammoniac)</p>`
+      },
+    ]
+  }
+};
+
+// ============================================================
+//  QUIZ DATA — 10 questions par chapitre (tirées aléatoirement)
+// ============================================================
+const QUIZ_DATA = {
+  maths: [
+    // Chapitre 0 — Nombres et calculs
+    [
+      { q: "Que vaut 2⁻³ ?", choices: ["1/8", "-8", "1/6", "-1/8"], correct: 0 },
+      { q: "Comment s'écrit 0,0052 en notation scientifique ?", choices: ["5,2 × 10⁻³", "52 × 10⁻⁴", "0,52 × 10⁻²", "5,2 × 10³"], correct: 0 },
+      { q: "Que vaut aⁿ × aᵐ ?", choices: ["aⁿ⁺ᵐ", "aⁿˣᵐ", "aⁿ⁻ᵐ", "2aⁿ"], correct: 0 },
+      { q: "Simplifie √12", choices: ["2√3", "3√2", "4√3", "√6"], correct: 0 },
+      { q: "Quel est le résultat de 3/4 × 8/9 ?", choices: ["2/3", "24/36", "1/3", "3/8"], correct: 0 },
+      { q: "Quelle est la valeur de (2³)² ?", choices: ["64", "12", "32", "16"], correct: 0 },
+      { q: "Dans quel ensemble est −5 ?", choices: ["ℤ", "ℕ", "ℕ seulement", "ni ℤ ni ℚ"], correct: 0 },
+      { q: "Que vaut a⁰ (a ≠ 0) ?", choices: ["1", "0", "a", "∞"], correct: 0 },
+      { q: "Quelle est la priorité opératoire correcte ?", choices: ["Parenthèses, puissances, ×÷, +−", "×÷, +−, parenthèses", "+−, ×÷, puissances", "Puissances, +−, ×÷"], correct: 0 },
+      { q: "Que vaut √(4 × 9) ?", choices: ["6", "√13", "2√9", "4√3"], correct: 0 },
+      { q: "Que vaut 5/6 ÷ 5/3 ?", choices: ["1/2", "25/18", "1/3", "5/9"], correct: 0 },
+      { q: "3,4 × 10⁶ correspond à quel nombre entier ?", choices: ["3 400 000", "340 000", "34 000 000", "0,0000034"], correct: 0 },
+    ],
+    // Chapitre 1 — Algèbre
+    [
+      { q: "Développe (a+b)²", choices: ["a²+2ab+b²", "a²+b²", "a²+ab+b²", "2a+2b"], correct: 0 },
+      { q: "Factorise x²−9", choices: ["(x−3)(x+3)", "(x−9)(x+9)", "(x+3)²", "(x−3)²"], correct: 0 },
+      { q: "Résous 3x − 6 = 0", choices: ["x=2", "x=3", "x=−2", "x=6"], correct: 0 },
+      { q: "Développe (a−b)²", choices: ["a²−2ab+b²", "a²+2ab+b²", "a²−b²", "a²+b²"], correct: 0 },
+      { q: "Si −2x < 4, alors…", choices: ["x > −2", "x < −2", "x < 2", "x > 2"], correct: 0 },
+      { q: "Que vaut (a+b)(a−b) ?", choices: ["a²−b²", "a²+b²", "a²−2ab+b²", "2a"], correct: 0 },
+      { q: "Factorise 6x² + 9x", choices: ["3x(2x+3)", "6x(x+9)", "3(2x²+9x)", "x(6x+9)"], correct: 0 },
+      { q: "Si A×B = 0, alors…", choices: ["A=0 ou B=0", "A=0 et B=0", "A+B=0", "A=B"], correct: 0 },
+      { q: "Résous le système : x+y=5 et x−y=1", choices: ["x=3, y=2", "x=2, y=3", "x=4, y=1", "x=1, y=4"], correct: 0 },
+      { q: "Développe 3(x−4)", choices: ["3x−12", "3x+12", "3x−4", "x−12"], correct: 0 },
+      { q: "Simplifie (2x)²", choices: ["4x²", "2x²", "4x", "2x"], correct: 0 },
+      { q: "Résous 2x + 3 = 11", choices: ["x=4", "x=7", "x=3", "x=5"], correct: 0 },
+    ],
+    // Chapitre 2 — Géométrie plane
+    [
+      { q: "Dans un triangle rectangle en A avec AB=3 et AC=4, BC vaut ?", choices: ["5", "7", "√7", "25"], correct: 0 },
+      { q: "cos B = ?", choices: ["côté adjacent / hypoténuse", "côté opposé / hypoténuse", "côté opposé / adjacent", "hypoténuse / adjacent"], correct: 0 },
+      { q: "Quelle est la somme des angles d'un triangle ?", choices: ["180°", "360°", "90°", "270°"], correct: 0 },
+      { q: "Si (DE) ∥ (BC) et AD/AB = 1/2, alors DE/BC vaut ?", choices: ["1/2", "2", "1/4", "√2"], correct: 0 },
+      { q: "L'aire d'un disque de rayon r est ?", choices: ["πr²", "2πr", "πr", "2πr²"], correct: 0 },
+      { q: "tan B = ?", choices: ["opposé / adjacent", "adjacent / hypoténuse", "opposé / hypoténuse", "hypoténuse / opposé"], correct: 0 },
+      { q: "Angles alternes-internes formés par deux parallèles sont…", choices: ["égaux", "supplémentaires", "complémentaires", "adjacents"], correct: 0 },
+      { q: "L'aire d'un trapèze de bases 4 et 6, hauteur 3 est ?", choices: ["15", "12", "18", "9"], correct: 0 },
+      { q: "BC²=AB²+AC² est la formule de quel théorème ?", choices: ["Pythagore", "Thalès", "Trigonométrie", "Euclide"], correct: 0 },
+      { q: "Le périmètre d'un cercle de rayon 5 est ?", choices: ["10π", "25π", "5π", "2π"], correct: 0 },
+      { q: "Les angles co-internes sont…", choices: ["supplémentaires", "égaux", "complémentaires", "nuls"], correct: 0 },
+      { q: "sin B = ?", choices: ["côté opposé / hypoténuse", "côté adjacent / hypoténuse", "opposé / adjacent", "hypoténuse / opposé"], correct: 0 },
+    ],
+    // Chapitre 3 — Géométrie dans l'espace
+    [
+      { q: "Volume d'une sphère de rayon r ?", choices: ["4πr³/3", "πr²", "4πr²", "πr³"], correct: 0 },
+      { q: "Volume d'un cylindre de rayon r et hauteur h ?", choices: ["πr²h", "2πrh", "πrh", "2πr²h"], correct: 0 },
+      { q: "Volume d'un cône de rayon r et hauteur h ?", choices: ["πr²h/3", "πr²h", "πrh/3", "2πr²h/3"], correct: 0 },
+      { q: "Comment représente-t-on les arêtes cachées d'un solide ?", choices: ["Traits pointillés", "Traits pleins", "Traits mixtes", "On ne les représente pas"], correct: 0 },
+      { q: "Volume d'un pavé droit L×l×h ?", choices: ["L×l×h", "2(Ll+Lh+lh)", "L+l+h", "L²×h"], correct: 0 },
+      { q: "La section d'une sphère par un plan est…", choices: ["un disque", "une ellipse", "un carré", "un cercle creux"], correct: 0 },
+      { q: "Un patron est…", choices: ["Le développement à plat d'un solide", "Une vue de dessus", "Une coupe transversale", "Un plan en perspective"], correct: 0 },
+      { q: "La surface d'une sphère de rayon r vaut ?", choices: ["4πr²", "2πr²", "πr²", "4πr"], correct: 0 },
+      { q: "Volume d'un cube d'arête a ?", choices: ["a³", "a²", "6a²", "3a"], correct: 0 },
+      { q: "La section d'un cône par un plan parallèle à la base est…", choices: ["Un disque", "Un triangle", "Une ellipse", "Un rectangle"], correct: 0 },
+    ],
+    // Chapitre 4 — Fonctions
+    [
+      { q: "f(x) = ax est une fonction…", choices: ["linéaire", "affine", "carrée", "inverse"], correct: 0 },
+      { q: "f(x) = ax + b est une fonction…", choices: ["affine", "linéaire", "carrée", "constante"], correct: 0 },
+      { q: "L'image de 3 par f(x) = 2x + 1 est ?", choices: ["7", "5", "6", "8"], correct: 0 },
+      { q: "f(x) = x² est représentée par…", choices: ["une parabole", "une droite", "une hyperbole", "un cercle"], correct: 0 },
+      { q: "L'antécédent de 5 par f(x) = x + 2 est ?", choices: ["3", "7", "5", "2"], correct: 0 },
+      { q: "Une fonction est croissante si…", choices: ["quand x augmente, f(x) augmente", "quand x augmente, f(x) diminue", "f(x) est constante", "f(x) est positive"], correct: 0 },
+      { q: "f(x) = 1/x est une fonction…", choices: ["inverse", "linéaire", "affine", "carrée"], correct: 0 },
+      { q: "La racine d'une fonction est la valeur de x où…", choices: ["f(x) = 0", "f(x) = 1", "f(x) est max", "f(x) est min"], correct: 0 },
+      { q: "Le coefficient directeur dans f(x)=3x−2 est ?", choices: ["3", "−2", "2", "−3"], correct: 0 },
+      { q: "L'ordonnée à l'origine de f(x)=5x+4 est ?", choices: ["4", "5", "0", "−4"], correct: 0 },
+    ],
+    // Chapitre 5 — Stats et probas
+    [
+      { q: "La moyenne de 4, 6, 8 est ?", choices: ["6", "7", "5", "8"], correct: 0 },
+      { q: "P(événement impossible) = ?", choices: ["0", "1", "0,5", "−1"], correct: 0 },
+      { q: "P(Ā) = ?", choices: ["1 − P(A)", "P(A) − 1", "P(A)", "1 + P(A)"], correct: 0 },
+      { q: "La médiane partage la série en…", choices: ["deux moitiés égales", "trois tiers égaux", "quatre quarts égaux", "cinq parties égales"], correct: 0 },
+      { q: "L'étendue est…", choices: ["valeur max − valeur min", "somme / effectif", "valeur du milieu", "valeur la plus fréquente"], correct: 0 },
+      { q: "Dans un arbre de probabilités, les branches d'un même nœud…", choices: ["s'additionnent à 1", "se multiplient", "sont égales", "sont inversées"], correct: 0 },
+      { q: "On lance un dé. P(6) = ?", choices: ["1/6", "1/3", "1/2", "1"], correct: 0 },
+      { q: "Q1 correspond à…", choices: ["25% des données en dessous", "50% des données", "75% des données", "la valeur min"], correct: 0 },
+      { q: "Le mode d'une série est…", choices: ["la valeur la plus fréquente", "la valeur centrale", "la moyenne", "la valeur max"], correct: 0 },
+      { q: "La probabilité d'un événement est toujours entre…", choices: ["0 et 1", "−1 et 1", "0 et 100", "0 et ∞"], correct: 0 },
+    ],
+  ],
+  francais: [
+    // Ch 0 — Grammaire phrase
+    [
+      { q: "Quelle phrase est interrogative ?", choices: ["Fait-il beau ?", "Il fait beau.", "Quel beau temps !", "Regarde !"], correct: 0 },
+      { q: "Le COD répond à la question…", choices: ["Qui ? Quoi ?", "À qui ? De qui ?", "Où ? Quand ?", "Comment ?"], correct: 0 },
+      { q: "Une proposition subordonnée relative est introduite par…", choices: ["qui, que, dont, où", "que, quand, parce que", "mais, ou, et", "si, alors, donc"], correct: 0 },
+      { q: "Dans 'Le chat mange la souris', quel est le sujet ?", choices: ["Le chat", "mange", "la souris", "Le"], correct: 0 },
+      { q: "Une phrase impérative sert à…", choices: ["donner un ordre", "poser une question", "exprimer un sentiment", "affirmer un fait"], correct: 0 },
+      { q: "L'attribut du sujet se trouve après…", choices: ["être, sembler, paraître", "avoir, faire, dire", "aller, venir, partir", "voir, entendre, sentir"], correct: 0 },
+      { q: "Le complément circonstanciel de lieu répond à…", choices: ["Où ?", "Quand ?", "Comment ?", "Pourquoi ?"], correct: 0 },
+      { q: "Dans 'La souris est mangée par le chat', la voix est…", choices: ["passive", "active", "pronominale", "impersonnelle"], correct: 0 },
+      { q: "Une épithète est un adjectif…", choices: ["directement lié au nom", "séparé du nom par un verbe", "attribut du sujet", "invariable"], correct: 0 },
+      { q: "Une proposition indépendante a…", choices: ["un seul verbe conjugué", "deux verbes conjugués", "pas de verbe", "un verbe à l'infinitif"], correct: 0 },
+    ],
+    // Ch 1 — Conjugaison
+    [
+      { q: "Quel temps utilise-t-on pour la description dans un récit passé ?", choices: ["Imparfait", "Passé simple", "Passé composé", "Plus-que-parfait"], correct: 0 },
+      { q: "Le passé composé se forme avec…", choices: ["auxiliaire + participe passé", "radical + terminaison", "infinitif + terminaison", "auxiliaire + infinitif"], correct: 0 },
+      { q: "Le futur simple se forme avec…", choices: ["infinitif + rai, ras, ra…", "radical + ais, ais, ait…", "auxiliaire + participe", "infinitif + e, es, e…"], correct: 0 },
+      { q: "Le subjonctif présent est utilisé après…", choices: ["il faut que", "parce que", "quand", "depuis que"], correct: 0 },
+      { q: "Avec l'auxiliaire 'être', le participe passé s'accorde avec…", choices: ["le sujet", "le COD", "l'auxiliaire", "rien"], correct: 0 },
+      { q: "Le conditionnel exprime…", choices: ["une hypothèse", "un ordre", "une question", "une vérité générale"], correct: 0 },
+      { q: "Quel est le temps du récit littéraire (3ème personne) ?", choices: ["Passé simple", "Imparfait", "Présent", "Passé composé"], correct: 0 },
+      { q: "Le plus-que-parfait exprime une action…", choices: ["antérieure à une autre action passée", "simultanée à une action passée", "postérieure à une action passée", "habituelle dans le passé"], correct: 0 },
+      { q: "'La lettre que j'ai écrite' — le participe s'accorde parce que…", choices: ["le COD est avant le verbe", "le sujet est féminin", "l'auxiliaire est être", "le participe est invariable"], correct: 0 },
+      { q: "Terminaison de l'imparfait à la 1ère personne du pluriel ?", choices: ["-ions", "-ons", "-ais", "-iez"], correct: 0 },
+    ],
+    // Ch 2 — Orthographe
+    [
+      { q: "Comment distinguer 'a' de 'à' ?", choices: ["Remplacer par 'avait'", "Remplacer par 'est'", "Remplacer par 'et'", "Remplacer par 'ont'"], correct: 0 },
+      { q: "'Ils ___ faim.' Quel mot manque ?", choices: ["ont", "on", "son", "sont"], correct: 0 },
+      { q: "Quand écrit-on 'leurs' avec un s ?", choices: ["Adjectif possessif devant un nom pluriel", "Pronom COI", "Toujours", "Jamais"], correct: 0 },
+      { q: "'___ livres sont là.' Quel est le bon mot ?", choices: ["Ces", "Ses", "C'est", "S'est"], correct: 0 },
+      { q: "Comment distinguer 'ou' de 'où' ?", choices: ["'Ou' = ou bien / 'Où' = lieu", "'Ou' = lieu / 'Où' = ou bien", "Ils sont identiques", "'Où' = possession"], correct: 0 },
+      { q: "'Elle ___ partie.' Quel auxiliaire ?", choices: ["est", "a", "ont", "sont"], correct: 0 },
+      { q: "Quand accorde-t-on l'adjectif qualificatif ?", choices: ["Toujours avec le nom qu'il qualifie", "Jamais", "Seulement au pluriel", "Seulement au féminin"], correct: 0 },
+      { q: "'Il ___ beau.' Quel mot manque ?", choices: ["fait", "fais", "faits", "faites"], correct: 0 },
+      { q: "'Quant ___' signifie…", choices: ["en ce qui concerne", "au moment où", "comme si", "pendant que"], correct: 0 },
+      { q: "Comment distinguer 'son' de 'sont' ?", choices: ["'Sont' se remplace par 'étaient'", "'Son' se remplace par 'étaient'", "Ils sont identiques", "'Son' est un verbe"], correct: 0 },
+    ],
+    // Ch 3 — Figures de style
+    [
+      { q: "Quelle figure compare sans outil de comparaison ?", choices: ["Métaphore", "Comparaison", "Allégorie", "Périphrase"], correct: 0 },
+      { q: "'Pour qui sont ces serpents qui sifflent sur vos têtes' est une…", choices: ["Allitération", "Assonance", "Anaphore", "Gradation"], correct: 0 },
+      { q: "'Cette obscure clarté' est un exemple de…", choices: ["Oxymore", "Antithèse", "Paradoxe", "Hyperbole"], correct: 0 },
+      { q: "'Je meurs de faim' est une…", choices: ["Hyperbole", "Litote", "Euphémisme", "Métaphore"], correct: 0 },
+      { q: "La litote consiste à…", choices: ["Dire moins pour suggérer plus", "Exagérer", "Atténuer une réalité dure", "Répéter un mot"], correct: 0 },
+      { q: "La répétition d'un mot en début de phrase est une…", choices: ["Anaphore", "Épiphore", "Gradation", "Allitération"], correct: 0 },
+      { q: "'Le roi des animaux' à la place de 'lion' est une…", choices: ["Périphrase", "Métaphore", "Allégorie", "Personnification"], correct: 0 },
+      { q: "Une comparaison utilise obligatoirement…", choices: ["Un outil de comparaison (comme, tel…)", "Une métaphore", "Un adjectif", "Une négation"], correct: 0 },
+      { q: "'Il est fort comme un bœuf' est une…", choices: ["Comparaison", "Métaphore", "Hyperbole", "Allégorie"], correct: 0 },
+      { q: "Une gradation présente des termes…", choices: ["De plus en plus forts (ou faibles)", "Contradictoires", "Répétés", "Inversés"], correct: 0 },
+    ],
+    // Ch 4 — Genres littéraires
+    [
+      { q: "Un narrateur à la 1ère personne est un narrateur…", choices: ["interne", "externe", "omniscient", "zéro"], correct: 0 },
+      { q: "Les didascalies au théâtre sont…", choices: ["Les indications de mise en scène", "Les répliques des personnages", "Les actes", "Le résumé de la pièce"], correct: 0 },
+      { q: "Un alexandrin a combien de syllabes ?", choices: ["12", "10", "8", "14"], correct: 0 },
+      { q: "Un monologue au théâtre, c'est…", choices: ["Un personnage seul qui parle", "Un dialogue à deux", "Une scène muette", "Une réplique courte"], correct: 0 },
+      { q: "Des rimes ABAB sont des rimes…", choices: ["croisées", "embrassées", "suivies", "plates"], correct: 0 },
+      { q: "La thèse dans un texte argumentatif est…", choices: ["La position défendue", "Un exemple", "Une concession", "Un argument adverse"], correct: 0 },
+      { q: "La focalisation omnisciente signifie que le narrateur…", choices: ["sait tout", "ne sait que ce qu'il voit", "est dans la tête d'un personnage", "ne sait rien"], correct: 0 },
+      { q: "Un quatrain est une strophe de…", choices: ["4 vers", "3 vers", "5 vers", "6 vers"], correct: 0 },
+      { q: "La concession dans un texte argumentatif sert à…", choices: ["Reconnaître un argument adverse pour mieux le réfuter", "Introduire la thèse", "Donner un exemple", "Conclure"], correct: 0 },
+      { q: "Quel connecteur exprime la conséquence ?", choices: ["Donc", "Car", "Mais", "Bien que"], correct: 0 },
+    ],
+  ],
+  histoire: [
+    // Ch 0 — 1ère GM
+    [
+      { q: "Quelle est la cause déclenchante de la 1ère GM ?", choices: ["Assassinat de François-Ferdinand", "Invasion de la Pologne", "Révolution russe", "Attentat à Paris"], correct: 0 },
+      { q: "Quand a eu lieu l'armistice de la 1ère GM ?", choices: ["11 novembre 1918", "11 novembre 1914", "8 mai 1945", "28 juin 1919"], correct: 0 },
+      { q: "La Triple-Entente rassemble…", choices: ["France, RU, Russie", "France, Allemagne, Autriche", "France, Italie, Russie", "RU, USA, France"], correct: 0 },
+      { q: "La bataille de Verdun a lieu en…", choices: ["1916", "1914", "1917", "1918"], correct: 0 },
+      { q: "Quel traité termine officiellement la 1ère GM ?", choices: ["Traité de Versailles", "Traité de Paris", "Armistice de 1918", "Traité de Berlin"], correct: 0 },
+      { q: "Le génocide arménien a lieu en…", choices: ["1915", "1916", "1918", "1912"], correct: 0 },
+      { q: "Quelle nouvelle arme fait son apparition pendant la 1ère GM ?", choices: ["Gaz de combat", "Bombe atomique", "Missile balistique", "Drone"], correct: 0 },
+      { q: "Quelle organisation internationale est créée après la 1ère GM ?", choices: ["SDN", "ONU", "OTAN", "UE"], correct: 0 },
+      { q: "En 1917, quel événement fait sortir la Russie de la guerre ?", choices: ["La révolution bolchevique", "La défaite militaire", "L'armistice", "L'entrée des USA"], correct: 0 },
+      { q: "Combien de morts environ fait la 1ère GM ?", choices: ["18 millions", "6 millions", "50 millions", "1 million"], correct: 0 },
+    ],
+    // Ch 1 — 2ème GM
+    [
+      { q: "Hitler arrive au pouvoir en…", choices: ["1933", "1939", "1930", "1945"], correct: 0 },
+      { q: "Le débarquement en Normandie a lieu le…", choices: ["6 juin 1944", "8 mai 1945", "1er sept. 1939", "11 nov. 1918"], correct: 0 },
+      { q: "La conférence de Wannsee (1942) décide…", choices: ["La Solution finale", "L'invasion de l'URSS", "La capitulation allemande", "Le débarquement allié"], correct: 0 },
+      { q: "L'appel du 18 juin 1940 est lancé par…", choices: ["De Gaulle", "Pétain", "Churchill", "Roosevelt"], correct: 0 },
+      { q: "Combien de Juifs ont été victimes de la Shoah ?", choices: ["6 millions", "1 million", "18 millions", "3 millions"], correct: 0 },
+      { q: "Le régime de Vichy est dirigé par…", choices: ["Pétain", "De Gaulle", "Laval seul", "Hitler"], correct: 0 },
+      { q: "L'opération Barbarossa (1941) est l'invasion de…", choices: ["L'URSS", "La France", "La Pologne", "La Grande-Bretagne"], correct: 0 },
+      { q: "Jean Moulin est célèbre pour avoir…", choices: ["Unifié la Résistance en 1943", "Lancé l'appel du 18 juin", "Signé l'armistice", "Libéré Paris"], correct: 0 },
+      { q: "La capitulation de l'Allemagne est le…", choices: ["8 mai 1945", "6 juin 1944", "2 sept. 1945", "25 déc. 1941"], correct: 0 },
+      { q: "Qu'est-ce que le pacte germano-soviétique (1939) ?", choices: ["Un accord de non-agression", "Une alliance militaire", "Un traité de paix", "Un accord économique"], correct: 0 },
+    ],
+    // Ch 2 — Guerre froide
+    [
+      { q: "La Guerre Froide est un affrontement entre…", choices: ["USA et URSS", "France et Allemagne", "OTAN et Chine", "USA et Chine"], correct: 0 },
+      { q: "Le mur de Berlin est construit en…", choices: ["1961", "1949", "1989", "1962"], correct: 0 },
+      { q: "L'OTAN est une alliance…", choices: ["militaire occidentale", "économique soviétique", "commerciale mondiale", "politique européenne"], correct: 0 },
+      { q: "La crise des missiles de Cuba a lieu en…", choices: ["1962", "1950", "1975", "1989"], correct: 0 },
+      { q: "Quand le mur de Berlin tombe-t-il ?", choices: ["1989", "1991", "1985", "1979"], correct: 0 },
+      { q: "Le Plan Marshall est…", choices: ["Une aide économique américaine à l'Europe", "Une alliance militaire soviétique", "Un traité de paix", "Une doctrine militaire"], correct: 0 },
+      { q: "La dissolution de l'URSS date de…", choices: ["1991", "1989", "1985", "1979"], correct: 0 },
+      { q: "La conférence de Bandung (1955) rassemble…", choices: ["Les pays non-alignés", "Les pays de l'OTAN", "Les pays du Pacte de Varsovie", "Les pays de l'ONU"], correct: 0 },
+      { q: "La guerre de Corée (1950-53) est…", choices: ["La première guerre de la Guerre Froide", "Une guerre civile", "La dernière guerre coloniale", "Un conflit nucléaire"], correct: 0 },
+      { q: "Gorbatchev lance en URSS…", choices: ["La glasnost et la perestroïka", "Le Plan Marshall", "La doctrine Truman", "La déstalinisation"], correct: 0 },
+    ],
+    // Ch 3 — France depuis 1958
+    [
+      { q: "La Ve République est fondée en…", choices: ["1958", "1945", "1962", "1968"], correct: 0 },
+      { q: "Les accords d'Évian (1962) mettent fin à…", choices: ["La guerre d'Algérie", "La 2ème GM", "La Guerre Froide", "La décolonisation africaine"], correct: 0 },
+      { q: "Mai 1968 est d'abord une révolte…", choices: ["étudiante", "ouvrière", "paysanne", "militaire"], correct: 0 },
+      { q: "Le Traité de Maastricht (1992) crée…", choices: ["L'Union Européenne", "La CECA", "La CEE", "L'euro"], correct: 0 },
+      { q: "Le président de la Ve République est élu au suffrage universel direct depuis…", choices: ["1962", "1958", "1945", "1981"], correct: 0 },
+      { q: "L'euro remplace les monnaies nationales en…", choices: ["2002", "1999", "1992", "2008"], correct: 0 },
+      { q: "Les accords de Grenelle (1968) accordent principalement…", choices: ["Des augmentations de salaires", "Le droit de vote à 18 ans", "La liberté de la presse", "La dépénalisation"], correct: 0 },
+      { q: "Combien de pays composent l'UE aujourd'hui ?", choices: ["27", "28", "25", "30"], correct: 0 },
+      { q: "La CECA est créée en…", choices: ["1951", "1957", "1992", "1949"], correct: 0 },
+      { q: "Quel est le rôle du Conseil constitutionnel ?", choices: ["Contrôler la constitutionnalité des lois", "Diriger le gouvernement", "Élire le président", "Voter les lois"], correct: 0 },
+    ],
+    // Ch 4 — Géo monde
+    [
+      { q: "Quelle est la 1ère puissance économique mondiale ?", choices: ["USA", "Chine", "UE", "Japon"], correct: 0 },
+      { q: "L'IDH mesure…", choices: ["Espérance de vie + éducation + revenu", "Uniquement le revenu", "La croissance économique", "La superficie du pays"], correct: 0 },
+      { q: "Les BRICS comprennent…", choices: ["Brésil, Russie, Inde, Chine, Afrique du Sud", "Belgique, Russie, Italie, Corée, Suède", "Bolivie, Roumanie, Irak, Chili, Arabie", "Birmanie, Rwanda, Iran, Colombie, Sénégal"], correct: 0 },
+      { q: "Une FMN est…", choices: ["Une firme multinationale", "Un fond monétaire national", "Une force militaire de l'ONU", "Un mouvement politique"], correct: 0 },
+      { q: "Plus de 50% de la population mondiale vit aujourd'hui…", choices: ["En ville", "À la campagne", "Dans des zones côtières", "Dans des mégapoles"], correct: 0 },
+      { q: "L'OMC est une organisation qui gère…", choices: ["Le commerce mondial", "La santé mondiale", "L'éducation mondiale", "La paix mondiale"], correct: 0 },
+      { q: "Quel pays est la 2ème puissance économique mondiale ?", choices: ["Chine", "Japon", "Inde", "Allemagne"], correct: 0 },
+      { q: "Les PMA sont…", choices: ["Les Pays les Moins Avancés", "Les Premiers Marchés Africains", "Les Pays Moyennement Avancés", "Les Pays Membres de l'Asie"], correct: 0 },
+      { q: "La métropolisation désigne…", choices: ["La concentration des fonctions dans les grandes villes", "La construction de nouvelles villes", "L'exode rural", "La croissance démographique urbaine"], correct: 0 },
+      { q: "Le soft power américain désigne…", choices: ["L'influence culturelle des USA", "La puissance militaire des USA", "L'aide économique des USA", "La diplomatie américaine"], correct: 0 },
+    ],
+    // Ch 5 — Géo France
+    [
+      { q: "La superficie de la France métropolitaine est d'environ…", choices: ["551 000 km²", "250 000 km²", "1 000 000 km²", "300 000 km²"], correct: 0 },
+      { q: "La ZEE française est la ___ du monde.", choices: ["2ème", "1ère", "3ème", "5ème"], correct: 0 },
+      { q: "La 'diagonale du vide' désigne…", choices: ["Une zone peu peuplée allant du NE au SO", "Une autoroute", "Une frontière naturelle", "Une zone industrielle"], correct: 0 },
+      { q: "Quelle est la 1ère métropole française ?", choices: ["Paris", "Lyon", "Marseille", "Toulouse"], correct: 0 },
+      { q: "La France compte environ combien d'habitants (2024) ?", choices: ["68 millions", "45 millions", "80 millions", "55 millions"], correct: 0 },
+      { q: "L'énergie nucléaire représente environ ___ de l'électricité française.", choices: ["75%", "30%", "50%", "10%"], correct: 0 },
+      { q: "Combien de pays voisins a la France métropolitaine ?", choices: ["6", "4", "8", "5"], correct: 0 },
+      { q: "Les DROM comprennent notamment…", choices: ["Guadeloupe, Martinique, Guyane, Réunion", "Polynésie, Nouvelle-Calédonie, Wallis", "Corse, Bretagne, Alsace", "Monaco, Andorre, Luxembourg"], correct: 0 },
+      { q: "La DATAR/CGET est chargée de…", choices: ["L'aménagement du territoire", "La défense nationale", "La politique étrangère", "Le budget de l'État"], correct: 0 },
+      { q: "La France est le ___ pays par superficie en Europe.", choices: ["6ème", "1er", "2ème", "3ème"], correct: 0 },
+    ],
+  ],
+  svt: [
+    // Ch 0 — Cellule
+    [
+      { q: "Toute cellule eucaryote possède…", choices: ["Un noyau", "Une paroi", "Des chloroplastes", "Des flagelles"], correct: 0 },
+      { q: "L'ADN est une molécule en…", choices: ["Double hélice", "Simple brin", "Triple hélice", "Forme sphérique"], correct: 0 },
+      { q: "L'humain possède combien de chromosomes ?", choices: ["46", "23", "48", "22"], correct: 0 },
+      { q: "La mitose produit…", choices: ["2 cellules identiques", "4 cellules différentes", "1 cellule fille", "2 cellules à 23 chromosomes"], correct: 0 },
+      { q: "Les mitochondries produisent…", choices: ["De l'énergie", "Des protéines", "De l'ADN", "Des lipides"], correct: 0 },
+      { q: "Un gène est…", choices: ["Une séquence d'ADN codant pour une protéine", "Un chromosome entier", "Un nucléotide", "Une cellule"], correct: 0 },
+      { q: "La méiose produit des cellules avec…", choices: ["23 chromosomes", "46 chromosomes", "24 chromosomes", "48 chromosomes"], correct: 0 },
+      { q: "Les ribosomes servent à…", choices: ["Synthétiser les protéines", "Produire de l'énergie", "Stocker l'ADN", "Digérer les molécules"], correct: 0 },
+      { q: "Quelle est la différence entre cellule procaryote et eucaryote ?", choices: ["Le noyau", "La taille", "La membrane", "Les chromosomes"], correct: 0 },
+      { q: "L'ADN est composé de 4 bases notées…", choices: ["A, T, G, C", "A, U, G, C", "A, B, G, D", "A, T, G, U"], correct: 0 },
+    ],
+    // Ch 1 — Génétique
+    [
+      { q: "Un allèle dominant s'exprime…", choices: ["Même si un seul exemplaire", "Seulement si deux exemplaires", "Jamais", "Uniquement chez les femmes"], correct: 0 },
+      { q: "AA signifie que l'individu est…", choices: ["Homozygote dominant", "Hétérozygote", "Homozygote récessif", "Mutant"], correct: 0 },
+      { q: "Le phénotype correspond à…", choices: ["Les caractères observables", "La constitution génétique", "Les allèles", "Les chromosomes"], correct: 0 },
+      { q: "Aa × Aa donne quelle proportion de aa ?", choices: ["1/4", "1/2", "3/4", "0"], correct: 0 },
+      { q: "Un allèle récessif s'exprime uniquement si…", choices: ["L'individu est aa", "L'individu est Aa", "L'individu est AA", "L'individu est hétérozygote"], correct: 0 },
+      { q: "La mutation est…", choices: ["Une modification de la séquence d'ADN", "Un changement de chromosome", "Un crossing-over", "Une duplication cellulaire"], correct: 0 },
+      { q: "Le génotype est…", choices: ["La constitution génétique de l'individu", "Les caractères visibles", "L'ensemble des chromosomes", "Le résultat d'un croisement"], correct: 0 },
+      { q: "AA × aa donne comme descendance…", choices: ["100% Aa", "50% AA, 50% aa", "25% AA, 50% Aa, 25% aa", "100% aa"], correct: 0 },
+      { q: "La fécondation restaure…", choices: ["46 chromosomes", "23 chromosomes", "48 chromosomes", "Le phénotype des parents"], correct: 0 },
+      { q: "Un locus est…", choices: ["La position d'un gène sur un chromosome", "Une mutation", "Un allèle récessif", "Un type de cellule"], correct: 0 },
+    ],
+    // Ch 2 — Digestion
+    [
+      { q: "Où se fait l'absorption des nutriments ?", choices: ["Intestin grêle", "Estomac", "Gros intestin", "Bouche"], correct: 0 },
+      { q: "L'amylase salivaire digère…", choices: ["Les glucides", "Les protéines", "Les lipides", "L'eau"], correct: 0 },
+      { q: "Le rôle du foie dans la digestion est de…", choices: ["Produire la bile", "Digérer les protéines", "Absorber l'eau", "Synthétiser les enzymes"], correct: 0 },
+      { q: "Les protides servent principalement à…", choices: ["Construire et réparer les tissus", "Fournir de l'énergie immédiate", "Constituer des réserves", "Réguler le métabolisme"], correct: 0 },
+      { q: "L'estomac dégrade principalement…", choices: ["Les protéines", "Les glucides", "Les lipides", "Les vitamines"], correct: 0 },
+      { q: "Le gros intestin sert à…", choices: ["Absorber l'eau", "Digérer les protéines", "Absorber les nutriments", "Produire la bile"], correct: 0 },
+      { q: "L'insuline est produite par…", choices: ["Le pancréas", "Le foie", "L'estomac", "L'intestin grêle"], correct: 0 },
+      { q: "Les lipides sont des réserves de…", choices: ["Énergie", "Protéines", "Minéraux", "Vitamines"], correct: 0 },
+      { q: "L'eau représente environ ___ du corps humain.", choices: ["60%", "30%", "80%", "45%"], correct: 0 },
+      { q: "La bile émulsionne…", choices: ["Les graisses", "Les protéines", "Les glucides", "Les vitamines"], correct: 0 },
+    ],
+    // Ch 3 — Système nerveux
+    [
+      { q: "Le SNC comprend…", choices: ["Cerveau + moelle épinière", "Nerfs + cerveau", "Nerfs seulement", "Moelle épinière seulement"], correct: 0 },
+      { q: "Un réflexe est une réponse…", choices: ["automatique et involontaire", "volontaire et consciente", "lente et réfléchie", "émotionnelle"], correct: 0 },
+      { q: "La synapse est…", choices: ["La jonction entre deux neurones", "Un type de neurone", "Le noyau du neurone", "Une partie du cerveau"], correct: 0 },
+      { q: "Quelle hormone déclenche la puberté chez les garçons ?", choices: ["Testostérone", "Œstrogène", "Progestérone", "Adrénaline"], correct: 0 },
+      { q: "La fécondation a lieu dans…", choices: ["La trompe utérine", "L'utérus", "L'ovaire", "Le vagin"], correct: 0 },
+      { q: "Le cycle menstruel dure environ…", choices: ["28 jours", "14 jours", "7 jours", "35 jours"], correct: 0 },
+      { q: "Un neurone transmet…", choices: ["L'influx nerveux", "Le sang", "Les hormones", "L'énergie"], correct: 0 },
+      { q: "L'arc réflexe commence par…", choices: ["Un stimulus sur un récepteur", "La moelle épinière", "Le muscle effecteur", "Le nerf moteur"], correct: 0 },
+      { q: "La méiose produit les…", choices: ["Gamètes", "Cellules somatiques", "Neurones", "Hématies"], correct: 0 },
+      { q: "La puberté chez la fille est caractérisée notamment par…", choices: ["Les premières règles", "La mue de la voix", "La spermatogenèse", "La descente des testicules"], correct: 0 },
+    ],
+    // Ch 4 — Écologie
+    [
+      { q: "Un écosystème comprend…", choices: ["Biocénose + biotope", "Uniquement les animaux", "Uniquement les plantes", "Le sol seulement"], correct: 0 },
+      { q: "La photosynthèse produit…", choices: ["Matière organique + O₂", "CO₂ + H₂O", "Uniquement O₂", "Uniquement du glucose"], correct: 0 },
+      { q: "La 6ème extinction de masse est causée par…", choices: ["L'être humain", "Les volcans", "Les météorites", "Les variations climatiques naturelles"], correct: 0 },
+      { q: "Le premier maillon d'une chaîne alimentaire est toujours…", choices: ["Un producteur (végétal)", "Un consommateur primaire", "Un décomposeur", "Un prédateur"], correct: 0 },
+      { q: "Le CO₂ atmosphérique augmente à cause de…", choices: ["La combustion des énergies fossiles", "La photosynthèse", "La respiration des plantes", "L'évaporation des océans"], correct: 0 },
+      { q: "Les accords de Paris (2015) visent à limiter le réchauffement à…", choices: ["+1,5°C", "+2°C", "+3°C", "+0,5°C"], correct: 0 },
+      { q: "La biodiversité comprend la diversité…", choices: ["Des espèces, des gènes et des écosystèmes", "Uniquement des espèces animales", "Des plantes seulement", "Des microbes seulement"], correct: 0 },
+      { q: "Le réchauffement climatique depuis l'ère préindustrielle est d'environ…", choices: ["+1,1°C", "+0,5°C", "+3°C", "+2°C"], correct: 0 },
+      { q: "La respiration cellulaire consomme…", choices: ["Glucose + O₂", "CO₂ + H₂O", "Uniquement du glucose", "Uniquement O₂"], correct: 0 },
+      { q: "Un réseau trophique est…", choices: ["L'ensemble des chaînes alimentaires d'un écosystème", "Une chaîne alimentaire simple", "Un cycle du carbone", "Un écosystème aquatique"], correct: 0 },
+    ],
+    // Ch 5 — Géologie
+    [
+      { q: "La croûte continentale est composée principalement de…", choices: ["Granit", "Basalte", "Calcaire", "Argile"], correct: 0 },
+      { q: "Les plaques tectoniques se déplacent de…", choices: ["Quelques cm/an", "Quelques km/an", "Quelques mm/siècle", "Quelques m/an"], correct: 0 },
+      { q: "Une dorsale océanique est une frontière…", choices: ["divergente", "convergente", "transformante", "subductive"], correct: 0 },
+      { q: "Le foyer d'un séisme est aussi appelé…", choices: ["Hypocentre", "Épicentre", "Magnitude", "Faille"], correct: 0 },
+      { q: "Un volcanisme effusif produit une lave…", choices: ["Fluide, peu dangereuse", "Visqueuse, très dangereuse", "Gazeuse", "Solide"], correct: 0 },
+      { q: "La croûte océanique est composée principalement de…", choices: ["Basalte", "Granit", "Calcaire", "Marbre"], correct: 0 },
+      { q: "La subduction est…", choices: ["Le plongement d'une plaque sous une autre", "L'écartement de deux plaques", "Le coulissement de deux plaques", "La collision de deux plaques continentales"], correct: 0 },
+      { q: "Le noyau externe de la Terre est composé de…", choices: ["Fer et nickel liquides", "Fer et nickel solides", "Silicates", "Basalte"], correct: 0 },
+      { q: "L'échelle de Richter mesure…", choices: ["La magnitude d'un séisme", "L'intensité ressentie", "La profondeur du foyer", "La distance à l'épicentre"], correct: 0 },
+      { q: "La convection mantellique est la cause du…", choices: ["Déplacement des plaques tectoniques", "Volcanisme effusif", "Séisme", "Changement climatique"], correct: 0 },
+    ],
+  ],
+  physchim: [
+    // Ch 0 — Mécanique
+    [
+      { q: "La formule de la vitesse est…", choices: ["v = d/t", "v = d×t", "v = t/d", "v = m×a"], correct: 0 },
+      { q: "Le poids d'un objet de masse 10 kg sur Terre (g=9,8) est…", choices: ["98 N", "10 N", "9,8 N", "980 N"], correct: 0 },
+      { q: "F = m × a est la ___ loi de Newton.", choices: ["2ème", "1ère", "3ème", "4ème"], correct: 0 },
+      { q: "L'énergie cinétique est…", choices: ["½mv²", "mgh", "mv", "m/v"], correct: 0 },
+      { q: "L'unité de force est…", choices: ["Newton (N)", "Joule (J)", "Watt (W)", "Pascal (Pa)"], correct: 0 },
+      { q: "Sans frottements, l'énergie mécanique est…", choices: ["conservée", "nulle", "croissante", "décroissante"], correct: 0 },
+      { q: "La 1ère loi de Newton dit que si les forces se compensent…", choices: ["Le mouvement est uniforme (ou repos)", "L'objet accélère", "L'objet freine", "L'objet tourne"], correct: 0 },
+      { q: "L'énergie potentielle est…", choices: ["mgh", "½mv²", "Ec + Ep", "F×d"], correct: 0 },
+      { q: "La 3ème loi de Newton dit que…", choices: ["Action = réaction", "F = ma", "v = constante si ΣF = 0", "E = mc²"], correct: 0 },
+      { q: "Convertir 90 km/h en m/s…", choices: ["25 m/s", "90 m/s", "324 m/s", "9 m/s"], correct: 0 },
+    ],
+    // Ch 1 — Électricité
+    [
+      { q: "La loi d'Ohm est…", choices: ["U = R × I", "P = U × I", "I = U + R", "U = I / R"], correct: 0 },
+      { q: "Dans un circuit série, l'intensité est…", choices: ["identique partout", "différente partout", "nulle", "maximale aux bornes"], correct: 0 },
+      { q: "Dans un circuit dérivation, la tension est…", choices: ["identique aux bornes de chaque branche", "différente partout", "nulle", "multipliée"], correct: 0 },
+      { q: "L'ampèremètre se branche…", choices: ["en série", "en parallèle", "en court-circuit", "entre deux nœuds"], correct: 0 },
+      { q: "La puissance électrique est…", choices: ["P = U × I", "P = U + I", "P = U / I", "P = R × I"], correct: 0 },
+      { q: "1 kWh = combien de Joules ?", choices: ["3 600 000 J", "1000 J", "3600 J", "1 000 000 J"], correct: 0 },
+      { q: "Le voltmètre se branche…", choices: ["en parallèle", "en série", "en court-circuit", "en dérivation avec la source"], correct: 0 },
+      { q: "L'unité de résistance est…", choices: ["Ohm (Ω)", "Ampère (A)", "Volt (V)", "Watt (W)"], correct: 0 },
+      { q: "Dans un circuit série : U total = ?", choices: ["U1 + U2 + U3", "U1 = U2 = U3", "U1 × U2", "U1 / U2"], correct: 0 },
+      { q: "L'effet Joule transforme l'électricité en…", choices: ["Chaleur", "Lumière", "Mouvement", "Magnétisme"], correct: 0 },
+    ],
+    // Ch 2 — Optique
+    [
+      { q: "La vitesse de la lumière dans le vide est…", choices: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁵ km/s"], correct: 0 },
+      { q: "L'angle de réflexion est…", choices: ["Égal à l'angle d'incidence", "Le double de l'angle d'incidence", "La moitié", "Toujours 90°"], correct: 0 },
+      { q: "La lumière visible va de…", choices: ["400 nm (violet) à 700 nm (rouge)", "200 nm à 400 nm", "700 nm à 1000 nm", "100 nm à 200 nm"], correct: 0 },
+      { q: "La vergence s'exprime en…", choices: ["Dioptries", "Mètres", "Hz", "Newtons"], correct: 0 },
+      { q: "Une lentille convergente fait converger les rayons vers…", choices: ["Le foyer F'", "Le centre optique", "L'infini", "La source"], correct: 0 },
+      { q: "La réfraction est…", choices: ["Le changement de direction de la lumière en changeant de milieu", "Le renvoi de la lumière", "La décomposition de la lumière", "L'absorption de la lumière"], correct: 0 },
+      { q: "La loi de Snell-Descartes est…", choices: ["n₁ sin i₁ = n₂ sin i₂", "n₁ + n₂ = 1", "n₁ / n₂ = sin i₂", "n₁ × i₁ = n₂ × i₂"], correct: 0 },
+      { q: "Un prisme décompose la lumière blanche en…", choices: ["Un spectre coloré", "Lumière noire", "Lumière rouge seulement", "Infrarouges"], correct: 0 },
+      { q: "Un rayon passant par le centre optique d'une lentille…", choices: ["N'est pas dévié", "Est réfléchi", "Est absorbé", "Passe par le foyer"], correct: 0 },
+      { q: "La réflexion totale est la base de…", choices: ["La fibre optique", "La lentille", "Le prisme", "Le miroir concave"], correct: 0 },
+    ],
+    // Ch 3 — Atomes
+    [
+      { q: "Le nombre de protons d'un atome est appelé…", choices: ["Numéro atomique Z", "Nombre de masse A", "Charge ionique", "Valence"], correct: 0 },
+      { q: "Un atome neutre a…", choices: ["Autant d'électrons que de protons", "Plus d'électrons que de protons", "Moins d'électrons que de protons", "Aucun électron"], correct: 0 },
+      { q: "La couche K peut accueillir au maximum…", choices: ["2 électrons", "8 électrons", "18 électrons", "1 électron"], correct: 0 },
+      { q: "Un cation est un ion à charge…", choices: ["Positive", "Négative", "Nulle", "Variable"], correct: 0 },
+      { q: "La liaison covalente est un…", choices: ["Partage d'électrons entre deux atomes", "Échange d'électrons", "Attraction entre ions", "Transfert de protons"], correct: 0 },
+      { q: "La formule de l'eau est…", choices: ["H₂O", "HO₂", "H₂O₂", "OH"], correct: 0 },
+      { q: "Le carbone (Z=6) a sa configuration électronique…", choices: ["K²L⁴", "K²L⁶", "K⁶", "K²L²M²"], correct: 0 },
+      { q: "Un anion est un ion qui a…", choices: ["Gagné des électrons", "Perdu des électrons", "Gagné des protons", "Perdu des neutrons"], correct: 0 },
+      { q: "La règle de l'octet dit que les atomes tendent à avoir…", choices: ["8 électrons sur leur couche externe", "8 protons", "8 neutrons", "8 liaisons"], correct: 0 },
+      { q: "Le nombre de masse A = ?", choices: ["Protons + neutrons", "Protons + électrons", "Protons seulement", "Neutrons seulement"], correct: 0 },
+    ],
+    // Ch 4 — Réactions chimiques
+    [
+      { q: "La loi de conservation de la masse est due à…", choices: ["Lavoisier", "Newton", "Einstein", "Mendeleïev"], correct: 0 },
+      { q: "La combustion complète produit…", choices: ["CO₂ + H₂O", "CO + H₂", "CO₂ seulement", "H₂O seulement"], correct: 0 },
+      { q: "La concentration molaire est…", choices: ["C = n/V", "C = m/V", "C = n×V", "C = V/n"], correct: 0 },
+      { q: "Un pH de 3 indique une solution…", choices: ["acide", "basique", "neutre", "saturée"], correct: 0 },
+      { q: "Pour équilibrer une équation chimique, on doit…", choices: ["Avoir le même nombre d'atomes de chaque côté", "Avoir la même charge", "Avoir la même masse molaire", "Avoir le même nombre de molécules"], correct: 0 },
+      { q: "La neutralisation est la réaction entre…", choices: ["Un acide et une base", "Deux acides", "Deux bases", "Un métal et un non-métal"], correct: 0 },
+      { q: "En solution basique, l'ion dominant est…", choices: ["HO⁻", "H₃O⁺", "Na⁺", "Cl⁻"], correct: 0 },
+      { q: "La dilution respecte la relation…", choices: ["C₁V₁ = C₂V₂", "C₁/V₁ = C₂/V₂", "C₁ + V₁ = C₂ + V₂", "C₁ × C₂ = V₁ × V₂"], correct: 0 },
+      { q: "La rouille est…", choices: ["Une oxydation du fer", "Une combustion", "Une précipitation", "Une neutralisation"], correct: 0 },
+      { q: "Un pH de 7 indique une solution…", choices: ["neutre", "acide", "basique", "fortement acide"], correct: 0 },
+    ],
+  ],
+};
+
+// ---- QUIZ ENGINE ----
+let quizState = null;
+
+function startQuiz(matKey, chIdx) {
+  const allQ = QUIZ_DATA[matKey]?.[chIdx] || [];
+  if (!allQ.length) return;
+  // Mélanger et prendre 10 questions
+  const shuffled = [...allQ].sort(() => Math.random() - 0.5).slice(0, 10);
+  // Mélanger les choices de chaque question
+  shuffled.forEach(q => {
+    const correctAns = q.choices[q.correct];
+    const mixed = [...q.choices].sort(() => Math.random() - 0.5);
+    q.shuffledChoices = mixed;
+    q.shuffledCorrect = mixed.indexOf(correctAns);
+  });
+  quizState = { matKey, chIdx, questions: shuffled, current: 0, score: 0, answers: [] };
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const { questions, current } = quizState;
+  const q = questions[current];
+  const mat = BREVET_DATA[quizState.matKey];
+  const ch = mat.chapitres[quizState.chIdx];
+  document.getElementById('brevet-chapitre-content').innerHTML = `
+    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:${mat.color};text-transform:uppercase;letter-spacing:1px">Quiz — ${ch.titre}</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:3px">Question ${current+1} / ${questions.length}</div>
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:${mat.color}">${quizState.score}/${current}</div>
+    </div>
+    <!-- Barre de progression -->
+    <div style="background:var(--border);border-radius:10px;height:8px;margin-bottom:24px;overflow:hidden">
+      <div style="height:100%;background:${mat.color};border-radius:10px;width:${(current/questions.length)*100}%;transition:width 0.4s ease"></div>
+    </div>
+    <!-- Question -->
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;line-height:1.4">${q.q}</div>
+    <!-- Choix -->
+    <div style="display:flex;flex-direction:column;gap:10px" id="quiz-choices">
+      ${q.shuffledChoices.map((c, i) => `
+        <button onclick="answerQuiz(${i})" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:12px" id="choice-${i}">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:${mat.color}">${['A','B','C','D'][i]}</span>
+          ${c}
+        </button>`).join('')}
+    </div>`;
+}
+
+function answerQuiz(choiceIdx) {
+  const { questions, current } = quizState;
+  const q = questions[current];
+  const correct = q.shuffledCorrect;
+  const isCorrect = choiceIdx === correct;
+  if (isCorrect) quizState.score++;
+  quizState.answers.push({ q: q.q, chosen: q.shuffledChoices[choiceIdx], correct: q.shuffledChoices[correct], ok: isCorrect });
+
+  // Disable all buttons and show feedback
+  q.shuffledChoices.forEach((_, i) => {
+    const btn = document.getElementById('choice-' + i);
+    if (!btn) return;
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+    if (i === correct) { btn.style.background = 'rgba(82,232,162,0.2)'; btn.style.borderColor = 'var(--accent3)'; }
+    else if (i === choiceIdx && !isCorrect) { btn.style.background = 'rgba(248,113,113,0.2)'; btn.style.borderColor = 'var(--accent4)'; }
+  });
+
+  // Show feedback then next
+  const feedback = document.createElement('div');
+  feedback.style.cssText = `margin-top:16px;padding:14px 16px;border-radius:12px;font-size:14px;font-weight:600;background:${isCorrect ? 'rgba(82,232,162,0.15)' : 'rgba(248,113,113,0.15)'};color:${isCorrect ? 'var(--accent3)' : 'var(--accent4)'};border:1px solid ${isCorrect ? 'rgba(82,232,162,0.4)' : 'rgba(248,113,113,0.4)'}`;
+  feedback.innerHTML = isCorrect ? '✅ Bonne réponse !' : `❌ Mauvaise réponse. La bonne réponse était : <strong>${q.shuffledChoices[correct]}</strong>`;
+  document.getElementById('quiz-choices').appendChild(feedback);
+
+  if (navigator.vibrate) navigator.vibrate(isCorrect ? 40 : [30, 40, 30]);
+
+  setTimeout(() => {
+    quizState.current++;
+    if (quizState.current >= questions.length) renderQuizResult();
+    else renderQuizQuestion();
+  }, 1500);
+}
+
+function renderQuizResult() {
+  const { score, questions, matKey, chIdx, answers } = quizState;
+  const mat = BREVET_DATA[matKey];
+  const total = questions.length;
+  const note = Math.round((score / total) * 20 * 10) / 10;
+  const pct = Math.round((score / total) * 100);
+  const emoji = note >= 16 ? '🏆' : note >= 12 ? '😊' : note >= 8 ? '😐' : '😔';
+  const msg = note >= 16 ? 'Excellent ! Tu maîtrises ce chapitre !' : note >= 12 ? 'Bien ! Quelques points à revoir.' : note >= 8 ? 'Moyen. Relis le cours.' : 'Insuffisant. Révise bien ce chapitre.';
+
+  document.getElementById('brevet-chapitre-content').innerHTML = `
+    <div style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:20px;margin-bottom:24px">
+      <div style="font-size:56px;margin-bottom:12px">${emoji}</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:800;color:${mat.color};line-height:1">${note}<span style="font-size:28px">/20</span></div>
+      <div style="font-size:14px;font-weight:600;margin-top:8px">${score} / ${total} bonnes réponses (${pct}%)</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">${msg}</div>
+    </div>
+    <!-- Barre résultat -->
+    <div style="background:var(--border);border-radius:10px;height:12px;margin-bottom:24px;overflow:hidden">
+      <div style="height:100%;background:${note>=10?'var(--accent3)':'var(--accent4)'};border-radius:10px;width:${pct}%;transition:width 0.8s ease"></div>
+    </div>
+    <!-- Détail réponses -->
+    <div style="margin-bottom:20px">
+      <div class="dash-section-title" style="margin-bottom:12px">📋 Détail des réponses</div>
+      ${answers.map((a, i) => `
+        <div style="padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid ${a.ok ? 'rgba(82,232,162,0.3)' : 'rgba(248,113,113,0.3)'};margin-bottom:8px">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px">Question ${i+1}</div>
+          <div style="font-size:13px;margin-bottom:6px">${a.q}</div>
+          <div style="font-size:12px;color:${a.ok ? 'var(--accent3)' : 'var(--accent4)'}">
+            ${a.ok ? '✅' : '❌'} Ta réponse : <strong>${a.chosen}</strong>
+            ${!a.ok ? `<br>✅ Bonne réponse : <strong>${a.correct}</strong>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>
+    <!-- Boutons -->
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" style="flex:1" onclick="startQuiz('${matKey}', ${chIdx})">🔄 Refaire le quiz</button>
+      <button class="btn btn-ghost" style="flex:1" onclick="showBrevetCoursOnly(${chIdx})">📖 Relire le cours</button>
+    </div>`;
+
+  launchConfetti();
+}
+
+function showBrevetCoursOnly(chIdx) {
+  openBrevetChapitre(chIdx);
+}
+
+let currentBrevetMat = 'maths';
+let currentBrevetCh = null;
+
+function switchBrevetMat(el) {
+  document.querySelectorAll('[data-mat]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentBrevetMat = el.dataset.mat;
+  currentBrevetCh = null;
+  document.getElementById('brevet-liste').style.display = 'block';
+  document.getElementById('brevet-chapitre').style.display = 'none';
+  renderBrevetListe();
+}
+
+function renderBrevetListe() {
+  const mat = BREVET_DATA[currentBrevetMat];
+  const el = document.getElementById('brevet-liste');
+  el.innerHTML = `
+    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px">
+      <div style="font-size:36px">${mat.label.split(' ')[0]}</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">${mat.label.slice(3)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">${mat.chapitres.length} chapitres — Programme de 3ème</div>
+      </div>
+    </div>
+    ${mat.chapitres.map((ch, i) => `
+      <div onclick="openBrevetChapitre(${i})" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;margin-bottom:10px;transition:all 0.15s" onmouseover="this.style.borderColor='${mat.color}'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="width:40px;height:40px;border-radius:10px;background:${mat.color}22;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:${mat.color};flex-shrink:0">${i+1}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700">${ch.titre}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">${ch.resume}</div>
+        </div>
+        <div style="font-size:20px;color:var(--muted)">›</div>
+      </div>`).join('')}`;
+}
+
+function openBrevetChapitre(idx) {
+  currentBrevetCh = idx;
+  const mat = BREVET_DATA[currentBrevetMat];
+  const ch = mat.chapitres[idx];
+  document.getElementById('brevet-liste').style.display = 'none';
+  document.getElementById('brevet-chapitre').style.display = 'block';
+  document.getElementById('brevet-chapitre-content').innerHTML = `
+    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:20px;margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;color:${mat.color};text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${mat.label} — Chapitre ${idx+1}</div>
+      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">${ch.titre}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">${ch.resume}</div>
+    </div>
+    <div class="brevet-cours-content">${ch.contenu}</div>
+    <!-- Bouton Quiz -->
+    <div style="margin-top:28px;padding:20px;background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;text-align:center">
+      <div style="font-size:24px;margin-bottom:8px">🎯</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px">Prêt à te tester ?</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px">10 questions aléatoires — Note sur 20</div>
+      <button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;border-radius:14px" onclick="startQuiz('${currentBrevetMat}', ${idx})">🚀 Lancer le quiz !</button>
+    </div>`;
+}
+
+function closeBrevetchapitre() {
+  document.getElementById('brevet-liste').style.display = 'block';
+  document.getElementById('brevet-chapitre').style.display = 'none';
+}
+
+function renderBrevet() {
+  renderBrevetListe();
 }
 
 function renderInfos() {
