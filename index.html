@@ -1650,10 +1650,7 @@ body {
       <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
         <span class="di-emoji">🎡</span>Roue
       </div>
-      <div class="more-drawer-item" data-section="brevet" onclick="showFromDrawer('brevet', this)">
-        <span class="di-emoji">🎓</span>Brevet
-      </div>
-      <div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
+<div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
         <span class="di-emoji">🔧</span>Outils
       </div>
       <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
@@ -1744,55 +1741,126 @@ body {
 
 <!-- ===================== COURS ===================== -->
 <section id="cours" class="section">
-  <!-- VUE 1 : liste des matières -->
-  <div id="cours-vue-matieres">
-    <div class="page-header">
+
+  <!-- MODE SELECTOR: Mes cours / Brevet / Anglais -->
+  <div id="cours-mode-selector">
+    <div class="page-header" style="margin-bottom:16px">
       <div>
         <div class="page-title">📚 <span>Cours</span></div>
-        <div class="page-sub">Choisis une matière</div>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="showAddMatiere()">+ Matière</button>
-    </div>
-    <!-- Formulaire ajout (caché par défaut) -->
-    <div id="add-matiere-form" style="display:none;margin-bottom:16px">
-      <div style="display:flex;gap:8px">
-        <input class="field-input" id="newMatiere" placeholder="Nom de la matière..." onkeydown="if(event.key==='Enter')addMatiere()">
-        <button class="btn btn-primary" onclick="addMatiere()">Ajouter</button>
-        <button class="btn btn-ghost" onclick="hideAddMatiere()">✕</button>
+        <div class="page-sub">Mes cours, révisions brevet & anglais</div>
       </div>
     </div>
-    <div id="coursGrid"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">
+      <div onclick="setCoursMode('mescours')" id="mode-mescours" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--accent);transition:all 0.2s">
+        <div style="font-size:28px;margin-bottom:6px">📓</div>
+        <div style="font-size:13px;font-weight:700;color:var(--accent)">Mes Cours</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Tes notes perso</div>
+      </div>
+      <div onclick="setCoursMode('brevet')" id="mode-brevet" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
+        <div style="font-size:28px;margin-bottom:6px">🎓</div>
+        <div style="font-size:13px;font-weight:700;color:var(--muted)">Brevet 3ème</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Cours + Quiz</div>
+      </div>
+      <div onclick="setCoursMode('anglais')" id="mode-anglais" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
+        <div style="font-size:28px;margin-bottom:6px">🇬🇧</div>
+        <div style="font-size:13px;font-weight:700;color:var(--muted)">Anglais</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Vocab & Quiz</div>
+      </div>
+    </div>
   </div>
 
-  <!-- VUE 2 : chapitres d'une matière -->
-  <div id="cours-vue-chapitres" style="display:none">
-    <div class="page-header">
-      <div style="display:flex;align-items:center;gap:12px">
-        <button class="cours-back-btn" onclick="coursGoBack('matieres')">‹</button>
+  <!-- ===== MES COURS ===== -->
+  <div id="cours-mescours-container" style="display:none">
+    <!-- VUE 1 : liste des matières -->
+    <div id="cours-vue-matieres">
+      <div class="page-header">
         <div>
-          <div class="page-title" id="cours-matiere-title">Matière</div>
-          <div class="page-sub">Choisis un chapitre</div>
+          <div class="page-title">📓 <span>Mes Cours</span></div>
+          <div class="page-sub">Choisis une matière</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="setCoursMode(null)">‹</button>
+          <button class="btn btn-primary btn-sm" onclick="showAddMatiere()">+ Matière</button>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm" onclick="addChapterCurrent()">+ Chapitre</button>
+      <div id="add-matiere-form" style="display:none;margin-bottom:16px">
+        <div style="display:flex;gap:8px">
+          <input class="field-input" id="newMatiere" placeholder="Nom de la matière..." onkeydown="if(event.key==='Enter')addMatiere()">
+          <button class="btn btn-primary" onclick="addMatiere()">Ajouter</button>
+          <button class="btn btn-ghost" onclick="hideAddMatiere()">✕</button>
+        </div>
+      </div>
+      <div id="coursGrid"></div>
     </div>
-    <div id="chapitresGrid"></div>
+    <!-- VUE 2 : chapitres d'une matière -->
+    <div id="cours-vue-chapitres" style="display:none">
+      <div class="page-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="cours-back-btn" onclick="coursGoBack('matieres')">‹</button>
+          <div>
+            <div class="page-title" id="cours-matiere-title">Matière</div>
+            <div class="page-sub">Choisis un chapitre</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="addChapterCurrent()">+ Chapitre</button>
+      </div>
+      <div id="chapitresGrid"></div>
+    </div>
+    <!-- VUE 3 : contenu d'un chapitre -->
+    <div id="cours-vue-chapitre" style="display:none">
+      <div class="page-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="cours-back-btn" onclick="coursGoBack('chapitres')">‹</button>
+          <div>
+            <div class="page-title" id="cours-chapitre-title">Chapitre</div>
+            <div class="page-sub" id="cours-chapitre-sub"></div>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteCurrentChapter()">🗑</button>
+      </div>
+      <div id="chapitreContent"></div>
+    </div>
   </div>
 
-  <!-- VUE 3 : contenu d'un chapitre -->
-  <div id="cours-vue-chapitre" style="display:none">
-    <div class="page-header">
+  <!-- ===== BREVET ===== -->
+  <div id="cours-brevet-container" style="display:none">
+    <div class="page-header" style="margin-bottom:16px">
       <div style="display:flex;align-items:center;gap:12px">
-        <button class="cours-back-btn" onclick="coursGoBack('chapitres')">‹</button>
+        <button class="cours-back-btn" onclick="setCoursMode(null)">‹</button>
         <div>
-          <div class="page-title" id="cours-chapitre-title">Chapitre</div>
-          <div class="page-sub" id="cours-chapitre-sub"></div>
+          <div class="page-title">🎓 <span>Brevet 3ème</span></div>
+          <div class="page-sub">Cours complets + Quiz</div>
         </div>
       </div>
-      <button class="btn btn-danger btn-sm" onclick="deleteCurrentChapter()">🗑</button>
     </div>
-    <div id="chapitreContent"></div>
+    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding-bottom:4px" id="brevet-matiere-tabs">
+      <div class="chip active" data-mat="maths" onclick="switchBrevetMat(this)">📐 Maths</div>
+      <div class="chip" data-mat="francais" onclick="switchBrevetMat(this)">📖 Français</div>
+      <div class="chip" data-mat="histoire" onclick="switchBrevetMat(this)">🌍 Hist-Géo</div>
+      <div class="chip" data-mat="svt" onclick="switchBrevetMat(this)">🌱 SVT</div>
+      <div class="chip" data-mat="physchim" onclick="switchBrevetMat(this)">⚗️ Physique</div>
+    </div>
+    <div id="brevet-liste"></div>
+    <div id="brevet-chapitre" style="display:none">
+      <button class="cours-back-btn" onclick="closeBrevetchapitre()" style="margin-bottom:16px">‹ Retour</button>
+      <div id="brevet-chapitre-content"></div>
+    </div>
   </div>
+
+  <!-- ===== ANGLAIS ===== -->
+  <div id="cours-anglais-container" style="display:none">
+    <div class="page-header" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="cours-back-btn" onclick="setCoursMode(null)">‹</button>
+        <div>
+          <div class="page-title">🇬🇧 <span>Anglais</span></div>
+          <div class="page-sub">Vocabulaire B1 — Quiz quotidien</div>
+        </div>
+      </div>
+    </div>
+    <div id="anglais-content"></div>
+  </div>
+
 </section>
 
 <!-- ===================== AGENDA ===================== -->
@@ -2240,33 +2308,6 @@ body {
 </section>
 
 <!-- ===================== INFOS ===================== -->
-<!-- ===================== BREVET ===================== -->
-<section id="brevet" class="section">
-  <div class="page-header">
-    <div>
-      <div class="page-title">🎓 <span>Révisions Brevet</span></div>
-      <div class="page-sub">Cours complets 3ème — Tout ce qu'il faut savoir</div>
-    </div>
-  </div>
-
-  <!-- Matières nav -->
-  <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding-bottom:4px" id="brevet-matiere-tabs">
-    <div class="chip active" data-mat="maths" onclick="switchBrevetMat(this)">📐 Maths</div>
-    <div class="chip" data-mat="francais" onclick="switchBrevetMat(this)">📖 Français</div>
-    <div class="chip" data-mat="histoire" onclick="switchBrevetMat(this)">🌍 Histoire-Géo</div>
-    <div class="chip" data-mat="svt" onclick="switchBrevetMat(this)">🌱 SVT</div>
-    <div class="chip" data-mat="physchim" onclick="switchBrevetMat(this)">⚗️ Physique-Chimie</div>
-  </div>
-
-  <!-- Vue liste des chapitres -->
-  <div id="brevet-liste"></div>
-
-  <!-- Vue contenu d'un chapitre -->
-  <div id="brevet-chapitre" style="display:none">
-    <button class="cours-back-btn" onclick="closeBrevetchapitre()" style="margin-bottom:16px">‹ Retour</button>
-    <div id="brevet-chapitre-content"></div>
-  </div>
-</section>
 
 <!-- ===================== OUTILS ===================== -->
 <section id="outils" class="section">
@@ -2552,7 +2593,7 @@ body {
   <div class="info-hero">
     <div class="info-hero-icon">✦</div>
     <div class="info-hero-name">StudySpace</div>
-    <div class="info-version-badge">v4.3</div>
+    <div class="info-version-badge">v4.4</div>
     <div class="info-hero-sub">Ton espace d'étude personnel</div>
   </div>
 
@@ -2578,7 +2619,7 @@ body {
       <div class="info-row-icon">🔖</div>
       <div>
         <div class="info-row-label">Version actuelle</div>
-        <div class="info-row-value">v4.3 — Mars 2026</div>
+        <div class="info-row-value">v4.4 — Mars 2026</div>
       </div>
     </div>
     <div class="info-divider"></div>
@@ -2615,7 +2656,7 @@ body {
     <div class="info-section-title">📋 Historique des versions</div>
     <div class="changelog-list">
       <div class="changelog-item">
-        <div class="changelog-version">v4.3</div>
+        <div class="changelog-version">v4.4</div>
         <div class="changelog-desc">Révisions Brevet 3ème — cours complets Maths, Français, Histoire-Géo, SVT, Physique-Chimie (30+ chapitres)</div>
         <div class="changelog-version">v4.1</div>
         <div class="changelog-desc">Section Outils (calculatrice, géométrie, convertisseur, sciences, conjugueur, grammaire, moyenne, checklist), section Apparence, bouton Outils sur l'accueil</div>
@@ -2796,7 +2837,6 @@ function showFromDrawer(id, el) {
   if (id === 'courses') renderCourses();
   if (id === 'roulette') renderWheel();
   if (id === 'profil') renderProfil();
-  if (id === 'brevet') renderBrevet();
   if (id === 'outils') renderOutils();
   if (id === 'apparence') renderApparence();
   if (id === 'infos') renderInfos();
@@ -2816,6 +2856,7 @@ function showSection(id, el) {
   el.classList.add('active');
   if (id === 'dashboard') renderDashboard();
   if (id === 'agenda') { renderCalendar(); renderAgendaView(); renderEvents(); }
+  if (id === 'cours') { setCoursMode(null); }
   if (id === 'objectifs') renderObjs();
   if (id === 'famille') renderFamille();
   if (id === 'challenges') renderChallenges();
@@ -2919,6 +2960,37 @@ function renderDashboard() {
       </div>
     `).join('');
   }
+}
+
+// ============================================================
+//  COURS MODE SELECTOR
+// ============================================================
+let currentCoursMode = null;
+
+function setCoursMode(mode) {
+  currentCoursMode = mode;
+  document.getElementById('cours-mode-selector').style.display = mode ? 'none' : 'block';
+  document.getElementById('cours-mescours-container').style.display = mode === 'mescours' ? 'block' : 'none';
+  document.getElementById('cours-brevet-container').style.display = mode === 'brevet' ? 'block' : 'none';
+  document.getElementById('cours-anglais-container').style.display = mode === 'anglais' ? 'block' : 'none';
+
+  // Update card styles
+  ['mescours','brevet','anglais'].forEach(m => {
+    const el = document.getElementById('mode-' + m);
+    if (!el) return;
+    const colors = { mescours: '#f0c14b', brevet: '#9b8afb', anglais: '#60a5fa' };
+    if (m === mode) {
+      el.style.borderColor = colors[m];
+      el.querySelector('div:nth-child(2)').style.color = colors[m];
+    } else {
+      el.style.borderColor = 'var(--border)';
+      el.querySelector('div:nth-child(2)').style.color = 'var(--muted)';
+    }
+  });
+
+  if (mode === 'mescours') { renderMatieres(); }
+  if (mode === 'brevet') { renderBrevet(); }
+  if (mode === 'anglais') { renderAnglais(); }
 }
 
 // ============================================================
@@ -5008,7 +5080,449 @@ function renderOutils() {
 }
 
 // ============================================================
-//  BREVET — COURS COMPLETS 3ÈME
+//  ANGLAIS — Vocabulaire B1 + Quiz quotidien
+// ============================================================
+// Banque de 200+ mots B1 organisés en groupes de 10
+const ENGLISH_WORD_BANK = [
+  // Semaine 1
+  [
+    { en: 'although', fr: 'bien que / même si', ex: 'Although it was raining, we went out.' },
+    { en: 'however', fr: 'cependant / pourtant', ex: 'It was cold. However, she wore a T-shirt.' },
+    { en: 'therefore', fr: 'donc / par conséquent', ex: 'He studied hard; therefore, he passed.' },
+    { en: 'moreover', fr: 'de plus / en outre', ex: 'It\'s cheap. Moreover, it\'s high quality.' },
+    { en: 'eventually', fr: 'finalement / au bout du compte', ex: 'He eventually found a job.' },
+    { en: 'throughout', fr: 'tout au long de', ex: 'Throughout the year, she worked hard.' },
+    { en: 'despite', fr: 'malgré', ex: 'Despite the rain, the match continued.' },
+    { en: 'whereas', fr: 'alors que / tandis que', ex: 'He likes coffee, whereas she prefers tea.' },
+    { en: 'regarding', fr: 'concernant / à propos de', ex: 'Regarding your question, here is the answer.' },
+    { en: 'according to', fr: 'selon / d\'après', ex: 'According to the news, it will snow tomorrow.' },
+  ],
+  // Semaine 2
+  [
+    { en: 'achievement', fr: 'accomplissement / réussite', ex: 'Winning the prize was a great achievement.' },
+    { en: 'concern', fr: 'inquiétude / préoccupation', ex: 'There is concern about climate change.' },
+    { en: 'opportunity', fr: 'occasion / opportunité', ex: 'This is a great opportunity to learn.' },
+    { en: 'behavior', fr: 'comportement', ex: 'His behavior was unacceptable.' },
+    { en: 'challenge', fr: 'défi', ex: 'Learning a new language is a challenge.' },
+    { en: 'evidence', fr: 'preuve / indice', ex: 'There is no evidence of his guilt.' },
+    { en: 'influence', fr: 'influence / influencer', ex: 'Music has a great influence on mood.' },
+    { en: 'purpose', fr: 'but / objectif', ex: 'The purpose of this trip is to learn.' },
+    { en: 'relationship', fr: 'relation / rapport', ex: 'They have a good relationship.' },
+    { en: 'solution', fr: 'solution', ex: 'We need to find a solution quickly.' },
+  ],
+  // Semaine 3
+  [
+    { en: 'to afford', fr: 'avoir les moyens de', ex: 'I can\'t afford to buy a new phone.' },
+    { en: 'to consider', fr: 'considérer / envisager', ex: 'Have you considered moving abroad?' },
+    { en: 'to improve', fr: 'améliorer / progresser', ex: 'She wants to improve her English.' },
+    { en: 'to involve', fr: 'impliquer / inclure', ex: 'The project involves a lot of work.' },
+    { en: 'to manage', fr: 'gérer / réussir à', ex: 'He managed to finish on time.' },
+    { en: 'to prevent', fr: 'empêcher / prévenir', ex: 'Exercise can prevent some diseases.' },
+    { en: 'to provide', fr: 'fournir / offrir', ex: 'The school provides free meals.' },
+    { en: 'to rely on', fr: 'compter sur / dépendre de', ex: 'You can rely on me.' },
+    { en: 'to require', fr: 'nécessiter / exiger', ex: 'This job requires experience.' },
+    { en: 'to suggest', fr: 'suggérer / proposer', ex: 'She suggested going to the cinema.' },
+  ],
+  // Semaine 4
+  [
+    { en: 'anxious', fr: 'anxieux / inquiet', ex: 'She felt anxious before the exam.' },
+    { en: 'confident', fr: 'sûr(e) de soi / confiant(e)', ex: 'He is confident about his skills.' },
+    { en: 'disappointed', fr: 'déçu(e)', ex: 'I was disappointed by the result.' },
+    { en: 'enthusiastic', fr: 'enthousiaste', ex: 'She is enthusiastic about learning.' },
+    { en: 'frustrated', fr: 'frustré(e)', ex: 'He felt frustrated with the traffic.' },
+    { en: 'grateful', fr: 'reconnaissant(e)', ex: 'I am grateful for your help.' },
+    { en: 'jealous', fr: 'jaloux/jalouse', ex: 'She was jealous of her sister\'s success.' },
+    { en: 'relieved', fr: 'soulagé(e)', ex: 'He was relieved to hear the good news.' },
+    { en: 'stubborn', fr: 'têtu(e) / obstiné(e)', ex: 'He is too stubborn to change his mind.' },
+    { en: 'thoughtful', fr: 'attentionné(e) / pensif/pensive', ex: 'She is always thoughtful and kind.' },
+  ],
+  // Semaine 5 — Société
+  [
+    { en: 'citizen', fr: 'citoyen(ne)', ex: 'Every citizen has the right to vote.' },
+    { en: 'community', fr: 'communauté', ex: 'She volunteers for her local community.' },
+    { en: 'environment', fr: 'environnement', ex: 'We must protect the environment.' },
+    { en: 'equality', fr: 'égalité', ex: 'They fight for equality and justice.' },
+    { en: 'freedom', fr: 'liberté', ex: 'Freedom of speech is a basic right.' },
+    { en: 'government', fr: 'gouvernement', ex: 'The government announced new laws.' },
+    { en: 'poverty', fr: 'pauvreté', ex: 'Millions of people live in poverty.' },
+    { en: 'progress', fr: 'progrès', ex: 'Science has made great progress.' },
+    { en: 'society', fr: 'société', ex: 'Technology has changed our society.' },
+    { en: 'violence', fr: 'violence', ex: 'Violence is never the answer.' },
+  ],
+  // Semaine 6 — Technologie
+  [
+    { en: 'artificial intelligence', fr: 'intelligence artificielle', ex: 'AI is transforming many industries.' },
+    { en: 'broadcast', fr: 'diffuser / émission', ex: 'The match will be broadcast live.' },
+    { en: 'device', fr: 'appareil / dispositif', ex: 'My phone is my favourite device.' },
+    { en: 'digital', fr: 'numérique', ex: 'We live in a digital world.' },
+    { en: 'innovative', fr: 'innovant(e)', ex: 'They have an innovative approach.' },
+    { en: 'network', fr: 'réseau', ex: 'The internet is a global network.' },
+    { en: 'privacy', fr: 'vie privée / confidentialité', ex: 'Online privacy is very important.' },
+    { en: 'renewable', fr: 'renouvelable', ex: 'Solar energy is renewable.' },
+    { en: 'software', fr: 'logiciel', ex: 'We need to update this software.' },
+    { en: 'wireless', fr: 'sans fil', ex: 'Wireless headphones are practical.' },
+  ],
+  // Semaine 7 — Santé
+  [
+    { en: 'addiction', fr: 'dépendance / addiction', ex: 'Social media addiction is a real problem.' },
+    { en: 'balanced', fr: 'équilibré(e)', ex: 'A balanced diet is essential for health.' },
+    { en: 'disease', fr: 'maladie', ex: 'Heart disease is very common.' },
+    { en: 'exhausted', fr: 'épuisé(e)', ex: 'I am completely exhausted after work.' },
+    { en: 'fit', fr: 'en forme', ex: 'He stays fit by running every day.' },
+    { en: 'harmful', fr: 'nuisible / nocif', ex: 'Smoking is harmful to health.' },
+    { en: 'mental health', fr: 'santé mentale', ex: 'Mental health is as important as physical health.' },
+    { en: 'nutrition', fr: 'nutrition / alimentation', ex: 'Good nutrition helps children grow.' },
+    { en: 'physical', fr: 'physique / corporel', ex: 'Physical activity reduces stress.' },
+    { en: 'treatment', fr: 'traitement', ex: 'The doctor recommended a new treatment.' },
+  ],
+  // Semaine 8 — Voyages / Culture
+  [
+    { en: 'abroad', fr: 'à l\'étranger', ex: 'She studied abroad for a year.' },
+    { en: 'accommodation', fr: 'hébergement / logement', ex: 'We booked accommodation online.' },
+    { en: 'customs', fr: 'coutumes / douanes', ex: 'Every country has its own customs.' },
+    { en: 'destination', fr: 'destination', ex: 'Paris is a popular tourist destination.' },
+    { en: 'heritage', fr: 'patrimoine / héritage', ex: 'The castle is part of our heritage.' },
+    { en: 'landscape', fr: 'paysage', ex: 'The landscape was breathtaking.' },
+    { en: 'native', fr: 'natif / autochtone', ex: 'She is a native French speaker.' },
+    { en: 'souvenir', fr: 'souvenir (objet)', ex: 'He bought a souvenir for his mother.' },
+    { en: 'tradition', fr: 'tradition', ex: 'Christmas is an important tradition.' },
+    { en: 'urban', fr: 'urbain(e)', ex: 'Urban life can be stressful.' },
+  ],
+  // Semaine 9 — Connecteurs et expressions
+  [
+    { en: 'as a result', fr: 'en conséquence / par conséquent', ex: 'He missed the bus. As a result, he was late.' },
+    { en: 'for instance', fr: 'par exemple', ex: 'Some fruits, for instance apples, are healthy.' },
+    { en: 'in addition', fr: 'de plus / en outre', ex: 'In addition to French, she speaks Spanish.' },
+    { en: 'in contrast', fr: 'en revanche / par contraste', ex: 'In contrast, the south is much warmer.' },
+    { en: 'in particular', fr: 'en particulier', ex: 'I love music, jazz in particular.' },
+    { en: 'in spite of', fr: 'malgré', ex: 'In spite of the cold, he went swimming.' },
+    { en: 'nevertheless', fr: 'néanmoins / quand même', ex: 'It was difficult. Nevertheless, he succeeded.' },
+    { en: 'on the contrary', fr: 'au contraire', ex: 'I\'m not tired. On the contrary, I\'m energetic.' },
+    { en: 'on the other hand', fr: 'd\'un autre côté', ex: 'On the other hand, it could be risky.' },
+    { en: 'so that', fr: 'afin que / pour que', ex: 'She studied so that she could pass the exam.' },
+  ],
+  // Semaine 10 — Scolaire / Futur
+  [
+    { en: 'ambition', fr: 'ambition', ex: 'Her ambition is to become a doctor.' },
+    { en: 'career', fr: 'carrière', ex: 'He wants a career in engineering.' },
+    { en: 'deadline', fr: 'date limite / délai', ex: 'The deadline is next Friday.' },
+    { en: 'effort', fr: 'effort', ex: 'It takes a lot of effort to succeed.' },
+    { en: 'failure', fr: 'échec', ex: 'Failure is part of the learning process.' },
+    { en: 'internship', fr: 'stage', ex: 'She did an internship at a hospital.' },
+    { en: 'qualification', fr: 'qualification / diplôme', ex: 'You need a qualification for this job.' },
+    { en: 'scholarship', fr: 'bourse d\'études', ex: 'He won a scholarship to study in London.' },
+    { en: 'skill', fr: 'compétence / aptitude', ex: 'Communication is an important skill.' },
+    { en: 'succeed', fr: 'réussir', ex: 'Hard work helps you succeed.' },
+  ],
+  // Semaine 11 — Environnement
+  [
+    { en: 'carbon footprint', fr: 'empreinte carbone', ex: 'Flying increases your carbon footprint.' },
+    { en: 'climate change', fr: 'changement climatique', ex: 'Climate change is a global threat.' },
+    { en: 'conservation', fr: 'conservation / préservation', ex: 'Wildlife conservation is essential.' },
+    { en: 'drought', fr: 'sécheresse', ex: 'The drought destroyed the crops.' },
+    { en: 'ecosystem', fr: 'écosystème', ex: 'Deforestation destroys ecosystems.' },
+    { en: 'flood', fr: 'inondation', ex: 'Heavy rain caused floods in the city.' },
+    { en: 'global warming', fr: 'réchauffement climatique', ex: 'Global warming is melting the ice caps.' },
+    { en: 'pollution', fr: 'pollution', ex: 'Air pollution is a serious health risk.' },
+    { en: 'recycle', fr: 'recycler', ex: 'We should recycle as much as possible.' },
+    { en: 'sustainable', fr: 'durable / soutenable', ex: 'We need sustainable energy sources.' },
+  ],
+  // Semaine 12 — Médias / Opinion
+  [
+    { en: 'attitude', fr: 'attitude / position', ex: 'His attitude towards school is positive.' },
+    { en: 'believe', fr: 'croire / penser', ex: 'I believe we can solve this problem.' },
+    { en: 'controversial', fr: 'controversé(e) / polémique', ex: 'This is a controversial topic.' },
+    { en: 'criticism', fr: 'critique', ex: 'The plan faced strong criticism.' },
+    { en: 'debate', fr: 'débat / débattre', ex: 'There is a debate about school uniforms.' },
+    { en: 'headline', fr: 'titre / une (journal)', ex: 'The headline was shocking.' },
+    { en: 'opinion', fr: 'opinion / avis', ex: 'In my opinion, this is unfair.' },
+    { en: 'point of view', fr: 'point de vue', ex: 'From my point of view, it\'s wrong.' },
+    { en: 'rumour', fr: 'rumeur', ex: 'Don\'t spread rumours.' },
+    { en: 'statement', fr: 'déclaration / affirmation', ex: 'The minister made an official statement.' },
+  ],
+];
+
+// Get current week number since a fixed reference date
+function getEnglishWeekIndex() {
+  const ref = new Date(2026, 2, 16); // 16 mars 2026 = semaine 1
+  const now = new Date();
+  const diffMs = now - ref;
+  const diffWeeks = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000));
+  return ((diffWeeks % ENGLISH_WORD_BANK.length) + ENGLISH_WORD_BANK.length) % ENGLISH_WORD_BANK.length;
+}
+
+function getEnglishMonthKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${now.getMonth()}`;
+}
+
+function getCurrentWeekWords() {
+  return ENGLISH_WORD_BANK[getEnglishWeekIndex()];
+}
+
+function getAllLearnedWords() {
+  // Words from all previous weeks of the current month
+  const ref = new Date(2026, 2, 16);
+  const now = new Date();
+  const diffMs = now - ref;
+  const totalWeeks = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000));
+  // Weeks in current month (from first monday of month)
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const diffFromMonth = Math.floor((now - firstOfMonth) / (7 * 24 * 60 * 60 * 1000));
+  const weeksThisMonth = Math.min(diffFromMonth + 1, 4);
+  const startWeek = getEnglishWeekIndex() - (diffFromMonth);
+  const words = [];
+  for (let i = 0; i < weeksThisMonth; i++) {
+    const idx = ((startWeek + i) % ENGLISH_WORD_BANK.length + ENGLISH_WORD_BANK.length) % ENGLISH_WORD_BANK.length;
+    words.push(...ENGLISH_WORD_BANK[idx]);
+  }
+  return words;
+}
+
+let englishQuizState = null;
+let englishMode = 'home'; // 'home' | 'study' | 'quiz' | 'stats'
+
+function renderAnglais() {
+  englishMode = 'home';
+  renderAnglaisHome();
+}
+
+function renderAnglaisHome() {
+  const weekWords = getCurrentWeekWords();
+  const weekIdx = getEnglishWeekIndex() + 1;
+  const quizDone = store.get('englishQuizDone', {});
+  const today = new Date().toISOString().split('T')[0];
+  const doneToday = quizDone[today];
+  const stats = store.get('englishStats', { totalWords: 0, bestScore: 0, quizzesDone: 0, monthKey: '' });
+  const allWords = getAllLearnedWords();
+
+  // Reset stats each month
+  const monthKey = getEnglishMonthKey();
+  if (stats.monthKey !== monthKey) {
+    stats.monthKey = monthKey;
+    stats.totalWords = 0;
+    stats.bestScore = 0;
+    stats.quizzesDone = 0;
+    store.set('englishStats', stats);
+  }
+
+  document.getElementById('anglais-content').innerHTML = `
+    <!-- Hero semaine -->
+    <div style="background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;padding:20px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px">Semaine ${weekIdx}</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-top:2px">10 mots à apprendre</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:800;color:#60a5fa">${allWords.length}</div>
+          <div style="font-size:10px;color:var(--muted)">mots ce mois</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-primary" style="flex:2;background:#60a5fa;color:#0c0b14" onclick="englishStartStudy()">📖 Étudier les mots</button>
+        <button class="btn btn-ghost" style="flex:1;position:relative" onclick="englishStartQuiz()">
+          🎯 Quiz du jour
+          ${doneToday ? '<span style="position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--accent3)"></span>' : ''}
+        </button>
+      </div>
+      ${doneToday ? `<div style="font-size:12px;color:var(--accent3);margin-top:8px;text-align:center">✅ Quiz du jour complété ! Score : ${quizDone[today]}/10</div>` : ''}
+    </div>
+
+    <!-- Stats du mois -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#60a5fa">${stats.quizzesDone}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Quiz faits</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--accent)">${stats.bestScore}/10</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Meilleur score</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--accent3)">${allWords.length}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px">Mots appris</div>
+      </div>
+    </div>
+
+    <!-- Liste des mots de la semaine -->
+    <div class="card" style="padding:18px;margin-bottom:16px">
+      <div class="dash-section-title" style="margin-bottom:14px">📝 Mots de la semaine</div>
+      ${weekWords.map(w => `
+        <div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px">
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:700;color:#60a5fa">${w.en}</div>
+            <div style="font-size:13px;color:var(--text);margin-top:2px">${w.fr}</div>
+            <div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:3px">${w.ex}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <!-- Mots des semaines précédentes ce mois -->
+    ${allWords.length > weekWords.length ? `
+    <div class="card" style="padding:18px;margin-bottom:16px">
+      <div class="dash-section-title" style="margin-bottom:14px">🔁 Tous les mots du mois (${allWords.length})</div>
+      ${allWords.filter(w => !weekWords.includes(w)).map(w => `
+        <div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600;color:var(--muted)">${w.en}</span>
+          <span style="font-size:12px;color:var(--muted)">${w.fr}</span>
+        </div>`).join('')}
+    </div>` : ''}
+
+    <div style="text-align:center;font-size:11px;color:var(--muted);padding:8px 0">
+      🔄 Les mots changent chaque semaine · Remise à zéro chaque mois
+    </div>`;
+}
+
+function englishStartStudy() {
+  const words = getCurrentWeekWords();
+  let studyIdx = 0;
+  let studyFlipped = false;
+
+  window._studyRender = function() {
+    const w = words[studyIdx];
+    const progress = Math.round((studyIdx / words.length) * 100);
+    const cardInner = studyFlipped
+      ? '<div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px">Traduction</div>'
+        + '<div style="font-family:\'Syne\',sans-serif;font-size:26px;font-weight:800">' + w.fr + '</div>'
+        + '<div style="font-size:13px;color:var(--muted);font-style:italic;margin-top:8px">' + w.ex + '</div>'
+      : '<div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px">Anglais</div>'
+        + '<div style="font-family:\'Syne\',sans-serif;font-size:36px;font-weight:800;color:#60a5fa">' + w.en + '</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-top:8px">Appuie pour voir la traduction</div>';
+
+    const prevDisabled = studyIdx === 0 ? ' disabled' : '';
+    const nextLabel = studyIdx === words.length - 1 ? '✅ Terminé' : 'Suivant ›';
+
+    document.getElementById('anglais-content').innerHTML =
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">'
+        + '<button class="cours-back-btn" onclick="renderAnglaisHome()">‹</button>'
+        + '<div><div style="font-size:14px;font-weight:700">📖 Étude des mots</div>'
+        + '<div style="font-size:12px;color:var(--muted)">' + (studyIdx+1) + ' / ' + words.length + '</div></div>'
+      + '</div>'
+      + '<div style="background:var(--border);border-radius:10px;height:6px;margin-bottom:24px;overflow:hidden">'
+        + '<div style="height:100%;background:#60a5fa;width:' + progress + '%;border-radius:10px;transition:width 0.3s"></div>'
+      + '</div>'
+      + '<div onclick="_studyFlip()" style="min-height:220px;background:linear-gradient(135deg,rgba(96,165,250,0.15),rgba(96,165,250,0.05));border:2px solid rgba(96,165,250,0.4);border-radius:24px;padding:32px 24px;text-align:center;cursor:pointer;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">'
+        + cardInner
+      + '</div>'
+      + '<div style="display:flex;gap:10px">'
+        + '<button class="btn btn-ghost" style="flex:1" onclick="_studyNav(-1)"' + prevDisabled + '>‹ Précédent</button>'
+        + '<button class="btn btn-primary" style="flex:2;background:#60a5fa;color:#0c0b14" onclick="_studyNav(1)">' + nextLabel + '</button>'
+      + '</div>';
+  };
+
+  window._studyFlip = function() { studyFlipped = !studyFlipped; window._studyRender(); };
+  window._studyNav = function(dir) {
+    studyFlipped = false;
+    if (studyIdx + dir >= words.length) { renderAnglaisHome(); return; }
+    studyIdx = Math.max(0, Math.min(words.length - 1, studyIdx + dir));
+    window._studyRender();
+  };
+  window._studyRender();
+}
+
+
+
+function renderEnglishQuestion() {
+  const { questions, current, score } = englishQuizState;
+  const q = questions[current];
+  document.getElementById('anglais-content').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div>
+        <div style="font-size:14px;font-weight:700">🎯 Quiz du jour</div>
+        <div style="font-size:12px;color:var(--muted)">Question ${current+1} / ${questions.length}</div>
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:#60a5fa">${score}/${current}</div>
+    </div>
+    <div style="background:var(--border);border-radius:10px;height:6px;margin-bottom:24px;overflow:hidden">
+      <div style="height:100%;background:#60a5fa;width:${(current/questions.length)*100}%;border-radius:10px;transition:width 0.3s"></div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(96,165,250,0.15),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;padding:24px;text-align:center;margin-bottom:24px">
+      <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Que signifie ce mot ?</div>
+      <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#60a5fa">${q.word.en}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px" id="eng-choices">
+      ${q.choices.map((c, i) => `
+        <button onclick="answerEnglish(${i})" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s" id="eng-choice-${i}">
+          <span style="font-weight:700;color:#60a5fa;margin-right:10px">${['A','B','C','D'][i]}</span>${c}
+        </button>`).join('')}
+    </div>`;
+}
+
+function answerEnglish(choiceIdx) {
+  const { questions, current } = englishQuizState;
+  const q = questions[current];
+  const isCorrect = choiceIdx === q.correct;
+  if (isCorrect) englishQuizState.score++;
+  englishQuizState.answers.push({ word: q.word.en, fr: q.word.fr, chosen: q.choices[choiceIdx], ok: isCorrect });
+
+  q.choices.forEach((_, i) => {
+    const btn = document.getElementById('eng-choice-' + i);
+    if (!btn) return;
+    btn.onclick = null; btn.style.cursor = 'default';
+    if (i === q.correct) { btn.style.background = 'rgba(82,232,162,0.2)'; btn.style.borderColor = 'var(--accent3)'; }
+    else if (i === choiceIdx && !isCorrect) { btn.style.background = 'rgba(248,113,113,0.2)'; btn.style.borderColor = 'var(--accent4)'; }
+  });
+
+  const fb = document.createElement('div');
+  fb.style.cssText = `margin-top:14px;padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;background:${isCorrect?'rgba(82,232,162,0.15)':'rgba(248,113,113,0.15)'};color:${isCorrect?'var(--accent3)':'var(--accent4)'}`;
+  fb.textContent = isCorrect ? '✅ Correct !' : `❌ Mauvaise réponse. "${q.word.en}" = ${q.word.fr}`;
+  document.getElementById('eng-choices').appendChild(fb);
+  if (navigator.vibrate) navigator.vibrate(isCorrect ? 40 : [30,40,30]);
+
+  setTimeout(() => {
+    englishQuizState.current++;
+    if (englishQuizState.current >= questions.length) renderEnglishResult();
+    else renderEnglishQuestion();
+  }, 1400);
+}
+
+function renderEnglishResult() {
+  const { score, questions, answers } = englishQuizState;
+  const total = questions.length;
+  const pct = Math.round((score/total)*100);
+  const note = Math.round((score/total)*10*10)/10;
+  const emoji = score === 10 ? '🏆' : score >= 7 ? '⭐' : score >= 5 ? '😊' : '📖';
+
+  // Save stats
+  const today = new Date().toISOString().split('T')[0];
+  const quizDone = store.get('englishQuizDone', {});
+  quizDone[today] = score;
+  store.set('englishQuizDone', quizDone);
+
+  const stats = store.get('englishStats', { totalWords: 0, bestScore: 0, quizzesDone: 0, monthKey: '' });
+  stats.quizzesDone++;
+  if (score > stats.bestScore) stats.bestScore = score;
+  store.set('englishStats', stats);
+
+  document.getElementById('anglais-content').innerHTML = `
+    <div style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;margin-bottom:20px">
+      <div style="font-size:56px;margin-bottom:8px">${emoji}</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:800;color:#60a5fa;line-height:1">${score}<span style="font-size:28px">/10</span></div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">${score===10?'Parfait ! Tu connais tous les mots !':score>=7?'Très bien ! Continue comme ça !':score>=5?'Pas mal ! Révise encore un peu.':'Continue de réviser, tu y arriveras !'}</div>
+    </div>
+    <div style="background:var(--border);border-radius:10px;height:10px;margin-bottom:20px;overflow:hidden">
+      <div style="height:100%;background:${score>=5?'#60a5fa':'var(--accent4)'};width:${pct}%;border-radius:10px"></div>
+    </div>
+    <div class="card" style="padding:18px;margin-bottom:16px">
+      <div class="dash-section-title" style="margin-bottom:12px">📋 Détail</div>
+      ${answers.map(a => `
+        <div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <div style="font-size:14px;font-weight:700;color:#60a5fa">${a.word}</div>
+          <div style="font-size:12px;${a.ok?'color:var(--accent3)':'color:var(--accent4)'}">
+            ${a.ok ? '✅ ' + a.fr : '❌ ' + a.chosen + ' → ' + a.fr}
+          </div>
+        </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" style="flex:1;background:#60a5fa;color:#0c0b14" onclick="englishStartQuiz()">🔄 Refaire</button>
+      <button class="btn btn-ghost" style="flex:1" onclick="renderAnglaisHome()">🏠 Accueil</button>
+    </div>`;
+  launchConfetti();
+}
+
+// ============================================================
+//  BREVET — renderBrevet (updated)
 // ============================================================
 const BREVET_DATA = {
   maths: {
@@ -5192,11 +5706,91 @@ P(certain) = 1 | P(impossible) = 0<br>
 • Probabilités des chemins d'un même résultat s'additionnent<br>
 • Somme de toutes les branches issues d'un même nœud = 1</p>`
       },
+      {
+        titre: 'Suites et évolution',
+        resume: 'Suites numériques, pourcentages, évolutions',
+        contenu: `<h3>📈 Pourcentages et évolutions</h3>
+<p><strong>Taux d\'évolution</strong> : t = (valeur finale − valeur initiale) / valeur initiale × 100<br>
+Si t > 0 : augmentation | Si t < 0 : diminution<br>
+<strong>Coefficient multiplicateur</strong> : k = 1 + t/100<br>
+Ex : +20% → k = 1,2 | −15% → k = 0,85<br>
+<strong>Valeur finale</strong> = valeur initiale × k</p>
+<p><strong>Évolutions successives</strong> : multiplier les coefficients<br>
+Ex : +10% puis −10% → k = 1,1 × 0,9 = 0,99 → résultat : −1% (pas 0% !)<br>
+<strong>Évolution réciproque</strong> : pour annuler +20%, il faut −16,67% (pas −20%)</p>
+<h3>🔢 Suites numériques</h3>
+<p><strong>Suite arithmétique</strong> : chaque terme = terme précédent + raison r<br>
+Un = U0 + n × r | Ex : 2, 5, 8, 11… (r = 3)<br>
+<strong>Suite géométrique</strong> : chaque terme = terme précédent × raison q<br>
+Un = U0 × qⁿ | Ex : 2, 6, 18, 54… (q = 3)<br>
+<strong>Somme des termes</strong> : reconnaître le type de suite et appliquer les formules</p>
+<h3>📊 Proportionnalité</h3>
+<p>Tableau de proportionnalité : produit en croix<br>
+a/b = c/d ↔ a × d = b × c<br>
+Reconnaître la proportionnalité : rapport constant entre les deux grandeurs<br>
+<strong>Règle de trois</strong> : si 3 valeurs sont connues, trouver la 4ème</p>`
+      },
+      {
+        titre: 'Vecteurs',
+        resume: 'Définition, coordonnées, opérations, translations',
+        contenu: `<h3>➡️ Définition d'un vecteur</h3>
+<p>Un vecteur est défini par :<br>
+• Une <strong>direction</strong> (la droite qui le porte)<br>
+• Un <strong>sens</strong> (vers où il pointe)<br>
+• Une <strong>norme</strong> (longueur)<br>
+Notation : <strong>AB⃗</strong> ou <strong>u⃗</strong><br>
+<strong>Vecteurs égaux</strong> : même direction, sens et norme<br>
+<strong>Vecteurs opposés</strong> : BA⃗ = − AB⃗</p>
+<h3>📐 Coordonnées d'un vecteur</h3>
+<p>Si A(xA ; yA) et B(xB ; yB) :<br>
+<strong>AB⃗ = (xB − xA ; yB − yA)</strong><br>
+<strong>Norme</strong> : ||AB⃗|| = √((xB−xA)² + (yB−yA)²)<br>
+Ex : A(1;2) et B(4;6) → AB⃗ = (3 ; 4) → ||AB⃗|| = √(9+16) = 5</p>
+<h3>➕ Opérations sur les vecteurs</h3>
+<p><strong>Addition</strong> : u⃗(a;b) + v⃗(c;d) = (a+c ; b+d)<br>
+<strong>Multiplication par un scalaire</strong> : k × u⃗(a;b) = (ka ; kb)<br>
+<strong>Relation de Chasles</strong> : AC⃗ = AB⃗ + BC⃗</p>
+<h3>🔄 Translation</h3>
+<p>Translater A par u⃗(a;b) → A'(xA+a ; yA+b)<br>
+La translation conserve : distances, angles, parallélisme<br>
+Milieu d'un segment : M = ((xA+xB)/2 ; (yA+yB)/2)</p>`
+      },
+
     ]
   },
   francais: {
     label: '📖 Français', color: '#9b8afb',
     chapitres: [
+      {
+        titre: 'Les genres et types de textes',
+        resume: 'Narratif, descriptif, explicatif, argumentatif, injonctif',
+        contenu: `<h3>📝 Les types de textes</h3>
+<p><strong>Texte narratif</strong> : raconte des événements dans le temps<br>
+• Temps : passé simple, imparfait, plus-que-parfait<br>
+• Indicateurs temporels : d\'abord, ensuite, soudain, le lendemain…<br>
+• Genres : roman, conte, nouvelle, fable, biographie</p>
+<p><strong>Texte descriptif</strong> : décrit un lieu, un personnage, une atmosphère<br>
+• Temps : imparfait, présent de vérité générale<br>
+• Champs lexicaux des sens, adjectifs nombreux<br>
+• Organisation : du général au particulier, du haut en bas…</p>
+<p><strong>Texte explicatif</strong> : explique un phénomène, informe<br>
+• Connecteurs logiques : car, parce que, en effet, donc<br>
+• Présent de vérité générale<br>
+• Genres : article encyclopédique, cours, documentaire</p>
+<p><strong>Texte argumentatif</strong> : défend un point de vue, cherche à convaincre<br>
+• Thèse + arguments + exemples + conclusion<br>
+• Genres : essai, éditorial, lettre ouverte, discours<br>
+• Procédés : exemples, citations, questions rhétoriques, figures de style</p>
+<p><strong>Texte injonctif</strong> : donne des ordres ou des conseils<br>
+• Modes : impératif, infinitif<br>
+• Genres : recette, mode d\'emploi, règlement</p>
+<h3>🔍 Reconnaître un texte</h3>
+<p>Questions à se poser :<br>
+1. Qui parle ? (narrateur, auteur, personnage)<br>
+2. À qui ? (destinataire)<br>
+3. Quel est le but ? (informer, convaincre, raconter, décrire)<br>
+4. Quels indices linguistiques ? (temps, mode, connecteurs, registre)</p>`
+      },
       {
         titre: 'Grammaire — La phrase',
         resume: 'Types, formes, propositions, fonctions grammaticales',
@@ -5482,6 +6076,30 @@ Début : discours de Churchill sur le "rideau de fer" (1946), doctrine Truman (1
 • Aujourd'hui : 27 membres</p>`
       },
       {
+        titre: 'Colonisation et décolonisation',
+        resume: 'Empire colonial, résistances, indépendances, CNR',
+        contenu: `<h3>🌍 La colonisation (XIXe-XXe s.)</h3>
+<p><strong>Conférence de Berlin (1885)</strong> : partage de l\'Afrique entre puissances européennes<br>
+Principales puissances : France, RU, Belgique, Portugal<br>
+<strong>Justifications</strong> : "mission civilisatrice" (prétexte raciste), intérêts économiques, prestige<br>
+<strong>Réalités</strong> : travail forcé, expropriation, destruction des cultures, violences<br>
+<strong>Résistances</strong> : armées (Abd el-Kader, Samory Touré) et intellectuelles (Négritude : Aimé Césaire)</p>
+<h3>🗺️ La décolonisation (1945-1975)</h3>
+<p><strong>Causes</strong> : affaiblissement des puissances, montée des nationalismes, pression ONU/USA/URSS<br>
+<strong>Indochine (1946-1954)</strong> : guerre contre le Viêt-minh, défaite à Diên Biên Phu, accords de Genève<br>
+<strong>Algérie (1954-1962)</strong> : 8 ans de guerre, ~1M de morts, accords d\'Évian → indépendance<br>
+<strong>"Année de l\'Afrique" (1960)</strong> : 17 indépendances africaines, souvent négociées</p>
+<h3>📜 Le CNR et son programme</h3>
+<p><strong>Créé le 27 mai 1943</strong> par Jean Moulin → unifie toute la Résistance intérieure<br>
+<strong>Programme "Les Jours heureux" (1944)</strong> :<br>
+• Libération et jugement des collaborateurs<br>
+• Retour aux libertés républicaines<br>
+• Création de la Sécurité sociale<br>
+• Nationalisation des grandes entreprises<br>
+• Droit de vote pour les femmes (obtenu en 1944)<br>
+→ Ce programme est largement appliqué à la Libération</p>`
+      },
+      {
         titre: 'Géographie — Le monde',
         resume: 'Mondialisation, puissances, développement',
         contenu: `<h3>🌐 La mondialisation</h3>
@@ -5705,6 +6323,47 @@ Mesure : échelle de Richter (magnitude) ou Mercalli (intensité)<br>
 • Effusif : lave fluide, peu dangereux (Hawaï)<br>
 • Explosif : lave visqueuse, très dangereux (Vésuve)</p>`
       },
+      {
+        titre: 'Système immunitaire',
+        resume: "Défenses de l\'organisme, immunité, vaccins",
+        contenu: `<h3>🛡️ Les lignes de défense</h3>
+<p><strong>1ère ligne (barrières)</strong> : peau, muqueuses → empêchent l\'entrée des agents pathogènes<br>
+<strong>2ème ligne (immunité innée)</strong> : rapide, non spécifique<br>
+• <strong>Inflammation</strong> : rougeur, chaleur, douleur, gonflement<br>
+• <strong>Phagocytose</strong> : macrophages avalent et détruisent les pathogènes<br>
+• <strong>Fièvre</strong> : élévation de température pour combattre l\'infection<br>
+<strong>3ème ligne (immunité adaptative)</strong> : lente mais spécifique et mémorisée<br>
+• <strong>Lymphocytes B</strong> : produisent des anticorps spécifiques<br>
+• <strong>Lymphocytes T</strong> : détruisent les cellules infectées<br>
+• <strong>Anticorps</strong> : protéines spécifiques d\'un antigène</p>
+<h3>🔬 Antigènes et anticorps</h3>
+<p><strong>Antigène</strong> : molécule étrangère reconnue par le système immunitaire<br>
+<strong>Anticorps</strong> : produit par les lymphocytes B, relation clé/serrure avec l\'antigène<br>
+→ Complexe immun : anticorps + antigène → neutralisation</p>
+<h3>💉 Vaccination</h3>
+<p><strong>Mémoire immunitaire</strong> : après infection, lymphocytes mémoire → réponse plus rapide<br>
+<strong>Vaccin</strong> : antigène inoffensif → crée une mémoire sans déclencher la maladie<br>
+<strong>Allergie</strong> : réaction excessive contre un allergène inoffensif<br>
+<strong>VIH</strong> : détruit les lymphocytes T → déficit immunitaire</p>`
+      },
+      {
+        titre: 'Micro-organismes et santé',
+        resume: 'Bactéries, virus, parasites, antibiotiques, hygiène',
+        contenu: `<h3>🦠 Les agents pathogènes</h3>
+<p><strong>Bactéries</strong> : procaryotes unicellulaires → traitées par <strong>antibiotiques</strong><br>
+Ex : Staphylocoque, Streptocoque, Salmonelle<br>
+<strong>Virus</strong> : non vivants, parasites intracellulaires → NON sensibles aux antibiotiques<br>
+Ex : VIH, grippe, Covid-19, varicelle → traitement par antiviraux ou vaccin<br>
+<strong>Parasites</strong> : vivent aux dépens d\'un hôte (plasmodium = paludisme, ténia)</p>
+<h3>💊 Antibiotiques</h3>
+<p>Efficaces <strong>uniquement contre les bactéries</strong>, jamais contre les virus<br>
+<strong>Résistance</strong> : utilisation excessive → bactéries résistantes → problème majeur de santé publique<br>
+→ Ne jamais prendre d\'antibiotiques sans prescription</p>
+<h3>🧼 Transmission et prévention</h3>
+<p>• Aérienne (gouttelettes) : grippe, Covid | Contact : herpès, IST<br>
+• Fécale-orale : gastro-entérite | Vecteur (moustique) : paludisme, dengue<br>
+<strong>Prévention</strong> : lavage des mains (le plus efficace !), vaccination, préservatifs, masques</p>`
+      },
     ]
   },
   physchim: {
@@ -5853,6 +6512,24 @@ Ex : 2H₂ + O₂ → 2H₂O</p>
 • pH > 7 : basique (ion HO⁻ dominant)<br>
 <strong>Acides courants</strong> : HCl (acide chlorhydrique), H₂SO₄ (sulfurique), CH₃COOH (acétique)<br>
 <strong>Bases courantes</strong> : NaOH (soude), NH₃ (ammoniac)</p>`
+      },
+      {
+        titre: 'Énergie — sources et enjeux',
+        resume: 'Nucléaire, renouvelables, transition énergétique',
+        contenu: `<h3>⚛️ L'énergie nucléaire</h3>
+<p><strong>Fission</strong> : noyau d'uranium + neutron → 2 noyaux + neutrons + énergie (réaction en chaîne)<br>
+<strong>Centrale nucléaire</strong> : combustible → chaleur → vapeur → turbine → électricité<br>
+<strong>+</strong> : pas de CO₂, production stable | <strong>−</strong> : déchets radioactifs, risque d'accident</p>
+<h3>🌱 Énergies renouvelables</h3>
+<p>• <strong>Solaire</strong> : panneaux → électricité<br>
+• <strong>Éolien</strong> : vent → rotation → électricité<br>
+• <strong>Hydraulique</strong> : chute d'eau → turbine (barrages)<br>
+<strong>+</strong> : inépuisables, peu de CO₂ | <strong>−</strong> : intermittentes</p>
+<h3>📊 Bilan énergétique</h3>
+<p>~80% consommation mondiale = fossiles (pétrole, gaz, charbon) → CO₂ → réchauffement<br>
+<strong>Transition énergétique</strong> : réduire les fossiles, développer les renouvelables<br>
+France : ~75% électricité = nucléaire<br>
+<strong>Rendement</strong> = énergie utile / énergie totale (toujours < 100%)</p>`
       },
     ]
   }
