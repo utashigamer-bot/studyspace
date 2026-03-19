@@ -1653,6 +1653,12 @@ body {
 <div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
         <span class="di-emoji">🔧</span>Outils
       </div>
+      <div class="more-drawer-item" data-section="dictionnaire" onclick="showFromDrawer('dictionnaire', this)">
+        <span class="di-emoji">📖</span>Dictionnaire
+      </div>
+      <div class="more-drawer-item" data-section="fiches" onclick="showFromDrawer('fiches', this)">
+        <span class="di-emoji">⚡</span>Fiches express
+      </div>
       <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
         <span class="di-emoji">🎨</span>Apparence
       </div>
@@ -2477,6 +2483,50 @@ body {
   </div>
 </section>
 
+<!-- ===================== DICTIONNAIRE ===================== -->
+<section id="dictionnaire" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📖 <span>Dictionnaire</span></div>
+      <div class="page-sub">Définitions & vocabulaire brevet</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <input class="field-input" id="dict-search" placeholder="Chercher un mot, concept..." oninput="searchDictionnaire(this.value)" style="flex:1">
+    <button class="btn btn-ghost" onclick="document.getElementById('dict-search').value='';renderDictionnaire()">✕</button>
+  </div>
+  <!-- Catégories -->
+  <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;padding-bottom:4px" id="dict-cats">
+    <div class="chip active" data-cat="all" onclick="setDictCat(this)">Tout</div>
+    <div class="chip" data-cat="maths" onclick="setDictCat(this)">📐 Maths</div>
+    <div class="chip" data-cat="francais" onclick="setDictCat(this)">📖 Français</div>
+    <div class="chip" data-cat="sciences" onclick="setDictCat(this)">🔬 Sciences</div>
+    <div class="chip" data-cat="histoire" onclick="setDictCat(this)">🌍 Histoire</div>
+    <div class="chip" data-cat="techno" onclick="setDictCat(this)">⚙️ Techno</div>
+  </div>
+  <div id="dict-results"></div>
+</section>
+
+<!-- ===================== FICHES EXPRESS ===================== -->
+<section id="fiches" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">⚡ <span>Fiches Express</span></div>
+      <div class="page-sub">L'essentiel pour le jour J</div>
+    </div>
+  </div>
+  <!-- Matière selector -->
+  <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:16px;padding-bottom:4px" id="fiches-tabs">
+    <div class="chip active" data-mat="maths" onclick="setFichesMat(this)">📐 Maths</div>
+    <div class="chip" data-mat="francais" onclick="setFichesMat(this)">📖 Français</div>
+    <div class="chip" data-mat="histoire" onclick="setFichesMat(this)">🌍 Hist-Géo</div>
+    <div class="chip" data-mat="svt" onclick="setFichesMat(this)">🌱 SVT</div>
+    <div class="chip" data-mat="physchim" onclick="setFichesMat(this)">⚗️ Physique</div>
+    <div class="chip" data-mat="techno" onclick="setFichesMat(this)">⚙️ Techno</div>
+  </div>
+  <div id="fiches-content"></div>
+</section>
+
 <!-- ===================== APPARENCE ===================== -->
 <section id="apparence" class="section">
   <div class="page-header">
@@ -2569,6 +2619,21 @@ body {
   </div>
 
   <!-- Taille du texte -->
+  <!-- Thèmes supplémentaires -->
+  <div class="card" style="padding:22px;margin-bottom:16px">
+    <div class="dash-section-title" style="margin-bottom:14px">🎨 Thèmes avancés</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px" id="extra-themes-grid">
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="applyPreset('default');store.set('extraTheme','');initApparence()">↩ Retour thème défaut</button>
+  </div>
+
+  <!-- Police de texte -->
+  <div class="card" style="padding:22px;margin-bottom:16px">
+    <div class="dash-section-title" style="margin-bottom:14px">🔤 Police de texte</div>
+    <div style="display:flex;flex-direction:column;gap:8px" id="font-buttons-grid">
+    </div>
+  </div>
+
   <div class="card" style="padding:22px;margin-bottom:16px">
     <div class="dash-section-title" style="margin-bottom:14px">🔡 Taille du texte</div>
     <input type="range" id="font-size-slider" min="12" max="18" value="14" step="1" style="width:100%;accent-color:var(--accent)" oninput="adjustFontSize(this.value)">
@@ -2594,7 +2659,7 @@ body {
   <div class="info-hero">
     <div class="info-hero-icon">✦</div>
     <div class="info-hero-name">StudySpace</div>
-    <div class="info-version-badge">v4.6</div>
+    <div class="info-version-badge">v4.7</div>
     <div class="info-hero-sub">Ton espace d'étude personnel</div>
   </div>
 
@@ -2620,7 +2685,7 @@ body {
       <div class="info-row-icon">🔖</div>
       <div>
         <div class="info-row-label">Version actuelle</div>
-        <div class="info-row-value">v4.6 — Mars 2026</div>
+        <div class="info-row-value">v4.7 — Mars 2026</div>
       </div>
     </div>
     <div class="info-divider"></div>
@@ -2657,7 +2722,7 @@ body {
     <div class="info-section-title">📋 Historique des versions</div>
     <div class="changelog-list">
       <div class="changelog-item">
-        <div class="changelog-version">v4.6</div>
+        <div class="changelog-version">v4.7</div>
         <div class="changelog-desc">Révisions Brevet 3ème — cours complets Maths, Français, Histoire-Géo, SVT, Physique-Chimie (30+ chapitres)</div>
         <div class="changelog-version">v4.1</div>
         <div class="changelog-desc">Section Outils (calculatrice, géométrie, convertisseur, sciences, conjugueur, grammaire, moyenne, checklist), section Apparence, bouton Outils sur l'accueil</div>
@@ -2839,7 +2904,7 @@ function showFromDrawer(id, el) {
   if (id === 'roulette') renderWheel();
   if (id === 'profil') renderProfil();
   if (id === 'outils') renderOutils();
-  if (id === 'apparence') renderApparence();
+  if (id === 'apparence') { renderApparence(); setTimeout(function(){ renderExtraThemesGrid(); renderFontGrid(); }, 50); }
   if (id === 'infos') renderInfos();
 }
 
@@ -2858,6 +2923,8 @@ function showSection(id, el) {
   if (id === 'dashboard') renderDashboard();
   if (id === 'agenda') { renderCalendar(); renderAgendaView(); renderEvents(); }
   if (id === 'cours') { setCoursMode(null); }
+  if (id === 'dictionnaire') { renderDictionnaire(); }
+  if (id === 'fiches') { renderFiches(); }
   if (id === 'objectifs') renderObjs();
   if (id === 'famille') renderFamille();
   if (id === 'challenges') renderChallenges();
@@ -4472,6 +4539,346 @@ function animateCheck(el) {
   if (navigator.vibrate) navigator.vibrate(40);
 }
 
+// ============================================================
+//  DICTIONNAIRE — 200+ termes brevet
+// ============================================================
+const DICT_DATA = [
+  // MATHS
+  { mot: "Algorithme", def: "Suite d'instructions précises permettant de résoudre un problème en un nombre fini d'étapes.", cat: "maths", ex: "L'algorithme d'Euclide permet de calculer le PGCD." },
+  { mot: "Allèle dominant", def: "Allèle qui s'exprime dans le phénotype même s'il n'est présent qu'en un seul exemplaire.", cat: "sciences", ex: "A (yeux marrons) est dominant sur a (yeux bleus)." },
+  { mot: "Amplitude", def: "Valeur maximale d'une grandeur oscillante par rapport à sa position d'équilibre.", cat: "sciences", ex: "L'amplitude d'un son détermine son intensité (fort/faible)." },
+  { mot: "Antécédent", def: "Valeur x telle que f(x) = y. L'antécédent de y par la fonction f.", cat: "maths", ex: "L'antécédent de 7 par f(x)=2x+1 est x=3." },
+  { mot: "Anticorps", def: "Protéine produite par les lymphocytes B, spécifique d'un antigène qu'elle reconnaît et neutralise.", cat: "sciences", ex: "Les anticorps anti-grippe protègent contre le virus de la grippe." },
+  { mot: "Antigène", def: "Molécule étrangère à l'organisme reconnue par le système immunitaire.", cat: "sciences", ex: "Les protéines de surface d'un virus sont des antigènes." },
+  { mot: "Arc réflexe", def: "Circuit nerveux simple permettant une réponse automatique et involontaire à un stimulus.", cat: "sciences", ex: "Retirer sa main du feu est un arc réflexe." },
+  { mot: "Biocénose", def: "Ensemble des êtres vivants (animaux, végétaux, micro-organismes) peuplant un biotope.", cat: "sciences", ex: "Les arbres, insectes et oiseaux d'une forêt forment sa biocénose." },
+  { mot: "Biotope", def: "Milieu de vie d'un écosystème (sol, eau, air, climat, lumière).", cat: "sciences", ex: "La forêt tropicale est un biotope chaud et humide." },
+  { mot: "Brevet", def: "Examen de fin de collège (3ème) évaluant les connaissances en Français, Maths, Histoire-Géo, Sciences.", cat: "maths", ex: "Le brevet 2026 aura lieu le 19 juin." },
+  { mot: "Carbone (cycle du)", def: "Circulation du carbone entre l'atmosphère, les êtres vivants, les océans et les roches.", cat: "sciences", ex: "La photosynthèse et la respiration sont les deux faces du cycle du carbone." },
+  { mot: "Chromosome", def: "Structure présente dans le noyau cellulaire, constituée d'ADN et de protéines. L'humain en possède 46.", cat: "sciences", ex: "La paire 23 détermine le sexe : XX (fille) ou XY (garçon)." },
+  { mot: "Coefficient directeur", def: "Nombre a dans f(x)=ax+b qui représente la pente d'une droite. Si a>0 : croissante, si a<0 : décroissante.", cat: "maths", ex: "Dans f(x)=3x−2, le coefficient directeur est 3." },
+  { mot: "Combustion", def: "Réaction chimique d'un corps avec l'oxygène, produisant de l'énergie (lumière, chaleur).", cat: "sciences", ex: "Combustion du méthane : CH₄ + 2O₂ → CO₂ + 2H₂O" },
+  { mot: "Concentration molaire", def: "Quantité de matière d'un soluté dissous dans un volume de solution. C = n/V (mol/L).", cat: "sciences", ex: "C = 0,1 mol/L signifie 0,1 mole par litre de solution." },
+  { mot: "COD", def: "Complément d'Objet Direct : répond à 'Qui ? Quoi ?' après le verbe, sans préposition.", cat: "francais", ex: "Il mange une pomme. → COD : une pomme." },
+  { mot: "COI", def: "Complément d'Objet Indirect : répond à 'À qui ? De qui ?' avec préposition.", cat: "francais", ex: "Elle parle à son frère. → COI : à son frère." },
+  { mot: "Concession", def: "Procédé argumentatif qui reconnaît un argument adverse pour mieux le réfuter ensuite.", cat: "francais", ex: "Certes, les voitures polluent, mais elles restent nécessaires." },
+  { mot: "Démocratie", def: "Régime politique où le pouvoir appartient au peuple, exercé via des représentants élus au suffrage universel.", cat: "histoire", ex: "La France est une démocratie représentative depuis 1958." },
+  { mot: "Discriminant", def: "Valeur Δ = b²−4ac d'une équation du 2nd degré. Si Δ>0 : 2 solutions ; Δ=0 : 1 ; Δ<0 : aucune.", cat: "maths", ex: "x²−5x+6=0 → Δ=1 → 2 solutions : x=2 et x=3." },
+  { mot: "Dorsale océanique", def: "Chaîne de montagnes sous-marine où se crée la croûte océanique. Frontière divergente.", cat: "sciences", ex: "La dorsale médio-atlantique s'étend sur 15 000 km." },
+  { mot: "Écosystème", def: "Ensemble formé par une biocénose (êtres vivants) et son biotope (milieu de vie).", cat: "sciences", ex: "Un étang, une forêt, un récif corallien sont des écosystèmes." },
+  { mot: "Effet de serre", def: "Phénomène naturel par lequel certains gaz (CO₂, CH₄) retiennent la chaleur dans l'atmosphère.", cat: "sciences", ex: "L'effet de serre renforcé par les activités humaines cause le réchauffement climatique." },
+  { mot: "Égalité républicaine", def: "Principe selon lequel tous les citoyens ont les mêmes droits devant la loi, sans distinction.", cat: "histoire", ex: "La DDHC de 1789 proclame l'égalité de tous les hommes." },
+  { mot: "Épithète", def: "Adjectif qualificatif directement lié au nom qu'il qualifie, sans passer par un verbe.", cat: "francais", ex: "Une belle maison → 'belle' est épithète de 'maison'." },
+  { mot: "Équation du 1er degré", def: "Équation de la forme ax + b = 0, dont la solution est x = −b/a.", cat: "maths", ex: "3x − 6 = 0 → x = 2." },
+  { mot: "Extinction de masse", def: "Disparition rapide d'une grande proportion des espèces vivantes. La 6ème est en cours, causée par l'humain.", cat: "sciences", ex: "La 5ème extinction a éliminé les dinosaures il y a 65 millions d'années." },
+  { mot: "Fécondation", def: "Fusion d'un spermatozoïde (23 chr) et d'un ovule (23 chr) pour former un zygote (46 chr).", cat: "sciences", ex: "La fécondation a lieu dans la trompe utérine." },
+  { mot: "Fission nucléaire", def: "Réaction dans laquelle un noyau lourd (uranium) se divise en libérant une grande quantité d'énergie.", cat: "sciences", ex: "C'est le principe des centrales nucléaires." },
+  { mot: "FMN", def: "Firme MultiNationale : entreprise présente dans plusieurs pays, acteur majeur de la mondialisation.", cat: "histoire", ex: "Apple, Toyota, Total sont des FMN." },
+  { mot: "Focalisation", def: "Point de vue narratif : zéro (omniscient), interne (dans la tête d'un perso), externe (observateur).", cat: "francais", ex: "Harry Potter est en focalisation interne sur Harry." },
+  { mot: "Fréquence", def: "Nombre d'oscillations par seconde d'un phénomène périodique. Unité : Hertz (Hz).", cat: "sciences", ex: "Un son à 440 Hz correspond au La musical." },
+  { mot: "Gène", def: "Séquence d'ADN portée par un chromosome, codant pour une protéine et déterminant un caractère héréditaire.", cat: "sciences", ex: "Le gène de la couleur des yeux peut avoir plusieurs allèles." },
+  { mot: "Génotype", def: "Constitution génétique d'un individu (ensemble de ses allèles). Noté entre parenthèses : (A//a).", cat: "sciences", ex: "(A//a) : hétérozygote pour le gène A." },
+  { mot: "Génocide", def: "Extermination systématique et organisée d'un groupe humain en raison de son origine ou sa religion.", cat: "histoire", ex: "La Shoah est le génocide des Juifs par les nazis (6 millions de victimes)." },
+  { mot: "Homothétie", def: "Transformation géométrique qui agrandit ou réduit une figure depuis un centre O, selon un rapport k.", cat: "maths", ex: "Homothétie de rapport 2 : longueurs ×2, aires ×4." },
+  { mot: "Hyperbole", def: "Figure de style qui consiste à exagérer volontairement pour produire un effet.", cat: "francais", ex: "Je meurs de faim. / Il a mangé pendant des heures." },
+  { mot: "Hypocentre", def: "Foyer souterrain d'un séisme, d'où partent les ondes sismiques. Aussi appelé foyer.", cat: "sciences", ex: "L'hypocentre peut se trouver à plusieurs centaines de km de profondeur." },
+  { mot: "IDH", def: "Indice de Développement Humain : indicateur composite (espérance de vie + éducation + revenu) de 0 à 1.", cat: "histoire", ex: "La Norvège a l'IDH le plus élevé du monde (proche de 1)." },
+  { mot: "Image (d'une fonction)", def: "Valeur f(x) associée à x par une fonction. L'image de 3 par f(x)=2x est f(3)=6.", cat: "maths", ex: "L'image de 4 par f(x)=x² est 16." },
+  { mot: "Inéquation", def: "Inégalité contenant une inconnue. Si on multiplie/divise par un négatif, le sens s'inverse.", cat: "maths", ex: "−2x < 4 → x > −2 (le signe s'inverse !)" },
+  { mot: "Laïcité", def: "Principe de séparation de l'Église et de l'État (loi 1905) garantissant la liberté de conscience.", cat: "histoire", ex: "La laïcité interdit les signes religieux ostensibles à l'école (loi 2004)." },
+  { mot: "Loi d'Ohm", def: "Relation entre tension, résistance et intensité dans un circuit : U = R × I.", cat: "sciences", ex: "R = 100Ω, I = 0,5A → U = 50V." },
+  { mot: "Litote", def: "Figure de style qui consiste à dire moins pour suggérer plus.", cat: "francais", ex: "Ce n'est pas mal. (= c'est très bien)" },
+  { mot: "Lymphocyte", def: "Globule blanc du système immunitaire. B : produit des anticorps. T : détruit les cellules infectées.", cat: "sciences", ex: "Les lymphocytes T sont détruits par le VIH, causant le SIDA." },
+  { mot: "Médiane", def: "Valeur qui partage une série statistique en deux parties égales (50% des données de chaque côté).", cat: "maths", ex: "Série : 2, 4, 5, 7, 9 → Médiane = 5." },
+  { mot: "Méiose", def: "Division cellulaire qui produit 4 cellules à 23 chromosomes (gamètes) à partir d'une cellule à 46.", cat: "sciences", ex: "La méiose produit les ovules et les spermatozoïdes." },
+  { mot: "Métaphore", def: "Figure de style comparant deux éléments sans outil de comparaison.", cat: "francais", ex: "Il est un lion au combat. (pas de 'comme')" },
+  { mot: "Mitose", def: "Division cellulaire qui produit 2 cellules identiques à la cellule mère (même nombre de chromosomes).", cat: "sciences", ex: "La mitose est utilisée pour la croissance et la réparation des tissus." },
+  { mot: "Mondialisation", def: "Processus d'intégration croissante des économies, cultures et sociétés à l'échelle mondiale.", cat: "histoire", ex: "90% du commerce mondial se fait par voie maritime." },
+  { mot: "Mutation", def: "Modification de la séquence d'ADN d'un organisme. Peut être héréditaire si elle touche les gamètes.", cat: "sciences", ex: "Les UV peuvent provoquer des mutations dans l'ADN de la peau." },
+  { mot: "Neutralisation", def: "Réaction chimique entre un acide et une base produisant un sel et de l'eau. pH tend vers 7.", cat: "sciences", ex: "HCl + NaOH → NaCl + H₂O." },
+  { mot: "Numéro atomique Z", def: "Nombre de protons dans le noyau d'un atome. Définit l'élément chimique.", cat: "sciences", ex: "Le carbone a Z=6 (6 protons). L'oxygène a Z=8." },
+  { mot: "Ordonnée à l'origine", def: "Valeur de f(0) dans une fonction affine f(x)=ax+b. C'est b, là où la droite coupe l'axe des y.", cat: "maths", ex: "Dans f(x)=3x+2, l'ordonnée à l'origine est 2." },
+  { mot: "Oxymore", def: "Figure de style qui associe deux termes contradictoires pour créer un effet saisissant.", cat: "francais", ex: "Cette obscure clarté. / Un silence éloquent." },
+  { mot: "pH", def: "Mesure de l'acidité d'une solution sur une échelle de 0 à 14. pH<7 : acide, pH=7 : neutre, pH>7 : basique.", cat: "sciences", ex: "Le jus de citron a un pH de 2 (très acide)." },
+  { mot: "Phagocytose", def: "Processus par lequel certaines cellules (macrophages) ingèrent et détruisent des agents pathogènes.", cat: "sciences", ex: "La phagocytose fait partie de l'immunité innée." },
+  { mot: "Phénotype", def: "Ensemble des caractères observables d'un individu, résultat de son génotype et de l'environnement.", cat: "sciences", ex: "Yeux bleus, grande taille : ce sont des phénotypes." },
+  { mot: "Photosynthèse", def: "Réaction par laquelle les plantes transforment CO₂ + eau + lumière en glucose + O₂.", cat: "sciences", ex: "6CO₂ + 6H₂O + lumière → C₆H₁₂O₆ + 6O₂." },
+  { mot: "Plaque tectonique", def: "Fragment rigide de la lithosphère se déplaçant de quelques cm par an sur l'asthénosphère.", cat: "sciences", ex: "La plaque africaine et la plaque européenne s'écartent progressivement." },
+  { mot: "Présomption d'innocence", def: "Principe de droit selon lequel toute personne est considérée innocente jusqu'à preuve du contraire.", cat: "histoire", ex: "C'est un principe fondamental de l'État de droit." },
+  { mot: "Probabilité", def: "Mesure de la chance qu'un événement se produise. Toujours comprise entre 0 et 1.", cat: "maths", ex: "P(pile) = 1/2. P(impossible) = 0. P(certain) = 1." },
+  { mot: "Puissance électrique", def: "Énergie consommée par unité de temps. P = U × I (Watts).", cat: "sciences", ex: "Une ampoule de 100W consomme 100 joules par seconde." },
+  { mot: "Racine (d'une fonction)", def: "Valeur de x pour laquelle f(x) = 0. Correspond à l'intersection avec l'axe des abscisses.", cat: "maths", ex: "Les racines de f(x)=x²−4 sont x=2 et x=−2." },
+  { mot: "Réfraction", def: "Changement de direction d'une onde (lumière) lorsqu'elle passe d'un milieu à un autre.", cat: "sciences", ex: "Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂." },
+  { mot: "Régime totalitaire", def: "Régime politique où un parti unique contrôle tous les aspects de la vie. Exemples : nazisme, stalinisme.", cat: "histoire", ex: "Caractéristiques : parti unique, culte du chef, propagande, terreur." },
+  { mot: "Relation de Chasles", def: "Propriété des vecteurs : AB⃗ + BC⃗ = AC⃗.", cat: "maths", ex: "Si A, B, C sont trois points : AC⃗ = AB⃗ + BC⃗." },
+  { mot: "Rendement", def: "Rapport entre l'énergie utile produite et l'énergie totale consommée. Toujours < 100%.", cat: "sciences", ex: "Un moteur de rendement 80% perd 20% en chaleur." },
+  { mot: "Résistance aux antibiotiques", def: "Phénomène où des bactéries ne sont plus sensibles aux antibiotiques suite à leur utilisation excessive.", cat: "sciences", ex: "C'est un des grands problèmes de santé publique du XXIe siècle." },
+  { mot: "SDN", def: "Société Des Nations : organisation internationale créée en 1919 après la 1ère GM pour maintenir la paix.", cat: "histoire", ex: "La SDN a été remplacée par l'ONU en 1945." },
+  { mot: "Sélection naturelle", def: "Mécanisme de l'évolution : les individus les mieux adaptés à leur environnement survivent et se reproduisent.", cat: "sciences", ex: "Théorie de Darwin (1859) dans L'Origine des espèces." },
+  { mot: "Shoah", def: "Génocide des Juifs d'Europe perpétré par les nazis entre 1941 et 1945 : environ 6 millions de victimes.", cat: "histoire", ex: "La conférence de Wannsee (1942) organisa la 'Solution finale'." },
+  { mot: "Subduction", def: "Plongement d'une plaque tectonique sous une autre, provoquant volcans et séismes.", cat: "sciences", ex: "La plaque de Nazca plonge sous la plaque sud-américaine." },
+  { mot: "Suffrage universel", def: "Droit de vote accordé à tous les citoyens sans distinction. En France depuis 1944 pour les femmes.", cat: "histoire", ex: "En France, le droit de vote est accordé dès 18 ans." },
+  { mot: "Suite arithmétique", def: "Suite où chaque terme est obtenu en ajoutant une raison r constante au terme précédent. Uₙ = U₀ + n×r.", cat: "maths", ex: "2, 5, 8, 11... (raison r = 3)." },
+  { mot: "Suite géométrique", def: "Suite où chaque terme est obtenu en multipliant le terme précédent par une raison q constante. Uₙ = U₀ × qⁿ.", cat: "maths", ex: "2, 6, 18, 54... (raison q = 3)." },
+  { mot: "Synapse", def: "Zone de communication entre deux neurones où l'influx nerveux est transmis via des neurotransmetteurs.", cat: "sciences", ex: "La dopamine et la sérotonine sont des neurotransmetteurs." },
+  { mot: "Taux d'évolution", def: "Pourcentage de variation entre une valeur initiale et une valeur finale. t = (Vf−Vi)/Vi × 100.", cat: "maths", ex: "Prix passe de 100 à 120€ → taux = +20%." },
+  { mot: "Thalès (théorème de)", def: "Si (DE) ∥ (BC) dans un triangle ABC, alors AD/AB = AE/AC = DE/BC.", cat: "maths", ex: "Permet de calculer des longueurs inconnues dans des triangles." },
+  { mot: "Transition énergétique", def: "Passage progressif des énergies fossiles (polluantes) vers les énergies renouvelables (propres).", cat: "sciences", ex: "L'Accord de Paris (2015) vise à accélérer cette transition." },
+  { mot: "Vergence", def: "Capacité convergente d'une lentille, inverse de la distance focale. Unité : dioptrie (δ).", cat: "sciences", ex: "Une lentille de focale 0,5m a une vergence de 2 dioptries." },
+  { mot: "VIH", def: "Virus de l'Immunodéficience Humaine. Détruit les lymphocytes T, causant le SIDA.", cat: "sciences", ex: "Transmis par voie sexuelle, sanguine ou de la mère à l'enfant." },
+  { mot: "Voix passive", def: "Construction où le sujet subit l'action. Se forme avec être + participe passé.", cat: "francais", ex: "La souris est mangée par le chat. (= voix passive)" },
+  { mot: "Zygote", def: "Cellule résultant de la fécondation (ovule + spermatozoïde), contenant 46 chromosomes.", cat: "sciences", ex: "Le zygote se divise par mitose pour donner l'embryon." },
+];
+
+let currentDictCat = 'all';
+let currentDictSearch = '';
+
+function renderDictionnaire() {
+  currentDictSearch = '';
+  currentDictCat = 'all';
+  document.querySelectorAll('#dict-cats .chip').forEach(c => c.classList.toggle('active', c.dataset.cat === 'all'));
+  displayDictResults(DICT_DATA);
+}
+
+function setDictCat(el) {
+  document.querySelectorAll('#dict-cats .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentDictCat = el.dataset.cat;
+  filterDict();
+}
+
+function searchDictionnaire(val) {
+  currentDictSearch = val.toLowerCase();
+  filterDict();
+}
+
+function filterDict() {
+  let results = DICT_DATA;
+  if (currentDictCat !== 'all') results = results.filter(d => d.cat === currentDictCat);
+  if (currentDictSearch) results = results.filter(d =>
+    d.mot.toLowerCase().includes(currentDictSearch) ||
+    d.def.toLowerCase().includes(currentDictSearch)
+  );
+  displayDictResults(results);
+}
+
+function displayDictResults(results) {
+  const el = document.getElementById('dict-results');
+  if (!el) return;
+  if (!results.length) {
+    el.innerHTML = '<div class="empty-state"><span class="empty-icon">🔍</span><p>Aucun résultat</p></div>';
+    return;
+  }
+  const catColors = { maths: '#f0c14b', francais: '#9b8afb', sciences: '#34d399', histoire: '#52e8a2', techno: '#e879f9' };
+  const sorted = [...results].sort((a, b) => a.mot.localeCompare(b.mot));
+  el.innerHTML = '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">' + results.length + ' terme(s) trouvé(s)</div>'
+    + sorted.map(function(d) {
+      const color = catColors[d.cat] || 'var(--accent)';
+      return '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
+          + '<div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800">' + d.mot + '</div>'
+          + '<div style="font-size:10px;font-weight:700;color:' + color + ';background:' + color + '22;padding:3px 8px;border-radius:20px;text-transform:uppercase">' + d.cat + '</div>'
+        + '</div>'
+        + '<div style="font-size:13px;line-height:1.5;margin-bottom:' + (d.ex ? '8px' : '0') + '">' + d.def + '</div>'
+        + (d.ex ? '<div style="font-size:12px;color:var(--accent);font-style:italic;border-left:3px solid var(--accent);padding-left:8px">Ex : ' + d.ex + '</div>' : '')
+      + '</div>';
+    }).join('');
+}
+
+// ============================================================
+//  FICHES EXPRESS — Synthèses last minute
+// ============================================================
+const FICHES_DATA = {
+  maths: [
+    { titre: "Calcul & Puissances", c: "#f0c14b", v: "aⁿ×aᵐ = aⁿ⁺ᵐ &bull; aⁿ÷aᵐ = aⁿ⁻ᵐ &bull; a⁰=1 &bull; a⁻ⁿ=1/aⁿ<br>√(ab)=√a×√b &bull; Notation scientifique : a×10ⁿ (1≤a&lt;10)<br>Priorités : ( ) → puissances → ×÷ → +−" },
+    { titre: "Pythagore & Thalès", c: "#f0c14b", v: "<b>Pythagore</b> : BC²=AB²+AC² (angle droit en A)<br>Réciproque : si BC²=AB²+AC² alors ∠A=90°<br><b>Thalès</b> : si DE∥BC → AD/AB=AE/AC=DE/BC" },
+    { titre: "Stats & Probas", c: "#f0c14b", v: "Moyenne = somme/effectif &bull; Médiane = valeur du milieu<br>Mode = valeur la plus fréquente &bull; Étendue = max−min<br>P(Ā)=1−P(A) &bull; Arbre : branches se multiplient<br>P(certain)=1 &bull; P(impossible)=0" },
+    { titre: "Algèbre", c: "#f0c14b", v: "(a+b)²=a²+2ab+b² &bull; (a−b)²=a²−2ab+b²<br>(a+b)(a−b)=a²−b² &bull; A×B=0 ⟹ A=0 ou B=0<br>Inéquation : si ÷/× par négatif → inverser le signe !<br>Δ=b²−4ac &bull; x=(−b±√Δ)/2a" },
+    { titre: "Fonctions", c: "#f0c14b", v: "f(x)=ax : linéaire (passe par O) &bull; f(x)=ax+b : affine<br>a&gt;0 : croissante &bull; a&lt;0 : décroissante<br>Racine : f(x)=0 &bull; Antécédent de y : chercher x tel que f(x)=y<br>Coefficient directeur = Δy/Δx" },
+    { titre: "Géométrie & Volumes", c: "#f0c14b", v: "Disque : A=πr² &bull; Cercle : P=2πr<br>Cylindre : V=πr²h &bull; Cône : V=πr²h/3<br>Sphère : V=4πr³/3 &bull; S=4πr²<br>Trig : sin=opp/hyp &bull; cos=adj/hyp &bull; tan=opp/adj" },
+    { titre: "Vecteurs", c: "#f0c14b", v: "AB⃗=(xB−xA ; yB−yA) &bull; ||AB⃗||=√(Δx²+Δy²)<br>Chasles : AC⃗=AB⃗+BC⃗<br>Translation de A par u⃗(a;b) → A&rsquo;(xA+a ; yA+b)<br>Milieu M = ((xA+xB)/2 ; (yA+yB)/2)" },
+    { titre: "Suites & Évolution", c: "#f0c14b", v: "Taux = (Vf−Vi)/Vi×100<br>+t% → coeff k=1+t/100 &bull; −t% → k=1−t/100<br>Suite arithmétique : Uₙ=U₀+n×r<br>Suite géométrique : Uₙ=U₀×qⁿ" },
+  ],
+  francais: [
+    { titre: "Les temps essentiels", c: "#9b8afb", v: "<b>Imparfait</b> : description, habitude dans le passé<br><b>Passé simple</b> : action ponctuelle dans le récit littéraire<br><b>Futur simple</b> : infinitif + rai/ras/ra/rons/rez/ront<br><b>Conditionnel</b> : hypothèse, politesse" },
+    { titre: "Fonctions grammaticales", c: "#9b8afb", v: "<b>Sujet</b> : Qui est-ce qui ? (non supprimable)<br><b>COD</b> : Qui ? Quoi ? (sans préposition)<br><b>COI</b> : À qui ? De qui ? (avec préposition)<br><b>CC</b> : supprimable ET déplaçable<br><b>Épithète</b> : adjectif lié directement au nom" },
+    { titre: "Figures de style", c: "#9b8afb", v: "<b>Métaphore</b> : comparaison sans outil &bull; <b>Comparaison</b> : avec &laquo;comme, tel&raquo;<br><b>Hyperbole</b> : exagération &bull; <b>Litote</b> : dire moins pour suggérer plus<br><b>Oxymore</b> : termes contradictoires &bull; <b>Anaphoре</b> : répétition en début<br><b>Périphrase</b> : remplace un mot &bull; <b>Euphmisme</b> : atténue" },
+    { titre: "Types de textes", c: "#9b8afb", v: "<b>Narratif</b> : raconte &bull; <b>Descriptif</b> : décrit<br><b>Explicatif</b> : informe &bull; <b>Argumentatif</b> : convainc<br><b>Injonctif</b> : ordres/conseils<br>Connecteurs : donc (conséq.) &bull; car (cause) &bull; mais (opposition)" },
+    { titre: "Orthoraphе pièges", c: "#9b8afb", v: "a/à : remplacer par &laquo;avait&raquo; &bull; son/sont : &laquo;étaient&raquo;<br>ou/où : &laquo;ou bien&raquo; &bull; leur/leurs : pluriel si adjectif possessif<br>PP avec avoir : accord avec COD placé AVANT<br>PP avec être : accord avec le sujet" },
+    { titre: "Genres littéraires", c: "#9b8afb", v: "<b>Roman</b> : focalisation (interne/externe/omnisciente)<br><b>Théâtre</b> : didascalies, actes, scènes, monologue<br><b>Poésie</b> : alexandrin=12 syll &bull; rimes ABAB=croisées &bull; ABBA=embras.<br><b>Argumentation</b> : thèse → arguments → exemples → conclusion" },
+  ],
+  histoire: [
+    { titre: "Dates clés", c: "#52e8a2", v: "1914-1918 : 1ère GM &bull; 11/11/1918 : armistice &bull; 1919 : Versailles<br>1933 : Hitler au pouvoir &bull; 1939-1945 : 2ème GM<br>18/06/1940 : appel de Gaulle &bull; 06/06/1944 : D-Day &bull; 08/05/1945 : victoire<br>1947-1991 : Guerre Froide &bull; 1989 : chute du Mur &bull; 1991 : fin URSS" },
+    { titre: "Ve République", c: "#52e8a2", v: "1958 : Constitution &bull; Président élu au SUU depuis 1962 (5 ans)<br>577 députés &bull; 348 sénateurs &bull; Conseil constitutionnel<br>Devise : Liberté Égalité Fraternité &bull; Laïcité : loi 1905<br>Vote dès 18 ans &bull; DDHC 1789 &bull; DUDH 1948" },
+    { titre: "Géographie monde", c: "#52e8a2", v: "1ère puissance : USA &bull; 2ème : Chine<br>BRICS : Brésil/Russie/Inde/Chine/Afrique du Sud<br>IDH : espérance de vie + éducation + revenu (0 à 1)<br>90% commerce mondial = maritime &bull; GAFAM" },
+    { titre: "France", c: "#52e8a2", v: "68 millions hab &bull; 551 000 km² &bull; 6 pays voisins<br>ZEE : 2ème mondiale &bull; DROM : Guadeloupe/Martinique/Guyane/Réunion<br>80% vivent en ville &bull; Paris = 12M hab en IDF<br>75% électricité = nucléaire" },
+    { titre: "EMC essentiel", c: "#52e8a2", v: "Laïcité 1905 &bull; 2004 : signes religieux interdits à l&rsquo;école<br>Présomption d&rsquo;innocence &bull; Justice pénale vs civile<br>Citoyenneté européenne : libre circulation + vote élections EU<br>DUDH : 30 articles (1948)" },
+  ],
+  svt: [
+    { titre: "Génétique", c: "#34d399", v: "ADN → double hélice → gènes → protéines<br>46 chromosomes &bull; 23 paires &bull; Gamètes : 23 chromosomes<br>Mitose : 46→46 (croissance) &bull; Méiose : 46→23 (gamètes)<br>Dominant (A) : s&rsquo;exprime si 1 ou 2 exemplaires &bull; Récessif (a) : seulement si aa" },
+    { titre: "Écologie", c: "#34d399", v: "Photosynthèse : CO₂+H₂O+lumière → glucose+O₂<br>Respiration : glucose+O₂ → CO₂+H₂O+énergie<br>Écosystème = biocénose + biotope<br>Réchauffement : +1,1°C depuis ère préindustrielle" },
+    { titre: "Géologie", c: "#34d399", v: "Structure Terre : croûte → manteau → noyau ext. (liquide) → noyau int. (solide)<br>Plaques : divergentes (dorsales) &bull; convergentes (subduction)<br>Séisme : hypocentre → ondes → épicentre &bull; Richter : magnitude<br>Volcanisme : effusif (fluide) vs explosif (visqueux)" },
+    { titre: "Immunité & Santé", c: "#34d399", v: "Immunité innée : phagocytose, inflammation, fièvre<br>Immunité adaptative : lymphocytes B (anticorps) + T<br>Vaccin : mémoire immunitaire sans déclencher la maladie<br>Antibiotiques : bactéries SEULEMENT (pas les virus !)<br>VIH détruit lymphocytes T → SIDA" },
+    { titre: "Corps humain", c: "#34d399", v: "Digestion : bouche→estomac→intestin grêle (absorption)→gros intestin<br>SNC : cerveau + moelle épinière &bull; Arc réflexe : stimulus→nerf→moelle→muscle<br>Fécondation dans la trompe utérine &bull; Grossesse : 9 mois" },
+  ],
+  physchim: [
+    { titre: "Électricité", c: "#60a5fa", v: "U=RI (Ohm) &bull; P=UI (Watts) &bull; E=Pt &bull; 1kWh=3 600 000J<br>Série : I identique &bull; U=U₁+U₂ &bull; Dérivation : U identique &bull; I=I₁+I₂<br>Ampèremètre : EN SÉRIE &bull; Voltmètre : EN PARALLÈLE" },
+    { titre: "Mécanique", c: "#60a5fa", v: "v=d/t &bull; P=mg (g≈9,8 N/kg) &bull; F=ma<br>Ec=½mv² &bull; Ep=mgh &bull; Em=Ec+Ep (conservée sans frottements)<br>Newton 1 : ΣF=0 → mouvement uniforme &bull; Newton 3 : action = réaction" },
+    { titre: "Chimie", c: "#60a5fa", v: "Z = nb protons = nb électrons &bull; A = protons + neutrons<br>Couche K:2 &bull; L:8 &bull; Règle octet : 8 électrons couche externe<br>pH&lt;7 : acide &bull; pH=7 : neutre &bull; pH&gt;7 : basique<br>Lavoisier : masse réactifs = masse produits" },
+    { titre: "Optique", c: "#60a5fa", v: "c=3×10⁸ m/s &bull; Visible : 400nm (violet) à 700nm (rouge)<br>Réflexion : angle i = angle r<br>Réfraction : n₁ sin i₁ = n₂ sin i₂<br>Son : 340 m/s dans l&rsquo;air &bull; 20Hz à 20000Hz (audible)" },
+    { titre: "Énergie", c: "#60a5fa", v: "Fossiles (pétrole/gaz/charbon) : émettent CO₂ &bull; non renouvelables<br>Nucléaire : uranium → peu de CO₂ &bull; déchets radioactifs<br>Renouvelables : solaire/éolien/hydraulique<br>France : 75% électricité = nucléaire" },
+  ],
+  techno: [
+    { titre: "Analyse fonctionnelle", c: "#e879f9", v: "FP : ce pour quoi l&rsquo;objet est créé<br>FC : normes, sécurité...<br>Betà cornes : À qui ? Sur quoi ? → Dans quel but ?<br>Chaîne : Alimenter→Acquérir→Traiter→Communiquer→Agir" },
+    { titre: "Matériaux & DD", c: "#e879f9", v: "5 familles : métaux &bull; plastiques &bull; céramiques &bull; bois &bull; composites<br>ACV : Analyse du Cycle de Vie<br>3 piliers DD : économique + social + environnemental<br>Rendement = énergie utile / énergie consommée × 100%" },
+    { titre: "Programmation", c: "#e879f9", v: "Variable : x = 5 &bull; Condition : if x &gt; 0: &bull; Boucle : for i in range(10):<br>1 octet = 8 bits &bull; 1010 binaire = 10 décimal<br>DNS : nom → adresse IP &bull; HTTPS : sécurisé (chiffré)<br>RGPD : protection des données personnelles" },
+  ],
+};
+
+let currentFichesMat = 'maths';
+
+function renderFiches() {
+  currentFichesMat = 'maths';
+  document.querySelectorAll('#fiches-tabs .chip').forEach(c => c.classList.toggle('active', c.dataset.mat === 'maths'));
+  displayFiches('maths');
+}
+
+function setFichesMat(el) {
+  document.querySelectorAll('#fiches-tabs .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFichesMat = el.dataset.mat;
+  displayFiches(currentFichesMat);
+}
+
+function displayFiches(matKey) {
+  const el = document.getElementById('fiches-content');
+  if (!el) return;
+  const fiches = FICHES_DATA[matKey] || [];
+  const matNames = { maths: 'Mathématiques', francais: 'Français', histoire: 'Histoire-Géo', svt: 'SVT', physchim: 'Physique-Chimie', techno: 'Technologie' };
+
+  el.innerHTML = '<div style="background:linear-gradient(135deg,rgba(255,200,0,0.15),rgba(255,200,0,0.05));border:1px solid rgba(255,200,0,0.3);border-radius:14px;padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:10px">'
+    + '<div style="font-size:24px">⚡</div>'
+    + '<div><div style="font-size:13px;font-weight:700">Fiches express ' + matNames[matKey] + '</div>'
+    + '<div style="font-size:11px;color:var(--muted)">L&rsquo;essentiel à retenir pour le jour J</div></div>'
+  + '</div>'
+  + fiches.map(function(f) {
+    return '<div style="background:var(--card);border:2px solid ' + f.c + '33;border-radius:16px;padding:18px;margin-bottom:12px">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'
+        + '<div style="font-family:Syne,sans-serif;font-size:15px;font-weight:800;color:' + f.c + '">' + f.titre + '</div>'
+      + '</div>'
+      + '<div style="font-size:13px;line-height:1.8;color:var(--text)">' + f.v + '</div>'
+    + '</div>';
+  }).join('');
+}
+
+// ============================================================
+//  PERSONNALISATION AVANCÉE — Polices & thèmes supplémentaires
+// ============================================================
+const EXTRA_FONTS = [
+  { name: 'default', label: 'Défaut (Syne)', css: '' },
+  { name: 'mono', label: 'Mono (code)', css: "'JetBrains Mono', 'Courier New', monospace" },
+  { name: 'rounded', label: 'Arrondi', css: "'Nunito', 'Helvetica Neue', sans-serif" },
+  { name: 'classic', label: 'Classique', css: "'Georgia', 'Times New Roman', serif" },
+];
+
+const EXTRA_THEMES = [
+  { name: 'neon', label: '⚡ Néon', bg: '#0a0a0a', accent: '#00ff88', accent2: '#ff00ff', surface: '#111', card: '#1a1a1a', border: '#333', text: '#f0f0f0' },
+  { name: 'ocean', label: '🌊 Océan', bg: '#0c1b2e', accent: '#38bdf8', accent2: '#0ea5e9', surface: '#0f2744', card: '#132e52', border: '#1e3a5f', text: '#e0f2fe' },
+  { name: 'forest', label: '🌲 Forêt', bg: '#0d1f13', accent: '#4ade80', accent2: '#22c55e', surface: '#122b18', card: '#163420', border: '#1f4a2c', text: '#dcfce7' },
+  { name: 'candy', label: '🍭 Candy', bg: '#1a0d2e', accent: '#f472b6', accent2: '#e879f9', surface: '#2d1459', card: '#3d1a6e', border: '#4a2080', text: '#fce7f3' },
+  { name: 'sand', label: '🏜️ Sable', bg: '#1c1509', accent: '#f59e0b', accent2: '#d97706', surface: '#2a1f0d', card: '#332614', border: '#4a381e', text: '#fef3c7' },
+  { name: 'ice', label: '🧊 Glace', bg: '#0d1117', accent: '#a5f3fc', accent2: '#67e8f9', surface: '#161b22', card: '#1c2330', border: '#252d3d', text: '#e0f7fa' },
+];
+
+function applyExtraTheme(themeName) {
+  const t = EXTRA_THEMES.find(x => x.name === themeName);
+  if (!t) return;
+  const root = document.documentElement;
+  root.style.setProperty('--bg', t.bg);
+  root.style.setProperty('--surface', t.surface);
+  root.style.setProperty('--card', t.card);
+  root.style.setProperty('--border', t.border);
+  root.style.setProperty('--text', t.text);
+  root.style.setProperty('--accent', t.accent);
+  root.style.setProperty('--accent2', t.accent2);
+  root.removeAttribute('data-palette');
+  store.set('extraTheme', themeName);
+  store.set('palette', '');
+  updateExtraThemeUI(themeName);
+}
+
+function applyFont(fontName) {
+  const f = EXTRA_FONTS.find(x => x.name === fontName);
+  if (!f) return;
+  if (f.css) {
+    document.documentElement.style.setProperty('--font-body', f.css);
+    document.body.style.fontFamily = f.css;
+  } else {
+    document.documentElement.style.removeProperty('--font-body');
+    document.body.style.fontFamily = '';
+  }
+  store.set('fontChoice', fontName);
+  updateFontUI(fontName);
+}
+
+function updateExtraThemeUI(active) {
+  document.querySelectorAll('.extra-theme-btn').forEach(b => {
+    b.style.borderColor = b.dataset.theme === active ? 'var(--accent)' : 'var(--border)';
+    b.style.transform = b.dataset.theme === active ? 'scale(1.05)' : 'scale(1)';
+  });
+}
+
+function updateFontUI(active) {
+  document.querySelectorAll('.font-btn').forEach(b => {
+    b.style.borderColor = b.dataset.font === active ? 'var(--accent)' : 'var(--border)';
+    b.style.background = b.dataset.font === active ? 'var(--accent)22' : 'var(--card)';
+  });
+}
+
+function initExtraPersonalisation() {
+  // Restore extra theme
+  const savedTheme = store.get('extraTheme', '');
+  if (savedTheme) applyExtraTheme(savedTheme);
+  // Restore font
+  const savedFont = store.get('fontChoice', 'default');
+  if (savedFont && savedFont !== 'default') applyFont(savedFont);
+}
+
+
+
+function renderExtraThemesGrid() {
+  const grid = document.getElementById('extra-themes-grid');
+  if (!grid) return;
+  const saved = store.get('extraTheme', '');
+  let html = '';
+  EXTRA_THEMES.forEach(function(t) {
+    const border = saved === t.name ? t.accent : '#333';
+    html += '<div class="extra-theme-btn" data-theme="' + t.name + '" onclick="applyExtraTheme(\'' + t.name + '\')"'
+          + ' style="border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;background:' + t.bg + ';border:2px solid ' + border + ';transition:all 0.2s">'
+          + '<div style="font-size:16px;margin-bottom:4px">' + t.label.split(' ')[0] + '</div>'
+          + '<div style="font-size:10px;color:' + t.accent + ';font-weight:700">' + t.label.split(' ').slice(1).join(' ') + '</div>'
+          + '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+function renderFontGrid() {
+  const grid = document.getElementById('font-buttons-grid');
+  if (!grid) return;
+  const saved = store.get('fontChoice', 'default');
+  let html = '';
+  EXTRA_FONTS.forEach(function(f) {
+    const isActive = saved === f.name;
+    const border = isActive ? 'var(--accent)' : 'var(--border)';
+    const bg = isActive ? 'rgba(155,138,251,0.2)' : 'var(--card)';
+    html += '<button class="font-btn" data-font="' + f.name + '" onclick="applyFont(\'' + f.name + '\')"'
+          + ' style="padding:14px 16px;border-radius:12px;border:2px solid ' + border + ';background:' + bg + ';text-align:left;cursor:pointer;font-size:14px;color:var(--text);transition:all 0.2s;font-family:' + (f.css || 'inherit') + ';width:100%;margin-bottom:4px">'
+          + f.label
+          + '</button>';
+  });
+  grid.innerHTML = html;
+}
+
 // Init all
 // Reset any bad saved text colors from previous versions
 (function() {
@@ -4482,6 +4889,7 @@ function animateCheck(el) {
   }
 })();
 initApparence();
+initExtraPersonalisation();
 renderDashboard();
 renderMatieres();
 renderCalendar();
@@ -5288,6 +5696,20 @@ function renderAnglais() {
   renderAnglaisHome();
 }
 
+function englishStartQuiz() {
+  const allWords = getAllLearnedWords();
+  if (!allWords.length) { renderAnglaisHome(); return; }
+  const pool = [...allWords].sort(() => Math.random() - 0.5).slice(0, 10);
+  const questions = pool.map(w => {
+    const wrongPool = allWords.filter(x => x.en !== w.en);
+    const wrongs = wrongPool.sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.fr);
+    const choices = [w.fr, ...wrongs].sort(() => Math.random() - 0.5);
+    return { word: w, choices, correct: choices.indexOf(w.fr) };
+  });
+  englishQuizState = { questions, current: 0, score: 0, answers: [] };
+  renderEnglishQuestion();
+}
+
 function renderAnglaisHome() {
   const weekWords = getCurrentWeekWords();
   const weekIdx = getEnglishWeekIndex() + 1;
@@ -5427,27 +5849,33 @@ function englishStartStudy() {
 function renderEnglishQuestion() {
   const { questions, current, score } = englishQuizState;
   const q = questions[current];
-  document.getElementById('anglais-content').innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div>
-        <div style="font-size:14px;font-weight:700">🎯 Quiz du jour</div>
-        <div style="font-size:12px;color:var(--muted)">Question ${current+1} / ${questions.length}</div>
-      </div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:#60a5fa">${score}/${current}</div>
-    </div>
-    <div style="background:var(--border);border-radius:10px;height:6px;margin-bottom:24px;overflow:hidden">
-      <div style="height:100%;background:#60a5fa;width:${(current/questions.length)*100}%;border-radius:10px;transition:width 0.3s"></div>
-    </div>
-    <div style="background:linear-gradient(135deg,rgba(96,165,250,0.15),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;padding:24px;text-align:center;margin-bottom:24px">
-      <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Que signifie ce mot ?</div>
-      <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#60a5fa">${q.word.en}</div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px" id="eng-choices">
-      ${q.choices.map((c, i) => `
-        <button onclick="answerEnglish(${i})" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s" id="eng-choice-${i}">
-          <span style="font-weight:700;color:#60a5fa;margin-right:10px">${['A','B','C','D'][i]}</span>${c}
-        </button>`).join('')}
-    </div>`;
+  const pct = Math.round((current / questions.length) * 100);
+
+  let choicesHTML = '';
+  q.choices.forEach(function(c, i) {
+    choicesHTML += '<button onclick="answerEnglish(' + i + ')" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s" id="eng-choice-' + i + '">'
+      + '<span style="font-weight:700;color:#60a5fa;margin-right:10px">' + ['A','B','C','D'][i] + '</span>' + c
+      + '</button>';
+  });
+
+  document.getElementById('anglais-content').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">'
+      + '<div>'
+        + '<div style="font-size:14px;font-weight:700">🎯 Quiz du jour</div>'
+        + '<div style="font-size:12px;color:var(--muted)">Question ' + (current+1) + ' / ' + questions.length + '</div>'
+      + '</div>'
+      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:24px;font-weight:800;color:#60a5fa">' + score + '/' + current + '</div>'
+    + '</div>'
+    + '<div style="background:var(--border);border-radius:10px;height:6px;margin-bottom:24px;overflow:hidden">'
+      + '<div style="height:100%;background:#60a5fa;width:' + pct + '%;border-radius:10px;transition:width 0.3s"></div>'
+    + '</div>'
+    + '<div style="background:linear-gradient(135deg,rgba(96,165,250,0.15),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;padding:24px;text-align:center;margin-bottom:24px">'
+      + '<div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Que signifie ce mot ?</div>'
+      + '<div style="font-family:\'Syne\',sans-serif;font-size:32px;font-weight:800;color:#60a5fa">' + q.word.en + '</div>'
+    + '</div>'
+    + '<div style="display:flex;flex-direction:column;gap:10px" id="eng-choices">'
+      + choicesHTML
+    + '</div>';
 }
 
 function answerEnglish(choiceIdx) {
@@ -5457,27 +5885,37 @@ function answerEnglish(choiceIdx) {
   if (isCorrect) englishQuizState.score++;
   englishQuizState.answers.push({ word: q.word.en, fr: q.word.fr, chosen: q.choices[choiceIdx], ok: isCorrect });
 
-  q.choices.forEach((_, i) => {
+  q.choices.forEach(function(_, i) {
     const btn = document.getElementById('eng-choice-' + i);
     if (!btn) return;
-    btn.onclick = null; btn.style.cursor = 'default';
-    if (i === q.correct) { btn.style.background = 'rgba(82,232,162,0.2)'; btn.style.borderColor = 'var(--accent3)'; }
-    else if (i === choiceIdx && !isCorrect) { btn.style.background = 'rgba(248,113,113,0.2)'; btn.style.borderColor = 'var(--accent4)'; }
+    btn.onclick = null;
+    btn.style.cursor = 'default';
+    if (i === q.correct) {
+      btn.style.background = 'rgba(82,232,162,0.2)';
+      btn.style.borderColor = 'var(--accent3)';
+    } else if (i === choiceIdx && !isCorrect) {
+      btn.style.background = 'rgba(248,113,113,0.2)';
+      btn.style.borderColor = 'var(--accent4)';
+    }
   });
 
   const fb = document.createElement('div');
-  fb.style.cssText = `margin-top:14px;padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;background:${isCorrect?'rgba(82,232,162,0.15)':'rgba(248,113,113,0.15)'};color:${isCorrect?'var(--accent3)':'var(--accent4)'}`;
-  fb.textContent = isCorrect ? '✅ Correct !' : `❌ Mauvaise réponse. "${q.word.en}" = ${q.word.fr}`;
-  document.getElementById('eng-choices').appendChild(fb);
-  if (navigator.vibrate) navigator.vibrate(isCorrect ? 40 : [30,40,30]);
+  fb.style.cssText = 'margin-top:14px;padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;background:'
+    + (isCorrect ? 'rgba(82,232,162,0.15)' : 'rgba(248,113,113,0.15)')
+    + ';color:' + (isCorrect ? 'var(--accent3)' : 'var(--accent4)');
+  fb.textContent = isCorrect ? '✅ Correct !' : '❌ Mauvaise réponse. "' + q.word.en + '" = ' + q.word.fr;
 
-  setTimeout(() => {
+  const choices = document.getElementById('eng-choices');
+  if (choices) choices.appendChild(fb);
+
+  if (navigator.vibrate) navigator.vibrate(isCorrect ? 40 : [30, 40, 30]);
+
+  setTimeout(function() {
     englishQuizState.current++;
     if (englishQuizState.current >= questions.length) renderEnglishResult();
     else renderEnglishQuestion();
   }, 1400);
 }
-
 function renderEnglishResult() {
   const { score, questions, answers } = englishQuizState;
   const total = questions.length;
@@ -6897,7 +7335,7 @@ Transports : véhicules électriques, covoiturage, transports en commun</p>`
 // ============================================================
 const QUIZ_DATA = {
   maths: [
-    // Chapitre 0 — Nombres et calculs
+    // Ch 0 — Nombres et calculs
     [
       { q: "Que vaut 2⁻³ ?", choices: ["1/8", "-8", "1/6", "-1/8"], correct: 0 },
       { q: "Comment s'écrit 0,0052 en notation scientifique ?", choices: ["5,2 × 10⁻³", "52 × 10⁻⁴", "0,52 × 10⁻²", "5,2 × 10³"], correct: 0 },
@@ -6907,12 +7345,10 @@ const QUIZ_DATA = {
       { q: "Quelle est la valeur de (2³)² ?", choices: ["64", "12", "32", "16"], correct: 0 },
       { q: "Dans quel ensemble est −5 ?", choices: ["ℤ", "ℕ", "ℕ seulement", "ni ℤ ni ℚ"], correct: 0 },
       { q: "Que vaut a⁰ (a ≠ 0) ?", choices: ["1", "0", "a", "∞"], correct: 0 },
-      { q: "Quelle est la priorité opératoire correcte ?", choices: ["Parenthèses, puissances, ×÷, +−", "×÷, +−, parenthèses", "+−, ×÷, puissances", "Puissances, +−, ×÷"], correct: 0 },
       { q: "Que vaut √(4 × 9) ?", choices: ["6", "√13", "2√9", "4√3"], correct: 0 },
-      { q: "Que vaut 5/6 ÷ 5/3 ?", choices: ["1/2", "25/18", "1/3", "5/9"], correct: 0 },
       { q: "3,4 × 10⁶ correspond à quel nombre entier ?", choices: ["3 400 000", "340 000", "34 000 000", "0,0000034"], correct: 0 },
     ],
-    // Chapitre 1 — Algèbre
+    // Ch 1 — Algèbre
     [
       { q: "Développe (a+b)²", choices: ["a²+2ab+b²", "a²+b²", "a²+ab+b²", "2a+2b"], correct: 0 },
       { q: "Factorise x²−9", choices: ["(x−3)(x+3)", "(x−9)(x+9)", "(x+3)²", "(x−3)²"], correct: 0 },
@@ -6923,39 +7359,35 @@ const QUIZ_DATA = {
       { q: "Factorise 6x² + 9x", choices: ["3x(2x+3)", "6x(x+9)", "3(2x²+9x)", "x(6x+9)"], correct: 0 },
       { q: "Si A×B = 0, alors…", choices: ["A=0 ou B=0", "A=0 et B=0", "A+B=0", "A=B"], correct: 0 },
       { q: "Résous le système : x+y=5 et x−y=1", choices: ["x=3, y=2", "x=2, y=3", "x=4, y=1", "x=1, y=4"], correct: 0 },
-      { q: "Développe 3(x−4)", choices: ["3x−12", "3x+12", "3x−4", "x−12"], correct: 0 },
-      { q: "Simplifie (2x)²", choices: ["4x²", "2x²", "4x", "2x"], correct: 0 },
       { q: "Résous 2x + 3 = 11", choices: ["x=4", "x=7", "x=3", "x=5"], correct: 0 },
     ],
-    // Chapitre 2 — Géométrie plane
+    // Ch 2 — Géométrie plane
     [
-      { q: "Dans un triangle rectangle en A avec AB=3 et AC=4, BC vaut ?", choices: ["5", "7", "√7", "25"], correct: 0 },
-      { q: "cos B = ?", choices: ["côté adjacent / hypoténuse", "côté opposé / hypoténuse", "côté opposé / adjacent", "hypoténuse / adjacent"], correct: 0 },
-      { q: "Quelle est la somme des angles d'un triangle ?", choices: ["180°", "360°", "90°", "270°"], correct: 0 },
+      { q: "Dans un triangle rectangle AB=3 AC=4, BC vaut ?", choices: ["5", "7", "√7", "25"], correct: 0 },
+      { q: "cos B = ?", choices: ["adjacent / hypoténuse", "opposé / hypoténuse", "opposé / adjacent", "hypoténuse / adjacent"], correct: 0 },
+      { q: "Somme des angles d'un triangle ?", choices: ["180°", "360°", "90°", "270°"], correct: 0 },
       { q: "Si (DE) ∥ (BC) et AD/AB = 1/2, alors DE/BC vaut ?", choices: ["1/2", "2", "1/4", "√2"], correct: 0 },
       { q: "L'aire d'un disque de rayon r est ?", choices: ["πr²", "2πr", "πr", "2πr²"], correct: 0 },
       { q: "tan B = ?", choices: ["opposé / adjacent", "adjacent / hypoténuse", "opposé / hypoténuse", "hypoténuse / opposé"], correct: 0 },
-      { q: "Angles alternes-internes formés par deux parallèles sont…", choices: ["égaux", "supplémentaires", "complémentaires", "adjacents"], correct: 0 },
+      { q: "Angles alternes-internes entre deux parallèles sont…", choices: ["égaux", "supplémentaires", "complémentaires", "adjacents"], correct: 0 },
       { q: "L'aire d'un trapèze de bases 4 et 6, hauteur 3 est ?", choices: ["15", "12", "18", "9"], correct: 0 },
-      { q: "BC²=AB²+AC² est la formule de quel théorème ?", choices: ["Pythagore", "Thalès", "Trigonométrie", "Euclide"], correct: 0 },
       { q: "Le périmètre d'un cercle de rayon 5 est ?", choices: ["10π", "25π", "5π", "2π"], correct: 0 },
-      { q: "Les angles co-internes sont…", choices: ["supplémentaires", "égaux", "complémentaires", "nuls"], correct: 0 },
-      { q: "sin B = ?", choices: ["côté opposé / hypoténuse", "côté adjacent / hypoténuse", "opposé / adjacent", "hypoténuse / opposé"], correct: 0 },
+      { q: "sin B = ?", choices: ["opposé / hypoténuse", "adjacent / hypoténuse", "opposé / adjacent", "hypoténuse / opposé"], correct: 0 },
     ],
-    // Chapitre 3 — Géométrie dans l'espace
+    // Ch 3 — Géométrie espace
     [
       { q: "Volume d'une sphère de rayon r ?", choices: ["4πr³/3", "πr²", "4πr²", "πr³"], correct: 0 },
       { q: "Volume d'un cylindre de rayon r et hauteur h ?", choices: ["πr²h", "2πrh", "πrh", "2πr²h"], correct: 0 },
       { q: "Volume d'un cône de rayon r et hauteur h ?", choices: ["πr²h/3", "πr²h", "πrh/3", "2πr²h/3"], correct: 0 },
-      { q: "Comment représente-t-on les arêtes cachées d'un solide ?", choices: ["Traits pointillés", "Traits pleins", "Traits mixtes", "On ne les représente pas"], correct: 0 },
       { q: "Volume d'un pavé droit L×l×h ?", choices: ["L×l×h", "2(Ll+Lh+lh)", "L+l+h", "L²×h"], correct: 0 },
-      { q: "La section d'une sphère par un plan est…", choices: ["un disque", "une ellipse", "un carré", "un cercle creux"], correct: 0 },
-      { q: "Un patron est…", choices: ["Le développement à plat d'un solide", "Une vue de dessus", "Une coupe transversale", "Un plan en perspective"], correct: 0 },
       { q: "La surface d'une sphère de rayon r vaut ?", choices: ["4πr²", "2πr²", "πr²", "4πr"], correct: 0 },
       { q: "Volume d'un cube d'arête a ?", choices: ["a³", "a²", "6a²", "3a"], correct: 0 },
+      { q: "Un patron est…", choices: ["Le développement à plat d'un solide", "Une vue de dessus", "Une coupe transversale", "Un plan en perspective"], correct: 0 },
       { q: "La section d'un cône par un plan parallèle à la base est…", choices: ["Un disque", "Un triangle", "Une ellipse", "Un rectangle"], correct: 0 },
+      { q: "Les arêtes cachées sont représentées en…", choices: ["Pointillés", "Traits pleins", "Traits mixtes", "Rouge"], correct: 0 },
+      { q: "Aire totale d'un cylindre ?", choices: ["2πr² + 2πrh", "2πrh", "πr²h", "4πr²"], correct: 0 },
     ],
-    // Chapitre 4 — Fonctions
+    // Ch 4 — Fonctions
     [
       { q: "f(x) = ax est une fonction…", choices: ["linéaire", "affine", "carrée", "inverse"], correct: 0 },
       { q: "f(x) = ax + b est une fonction…", choices: ["affine", "linéaire", "carrée", "constante"], correct: 0 },
@@ -6963,330 +7395,642 @@ const QUIZ_DATA = {
       { q: "f(x) = x² est représentée par…", choices: ["une parabole", "une droite", "une hyperbole", "un cercle"], correct: 0 },
       { q: "L'antécédent de 5 par f(x) = x + 2 est ?", choices: ["3", "7", "5", "2"], correct: 0 },
       { q: "Une fonction est croissante si…", choices: ["quand x augmente, f(x) augmente", "quand x augmente, f(x) diminue", "f(x) est constante", "f(x) est positive"], correct: 0 },
-      { q: "f(x) = 1/x est une fonction…", choices: ["inverse", "linéaire", "affine", "carrée"], correct: 0 },
       { q: "La racine d'une fonction est la valeur de x où…", choices: ["f(x) = 0", "f(x) = 1", "f(x) est max", "f(x) est min"], correct: 0 },
       { q: "Le coefficient directeur dans f(x)=3x−2 est ?", choices: ["3", "−2", "2", "−3"], correct: 0 },
       { q: "L'ordonnée à l'origine de f(x)=5x+4 est ?", choices: ["4", "5", "0", "−4"], correct: 0 },
+      { q: "Intersection de f(x)=2x+1 et g(x)=−x+4 ?", choices: ["x=1, y=3", "x=3, y=1", "x=0, y=4", "x=2, y=2"], correct: 0 },
     ],
-    // Chapitre 5 — Stats et probas
+    // Ch 5 — Stats et probas
     [
       { q: "La moyenne de 4, 6, 8 est ?", choices: ["6", "7", "5", "8"], correct: 0 },
       { q: "P(événement impossible) = ?", choices: ["0", "1", "0,5", "−1"], correct: 0 },
       { q: "P(Ā) = ?", choices: ["1 − P(A)", "P(A) − 1", "P(A)", "1 + P(A)"], correct: 0 },
-      { q: "La médiane partage la série en…", choices: ["deux moitiés égales", "trois tiers égaux", "quatre quarts égaux", "cinq parties égales"], correct: 0 },
+      { q: "La médiane partage la série en…", choices: ["deux moitiés égales", "trois tiers égaux", "quatre quarts égaux", "cinq parties"], correct: 0 },
       { q: "L'étendue est…", choices: ["valeur max − valeur min", "somme / effectif", "valeur du milieu", "valeur la plus fréquente"], correct: 0 },
-      { q: "Dans un arbre de probabilités, les branches d'un même nœud…", choices: ["s'additionnent à 1", "se multiplient", "sont égales", "sont inversées"], correct: 0 },
+      { q: "Dans un arbre de probabilités, les branches d'un nœud…", choices: ["s'additionnent à 1", "se multiplient", "sont égales", "sont inversées"], correct: 0 },
       { q: "On lance un dé. P(6) = ?", choices: ["1/6", "1/3", "1/2", "1"], correct: 0 },
-      { q: "Q1 correspond à…", choices: ["25% des données en dessous", "50% des données", "75% des données", "la valeur min"], correct: 0 },
       { q: "Le mode d'une série est…", choices: ["la valeur la plus fréquente", "la valeur centrale", "la moyenne", "la valeur max"], correct: 0 },
-      { q: "La probabilité d'un événement est toujours entre…", choices: ["0 et 1", "−1 et 1", "0 et 100", "0 et ∞"], correct: 0 },
+      { q: "La probabilité est toujours entre…", choices: ["0 et 1", "−1 et 1", "0 et 100", "0 et ∞"], correct: 0 },
+      { q: "P(A ∩ B) si A et B indépendants = ?", choices: ["P(A) × P(B)", "P(A) + P(B)", "P(A) − P(B)", "1 − P(A)"], correct: 0 },
+    ],
+    // Ch 6 — Suites et évolution
+    [
+      { q: "Taux d'évolution = ?", choices: ["(Vf − Vi) / Vi × 100", "(Vi − Vf) / Vf × 100", "Vf / Vi", "Vi × Vf"], correct: 0 },
+      { q: "Augmenter de 20% = coefficient multiplicateur…", choices: ["1,2", "0,8", "1,02", "20"], correct: 0 },
+      { q: "Diminuer de 15% = coefficient…", choices: ["0,85", "1,15", "0,15", "−0,15"], correct: 0 },
+      { q: "+10% puis −10% donne…", choices: ["−1% au total", "0%", "+1%", "+20%"], correct: 0 },
+      { q: "Suite arithmétique : chaque terme = ?", choices: ["terme précédent + r", "terme précédent × r", "terme précédent − r", "terme précédent / r"], correct: 0 },
+      { q: "Suite : 2, 6, 18, 54… La raison est…", choices: ["3 (géométrique)", "4 (arithmétique)", "2 (géométrique)", "6 (arithmétique)"], correct: 0 },
+      { q: "Suite : 3, 7, 11, 15… La raison est…", choices: ["4 (arithmétique)", "3 (géométrique)", "7 (arithmétique)", "2 (arithmétique)"], correct: 0 },
+      { q: "Un = U0 + n×r est la formule d'une suite…", choices: ["arithmétique", "géométrique", "constante", "harmonique"], correct: 0 },
+      { q: "Un = U0 × qⁿ est la formule d'une suite…", choices: ["géométrique", "arithmétique", "constante", "harmonique"], correct: 0 },
+      { q: "Coefficient pour annuler +25% ?", choices: ["0,8 (soit −20%)", "0,75 (−25%)", "1,25 (+25%)", "0,25"], correct: 0 },
+    ],
+    // Ch 7 — Vecteurs
+    [
+      { q: "AB⃗ avec A(1;2) et B(4;6) ?", choices: ["(3 ; 4)", "(5 ; 8)", "(−3 ; −4)", "(4 ; 6)"], correct: 0 },
+      { q: "||AB⃗|| avec AB⃗=(3;4) vaut…", choices: ["5", "7", "√7", "12"], correct: 0 },
+      { q: "Relation de Chasles : AC⃗ = ?", choices: ["AB⃗ + BC⃗", "AB⃗ − BC⃗", "AB⃗ × BC⃗", "BC⃗ − AB⃗"], correct: 0 },
+      { q: "Translater A(2;3) par u⃗(1;−2) donne…", choices: ["A'(3;1)", "A'(1;5)", "A'(3;5)", "A'(−1;2)"], correct: 0 },
+      { q: "u⃗(2;3) + v⃗(1;4) = ?", choices: ["(3;7)", "(1;1)", "(2;12)", "(3;1)"], correct: 0 },
+      { q: "Milieu de [AB] avec A(0;2) et B(4;6) ?", choices: ["M(2;4)", "M(4;8)", "M(0;4)", "M(2;3)"], correct: 0 },
+      { q: "k × u⃗(a;b) = ?", choices: ["(ka ; kb)", "(a+k ; b+k)", "(a/k ; b/k)", "(k+a ; k+b)"], correct: 0 },
+      { q: "BA⃗ = ?", choices: ["−AB⃗", "AB⃗", "2×AB⃗", "0"], correct: 0 },
+      { q: "Distance AB avec A(0;0) et B(3;4) ?", choices: ["5", "7", "√7", "12"], correct: 0 },
+      { q: "Deux vecteurs sont égaux si…", choices: ["même direction, sens et norme", "même direction uniquement", "même norme uniquement", "même sens uniquement"], correct: 0 },
+    ],
+    // Ch 8 — Équations 2nd degré
+    [
+      { q: "Δ = b²−4ac avec a=1, b=−5, c=6 ?", choices: ["1", "0", "−1", "25"], correct: 0 },
+      { q: "Si Δ > 0, l'équation a…", choices: ["2 solutions", "1 solution", "0 solution", "∞ solutions"], correct: 0 },
+      { q: "Si Δ = 0, l'équation a…", choices: ["1 solution double", "2 solutions", "0 solution", "3 solutions"], correct: 0 },
+      { q: "Si Δ < 0, l'équation a…", choices: ["0 solution réelle", "1 solution", "2 solutions", "∞ solutions"], correct: 0 },
+      { q: "x²−5x+6=0 → les solutions sont…", choices: ["x=2 et x=3", "x=1 et x=6", "x=−2 et x=−3", "x=5 et x=1"], correct: 0 },
+      { q: "La règle du produit nul : A×B=0 ⟹", choices: ["A=0 ou B=0", "A=0 et B=0", "A+B=0", "A=B"], correct: 0 },
+      { q: "Somme des racines x₁+x₂ = ?", choices: ["−b/a", "c/a", "b/a", "−c/a"], correct: 0 },
+      { q: "Produit des racines x₁×x₂ = ?", choices: ["c/a", "−b/a", "b/a", "−c/a"], correct: 0 },
+      { q: "x²−9=0 → solutions ?", choices: ["x=3 et x=−3", "x=9 et x=0", "x=3 uniquement", "pas de solution"], correct: 0 },
+      { q: "Forme factorisée de ax²+bx+c si Δ>0 ?", choices: ["a(x−x₁)(x−x₂)", "(x−x₁)(x+x₂)", "a(x+x₁)(x+x₂)", "(x+b)(x+c)"], correct: 0 },
+    ],
+    // Ch 9 — Transformations
+    [
+      { q: "La translation conserve…", choices: ["distances, angles, orientation", "distances uniquement", "seulement les angles", "rien"], correct: 0 },
+      { q: "La symétrie axiale inverse…", choices: ["l'orientation", "les distances", "les angles", "la forme"], correct: 0 },
+      { q: "Image de A(2;3) par symétrie centrale O(0;0) ?", choices: ["A'(−2;−3)", "A'(2;−3)", "A'(−2;3)", "A'(3;2)"], correct: 0 },
+      { q: "Homothétie k=2 : longueurs multipliées par…", choices: ["2", "4", "1/2", "√2"], correct: 0 },
+      { q: "Homothétie k=2 : aires multipliées par…", choices: ["4", "2", "8", "√2"], correct: 0 },
+      { q: "Rotation 180° autour de O équivaut à…", choices: ["symétrie centrale de centre O", "translation", "symétrie axiale", "homothétie k=−1"], correct: 0 },
+      { q: "k=−1 dans une homothétie correspond à…", choices: ["symétrie centrale", "symétrie axiale", "translation", "rotation 90°"], correct: 0 },
+      { q: "Translater B(1;4) par u⃗(3;−1) donne…", choices: ["B'(4;3)", "B'(−2;5)", "B'(3;−1)", "B'(4;−1)"], correct: 0 },
+      { q: "Homothétie k=1 est…", choices: ["l'identité (image = original)", "une translation", "une rotation", "une réduction"], correct: 0 },
+      { q: "La symétrie centrale conserve-t-elle l'orientation ?", choices: ["Oui", "Non", "Parfois", "Seulement en 3D"], correct: 0 },
+    ],
+    // Ch 10 — Trigonométrie avancée
+    [
+      { q: "sin 30° = ?", choices: ["1/2", "√3/2", "√2/2", "1"], correct: 0 },
+      { q: "cos 60° = ?", choices: ["1/2", "√3/2", "√2/2", "0"], correct: 0 },
+      { q: "tan 45° = ?", choices: ["1", "0", "√3", "√2"], correct: 0 },
+      { q: "sin 90° = ?", choices: ["1", "0", "√2/2", "1/2"], correct: 0 },
+      { q: "cos 0° = ?", choices: ["1", "0", "1/2", "√3/2"], correct: 0 },
+      { q: "sin²α + cos²α = ?", choices: ["1", "0", "2", "sin(2α)"], correct: 0 },
+      { q: "sin α = 0,5 → α = ?", choices: ["30°", "45°", "60°", "90°"], correct: 0 },
+      { q: "La calculatrice doit être en mode…", choices: ["Degrés", "Radians", "Gradians", "Peu importe"], correct: 0 },
+      { q: "cos⁻¹(1/2) = ?", choices: ["60°", "30°", "45°", "90°"], correct: 0 },
+      { q: "tan 60° = ?", choices: ["√3", "1", "1/2", "√3/2"], correct: 0 },
+    ],
+    // Ch 11 — Démonstrations
+    [
+      { q: "Pour utiliser Pythagore on écrit : 'D'après…'", choices: ["le théorème de Pythagore", "la propriété", "la formule", "le calcul"], correct: 0 },
+      { q: "La réciproque de Pythagore prouve qu'un angle est…", choices: ["droit (90°)", "obtus", "aigu", "plat"], correct: 0 },
+      { q: "Un contre-exemple sert à…", choices: ["réfuter une affirmation", "prouver un théorème", "illustrer une propriété", "démontrer une égalité"], correct: 0 },
+      { q: "Le raisonnement par l'absurde consiste à…", choices: ["supposer la conclusion fausse puis trouver une contradiction", "vérifier sur des exemples", "utiliser un contre-exemple", "calculer numériquement"], correct: 0 },
+      { q: "Pour conclure une démonstration on écrit…", choices: ["'Donc…' ou 'On en déduit que…'", "'Car…'", "'Parce que…'", "'Soit…'"], correct: 0 },
+      { q: "La réciproque de Thalès prouve que deux droites sont…", choices: ["parallèles", "perpendiculaires", "sécantes", "confondues"], correct: 0 },
+      { q: "AB⃗(a;b) et CD⃗(c;d) sont colinéaires si…", choices: ["ad − bc = 0", "a+c = b+d", "a×c = b×d", "a/b = c/d"], correct: 0 },
+      { q: "Dans une démo, 'Or' introduit…", choices: ["une information complémentaire", "la conclusion", "l'hypothèse initiale", "un contre-exemple"], correct: 0 },
+      { q: "La médiatrice de [AB] : lieu des M tels que…", choices: ["MA = MB", "MA + MB = AB", "M est le milieu de AB", "M est sur AB"], correct: 0 },
+      { q: "Pour démontrer une égalité on…", choices: ["transforme un membre pour obtenir l'autre", "pose l'égalité directement", "vérifie avec des nombres", "utilise une calculatrice"], correct: 0 },
     ],
   ],
   francais: [
-    // Ch 0 — Grammaire phrase
+    // Ch 0 — Types de textes
+    [
+      { q: "Quel type de texte raconte des événements ?", choices: ["Narratif", "Descriptif", "Argumentatif", "Injonctif"], correct: 0 },
+      { q: "Le texte explicatif utilise surtout quel temps ?", choices: ["Présent de vérité générale", "Passé simple", "Futur", "Imparfait"], correct: 0 },
+      { q: "Un mode d'emploi est un texte…", choices: ["injonctif", "narratif", "argumentatif", "descriptif"], correct: 0 },
+      { q: "Le texte argumentatif cherche à…", choices: ["convaincre", "raconter", "décrire", "informer"], correct: 0 },
+      { q: "Quel connecteur exprime la cause ?", choices: ["parce que", "donc", "mais", "ensuite"], correct: 0 },
+      { q: "Un roman est un texte…", choices: ["narratif", "explicatif", "injonctif", "descriptif"], correct: 0 },
+      { q: "L'imparfait est le temps de…", choices: ["la description dans le passé", "l'action ponctuelle", "l'avenir", "l'ordre"], correct: 0 },
+      { q: "Quel connecteur exprime la conséquence ?", choices: ["donc", "car", "mais", "bien que"], correct: 0 },
+      { q: "La thèse dans un texte argumentatif est…", choices: ["la position défendue", "un exemple", "une concession", "un contre-argument"], correct: 0 },
+      { q: "Un article encyclopédique est un texte…", choices: ["explicatif", "narratif", "injonctif", "argumentatif"], correct: 0 },
+    ],
+    // Ch 1 — Grammaire phrase
     [
       { q: "Quelle phrase est interrogative ?", choices: ["Fait-il beau ?", "Il fait beau.", "Quel beau temps !", "Regarde !"], correct: 0 },
       { q: "Le COD répond à la question…", choices: ["Qui ? Quoi ?", "À qui ? De qui ?", "Où ? Quand ?", "Comment ?"], correct: 0 },
       { q: "Une proposition subordonnée relative est introduite par…", choices: ["qui, que, dont, où", "que, quand, parce que", "mais, ou, et", "si, alors, donc"], correct: 0 },
-      { q: "Dans 'Le chat mange la souris', quel est le sujet ?", choices: ["Le chat", "mange", "la souris", "Le"], correct: 0 },
       { q: "Une phrase impérative sert à…", choices: ["donner un ordre", "poser une question", "exprimer un sentiment", "affirmer un fait"], correct: 0 },
-      { q: "L'attribut du sujet se trouve après…", choices: ["être, sembler, paraître", "avoir, faire, dire", "aller, venir, partir", "voir, entendre, sentir"], correct: 0 },
-      { q: "Le complément circonstanciel de lieu répond à…", choices: ["Où ?", "Quand ?", "Comment ?", "Pourquoi ?"], correct: 0 },
       { q: "Dans 'La souris est mangée par le chat', la voix est…", choices: ["passive", "active", "pronominale", "impersonnelle"], correct: 0 },
+      { q: "L'attribut du sujet se trouve après…", choices: ["être, sembler, paraître", "avoir, faire, dire", "aller, venir, partir", "voir, entendre, sentir"], correct: 0 },
+      { q: "Le complément circonstanciel est…", choices: ["supprimable et déplaçable", "non supprimable", "toujours en début de phrase", "toujours après le verbe"], correct: 0 },
       { q: "Une épithète est un adjectif…", choices: ["directement lié au nom", "séparé du nom par un verbe", "attribut du sujet", "invariable"], correct: 0 },
+      { q: "Le sujet d'un verbe s'identifie avec…", choices: ["Qui est-ce qui ?", "Qui ? Quoi ?", "À qui ?", "De qui ?"], correct: 0 },
       { q: "Une proposition indépendante a…", choices: ["un seul verbe conjugué", "deux verbes conjugués", "pas de verbe", "un verbe à l'infinitif"], correct: 0 },
     ],
-    // Ch 1 — Conjugaison
+    // Ch 2 — Conjugaison
     [
-      { q: "Quel temps utilise-t-on pour la description dans un récit passé ?", choices: ["Imparfait", "Passé simple", "Passé composé", "Plus-que-parfait"], correct: 0 },
-      { q: "Le passé composé se forme avec…", choices: ["auxiliaire + participe passé", "radical + terminaison", "infinitif + terminaison", "auxiliaire + infinitif"], correct: 0 },
+      { q: "Quel temps pour la description dans un récit passé ?", choices: ["Imparfait", "Passé simple", "Passé composé", "Plus-que-parfait"], correct: 0 },
+      { q: "Le passé simple est surtout utilisé…", choices: ["à l'écrit littéraire", "à l'oral", "pour le futur", "pour les habitudes"], correct: 0 },
       { q: "Le futur simple se forme avec…", choices: ["infinitif + rai, ras, ra…", "radical + ais, ais, ait…", "auxiliaire + participe", "infinitif + e, es, e…"], correct: 0 },
       { q: "Le subjonctif présent est utilisé après…", choices: ["il faut que", "parce que", "quand", "depuis que"], correct: 0 },
-      { q: "Avec l'auxiliaire 'être', le participe passé s'accorde avec…", choices: ["le sujet", "le COD", "l'auxiliaire", "rien"], correct: 0 },
+      { q: "Avec 'être', le participe passé s'accorde avec…", choices: ["le sujet", "le COD", "l'auxiliaire", "rien"], correct: 0 },
       { q: "Le conditionnel exprime…", choices: ["une hypothèse", "un ordre", "une question", "une vérité générale"], correct: 0 },
-      { q: "Quel est le temps du récit littéraire (3ème personne) ?", choices: ["Passé simple", "Imparfait", "Présent", "Passé composé"], correct: 0 },
-      { q: "Le plus-que-parfait exprime une action…", choices: ["antérieure à une autre action passée", "simultanée à une action passée", "postérieure à une action passée", "habituelle dans le passé"], correct: 0 },
-      { q: "'La lettre que j'ai écrite' — le participe s'accorde parce que…", choices: ["le COD est avant le verbe", "le sujet est féminin", "l'auxiliaire est être", "le participe est invariable"], correct: 0 },
-      { q: "Terminaison de l'imparfait à la 1ère personne du pluriel ?", choices: ["-ions", "-ons", "-ais", "-iez"], correct: 0 },
+      { q: "Quel est le temps du récit littéraire ?", choices: ["Passé simple", "Imparfait", "Présent", "Passé composé"], correct: 0 },
+      { q: "Le plus-que-parfait exprime une action…", choices: ["antérieure à une autre action passée", "simultanée", "postérieure", "habituelle"], correct: 0 },
+      { q: "'La lettre que j'ai écrite' — le PP s'accorde car…", choices: ["le COD est avant le verbe", "le sujet est féminin", "l'auxiliaire est être", "le PP est invariable"], correct: 0 },
+      { q: "Terminaison imparfait 1ère personne pluriel ?", choices: ["-ions", "-ons", "-ais", "-iez"], correct: 0 },
     ],
-    // Ch 2 — Orthographe
+    // Ch 3 — Orthographe
     [
       { q: "Comment distinguer 'a' de 'à' ?", choices: ["Remplacer par 'avait'", "Remplacer par 'est'", "Remplacer par 'et'", "Remplacer par 'ont'"], correct: 0 },
       { q: "'Ils ___ faim.' Quel mot manque ?", choices: ["ont", "on", "son", "sont"], correct: 0 },
-      { q: "Quand écrit-on 'leurs' avec un s ?", choices: ["Adjectif possessif devant un nom pluriel", "Pronom COI", "Toujours", "Jamais"], correct: 0 },
       { q: "'___ livres sont là.' Quel est le bon mot ?", choices: ["Ces", "Ses", "C'est", "S'est"], correct: 0 },
       { q: "Comment distinguer 'ou' de 'où' ?", choices: ["'Ou' = ou bien / 'Où' = lieu", "'Ou' = lieu / 'Où' = ou bien", "Ils sont identiques", "'Où' = possession"], correct: 0 },
-      { q: "'Elle ___ partie.' Quel auxiliaire ?", choices: ["est", "a", "ont", "sont"], correct: 0 },
-      { q: "Quand accorde-t-on l'adjectif qualificatif ?", choices: ["Toujours avec le nom qu'il qualifie", "Jamais", "Seulement au pluriel", "Seulement au féminin"], correct: 0 },
-      { q: "'Il ___ beau.' Quel mot manque ?", choices: ["fait", "fais", "faits", "faites"], correct: 0 },
-      { q: "'Quant ___' signifie…", choices: ["en ce qui concerne", "au moment où", "comme si", "pendant que"], correct: 0 },
       { q: "Comment distinguer 'son' de 'sont' ?", choices: ["'Sont' se remplace par 'étaient'", "'Son' se remplace par 'étaient'", "Ils sont identiques", "'Son' est un verbe"], correct: 0 },
+      { q: "Quand écrit-on 'leurs' avec un s ?", choices: ["adjectif possessif devant un nom pluriel", "pronom COI", "toujours", "jamais"], correct: 0 },
+      { q: "'Elle ___ partie.' Quel auxiliaire ?", choices: ["est", "a", "ont", "sont"], correct: 0 },
+      { q: "Pluriel de 'cheval' ?", choices: ["chevaux", "chevals", "chevaus", "cheval"], correct: 0 },
+      { q: "Pluriel de 'gâteau' ?", choices: ["gâteaux", "gâteaus", "gâteau", "gâteaus"], correct: 0 },
+      { q: "Le verbe s'accorde toujours avec…", choices: ["son sujet", "le COD", "l'attribut", "le CC"], correct: 0 },
     ],
-    // Ch 3 — Figures de style
+    // Ch 4 — Figures de style
     [
       { q: "Quelle figure compare sans outil de comparaison ?", choices: ["Métaphore", "Comparaison", "Allégorie", "Périphrase"], correct: 0 },
-      { q: "'Pour qui sont ces serpents qui sifflent sur vos têtes' est une…", choices: ["Allitération", "Assonance", "Anaphore", "Gradation"], correct: 0 },
       { q: "'Cette obscure clarté' est un exemple de…", choices: ["Oxymore", "Antithèse", "Paradoxe", "Hyperbole"], correct: 0 },
       { q: "'Je meurs de faim' est une…", choices: ["Hyperbole", "Litote", "Euphémisme", "Métaphore"], correct: 0 },
       { q: "La litote consiste à…", choices: ["Dire moins pour suggérer plus", "Exagérer", "Atténuer une réalité dure", "Répéter un mot"], correct: 0 },
       { q: "La répétition d'un mot en début de phrase est une…", choices: ["Anaphore", "Épiphore", "Gradation", "Allitération"], correct: 0 },
-      { q: "'Le roi des animaux' à la place de 'lion' est une…", choices: ["Périphrase", "Métaphore", "Allégorie", "Personnification"], correct: 0 },
-      { q: "Une comparaison utilise obligatoirement…", choices: ["Un outil de comparaison (comme, tel…)", "Une métaphore", "Un adjectif", "Une négation"], correct: 0 },
+      { q: "'Le roi des animaux' pour 'lion' est une…", choices: ["Périphrase", "Métaphore", "Allégorie", "Personnification"], correct: 0 },
       { q: "'Il est fort comme un bœuf' est une…", choices: ["Comparaison", "Métaphore", "Hyperbole", "Allégorie"], correct: 0 },
-      { q: "Une gradation présente des termes…", choices: ["De plus en plus forts (ou faibles)", "Contradictoires", "Répétés", "Inversés"], correct: 0 },
+      { q: "L'allitération est la répétition de…", choices: ["sons consonantiques", "sons vocaliques", "mots entiers", "phrases entières"], correct: 0 },
+      { q: "L'euphémisme sert à…", choices: ["Atténuer une réalité dure", "Exagérer", "Comparer", "Répéter"], correct: 0 },
+      { q: "Une gradation présente des termes…", choices: ["de plus en plus forts (ou faibles)", "contradictoires", "répétés", "inversés"], correct: 0 },
     ],
-    // Ch 4 — Genres littéraires
+    // Ch 5 — Genres littéraires
     [
-      { q: "Un narrateur à la 1ère personne est un narrateur…", choices: ["interne", "externe", "omniscient", "zéro"], correct: 0 },
-      { q: "Les didascalies au théâtre sont…", choices: ["Les indications de mise en scène", "Les répliques des personnages", "Les actes", "Le résumé de la pièce"], correct: 0 },
+      { q: "Un narrateur à la 1ère personne est un narrateur…", choices: ["interne", "externe", "omniscient", "neutre"], correct: 0 },
+      { q: "Les didascalies au théâtre sont…", choices: ["Les indications de mise en scène", "Les répliques", "Les actes", "Le résumé"], correct: 0 },
       { q: "Un alexandrin a combien de syllabes ?", choices: ["12", "10", "8", "14"], correct: 0 },
-      { q: "Un monologue au théâtre, c'est…", choices: ["Un personnage seul qui parle", "Un dialogue à deux", "Une scène muette", "Une réplique courte"], correct: 0 },
       { q: "Des rimes ABAB sont des rimes…", choices: ["croisées", "embrassées", "suivies", "plates"], correct: 0 },
-      { q: "La thèse dans un texte argumentatif est…", choices: ["La position défendue", "Un exemple", "Une concession", "Un argument adverse"], correct: 0 },
-      { q: "La focalisation omnisciente signifie que le narrateur…", choices: ["sait tout", "ne sait que ce qu'il voit", "est dans la tête d'un personnage", "ne sait rien"], correct: 0 },
       { q: "Un quatrain est une strophe de…", choices: ["4 vers", "3 vers", "5 vers", "6 vers"], correct: 0 },
-      { q: "La concession dans un texte argumentatif sert à…", choices: ["Reconnaître un argument adverse pour mieux le réfuter", "Introduire la thèse", "Donner un exemple", "Conclure"], correct: 0 },
+      { q: "Un monologue au théâtre, c'est…", choices: ["un personnage seul qui parle", "un dialogue à deux", "une scène muette", "une réplique courte"], correct: 0 },
+      { q: "La concession sert à…", choices: ["reconnaître un argument adverse pour mieux le réfuter", "introduire la thèse", "donner un exemple", "conclure"], correct: 0 },
+      { q: "La focalisation omnisciente : le narrateur…", choices: ["sait tout", "ne sait que ce qu'il voit", "est dans la tête d'un personnage", "ne sait rien"], correct: 0 },
       { q: "Quel connecteur exprime la conséquence ?", choices: ["Donc", "Car", "Mais", "Bien que"], correct: 0 },
+      { q: "La thèse dans un texte argumentatif est…", choices: ["la position défendue", "un exemple", "une concession", "un argument adverse"], correct: 0 },
+    ],
+    // Ch 6 — Classes grammaticales
+    [
+      { q: "Quel mot est invariable ?", choices: ["Adverbe", "Nom", "Adjectif", "Pronom"], correct: 0 },
+      { q: "Un verbe d'état est…", choices: ["être, sembler, paraître", "courir, manger, écrire", "aller, venir, partir", "voir, entendre, sentir"], correct: 0 },
+      { q: "MOEDONC correspond aux…", choices: ["conjonctions de coordination", "conjonctions de subordination", "adverbes", "prépositions"], correct: 0 },
+      { q: "Un pronom relatif est…", choices: ["qui, que, dont, où", "je, tu, il", "le mien, la tienne", "celui-ci, cela"], correct: 0 },
+      { q: "Un déterminant défini est…", choices: ["le, la, l', les", "un, une, des", "mon, ton, son", "ce, cet, cette"], correct: 0 },
+      { q: "L'adjectif s'accorde avec…", choices: ["le nom qu'il qualifie", "le verbe", "le sujet de la phrase", "toujours au masculin"], correct: 0 },
+      { q: "Une préposition est…", choices: ["invariable", "variable", "un verbe", "un nom"], correct: 0 },
+      { q: "Le déterminant partitif est…", choices: ["du, de la, de l'", "le, la, les", "mon, ton", "ce, cet"], correct: 0 },
+      { q: "Une interjection exprime…", choices: ["une exclamation ou réaction", "une action", "une qualité", "un lieu"], correct: 0 },
+      { q: "Quel mot est un pronom personnel ?", choices: ["je", "le", "un", "ce"], correct: 0 },
+    ],
+    // Ch 7 — Le nom
+    [
+      { q: "Le pluriel de 'cheval' est…", choices: ["chevaux", "chevals", "chevaus", "cheval"], correct: 0 },
+      { q: "Un nom propre s'écrit…", choices: ["avec une majuscule", "avec une minuscule", "en italique", "entre guillemets"], correct: 0 },
+      { q: "Le pluriel de 'gâteau' est…", choices: ["gâteaux", "gâteaus", "gâteau", "gâteau"], correct: 0 },
+      { q: "Parmi les noms en -ou qui prennent -x au pluriel, lequel ?", choices: ["genou", "trou", "cou", "sou"], correct: 0 },
+      { q: "Un nom abstrait est…", choices: ["une idée ou un sentiment", "perçu par les sens", "un lieu", "un être vivant"], correct: 0 },
+      { q: "Le pluriel de 'bal' est…", choices: ["bals", "baux", "bal", "bales"], correct: 0 },
+      { q: "Un nom commun désigne…", choices: ["une catégorie d'êtres ou de choses", "un individu unique", "toujours un être vivant", "toujours un objet"], correct: 0 },
+      { q: "Le pluriel de 'festival' est…", choices: ["festivals", "festivaux", "festival", "festivales"], correct: 0 },
+      { q: "Un nom composé est…", choices: ["formé de plusieurs mots", "un seul mot", "toujours avec un trait d'union", "toujours invariable"], correct: 0 },
+      { q: "Les 7 noms en -ou prenant -x : bijou, caillou, chou, genou, hibou, joujou et…", choices: ["pou", "sou", "trou", "cou"], correct: 0 },
     ],
   ],
   histoire: [
     // Ch 0 — 1ère GM
     [
-      { q: "Quelle est la cause déclenchante de la 1ère GM ?", choices: ["Assassinat de François-Ferdinand", "Invasion de la Pologne", "Révolution russe", "Attentat à Paris"], correct: 0 },
-      { q: "Quand a eu lieu l'armistice de la 1ère GM ?", choices: ["11 novembre 1918", "11 novembre 1914", "8 mai 1945", "28 juin 1919"], correct: 0 },
+      { q: "Cause déclenchante de la 1ère GM ?", choices: ["Assassinat de François-Ferdinand", "Invasion de la Pologne", "Révolution russe", "Attentat à Paris"], correct: 0 },
+      { q: "Armistice de la 1ère GM ?", choices: ["11 novembre 1918", "11 novembre 1914", "8 mai 1945", "28 juin 1919"], correct: 0 },
       { q: "La Triple-Entente rassemble…", choices: ["France, RU, Russie", "France, Allemagne, Autriche", "France, Italie, Russie", "RU, USA, France"], correct: 0 },
-      { q: "La bataille de Verdun a lieu en…", choices: ["1916", "1914", "1917", "1918"], correct: 0 },
-      { q: "Quel traité termine officiellement la 1ère GM ?", choices: ["Traité de Versailles", "Traité de Paris", "Armistice de 1918", "Traité de Berlin"], correct: 0 },
-      { q: "Le génocide arménien a lieu en…", choices: ["1915", "1916", "1918", "1912"], correct: 0 },
-      { q: "Quelle nouvelle arme fait son apparition pendant la 1ère GM ?", choices: ["Gaz de combat", "Bombe atomique", "Missile balistique", "Drone"], correct: 0 },
-      { q: "Quelle organisation internationale est créée après la 1ère GM ?", choices: ["SDN", "ONU", "OTAN", "UE"], correct: 0 },
-      { q: "En 1917, quel événement fait sortir la Russie de la guerre ?", choices: ["La révolution bolchevique", "La défaite militaire", "L'armistice", "L'entrée des USA"], correct: 0 },
-      { q: "Combien de morts environ fait la 1ère GM ?", choices: ["18 millions", "6 millions", "50 millions", "1 million"], correct: 0 },
+      { q: "Bataille de Verdun ?", choices: ["1916", "1914", "1917", "1918"], correct: 0 },
+      { q: "Quel traité termine la 1ère GM ?", choices: ["Traité de Versailles", "Traité de Paris", "Armistice de 1918", "Traité de Berlin"], correct: 0 },
+      { q: "Organisation créée après la 1ère GM ?", choices: ["SDN", "ONU", "OTAN", "UE"], correct: 0 },
+      { q: "En 1917, la Russie quitte la guerre car…", choices: ["révolution bolchevique", "défaite militaire", "armistice", "entrée des USA"], correct: 0 },
+      { q: "Combien de morts environ pour la 1ère GM ?", choices: ["18 millions", "6 millions", "50 millions", "1 million"], correct: 0 },
+      { q: "Génocide arménien : quelle année ?", choices: ["1915", "1916", "1918", "1912"], correct: 0 },
+      { q: "Nouvelle arme de la 1ère GM ?", choices: ["Gaz de combat", "Bombe atomique", "Missile balistique", "Drone"], correct: 0 },
     ],
     // Ch 1 — 2ème GM
     [
       { q: "Hitler arrive au pouvoir en…", choices: ["1933", "1939", "1930", "1945"], correct: 0 },
-      { q: "Le débarquement en Normandie a lieu le…", choices: ["6 juin 1944", "8 mai 1945", "1er sept. 1939", "11 nov. 1918"], correct: 0 },
-      { q: "La conférence de Wannsee (1942) décide…", choices: ["La Solution finale", "L'invasion de l'URSS", "La capitulation allemande", "Le débarquement allié"], correct: 0 },
+      { q: "Débarquement en Normandie ?", choices: ["6 juin 1944", "8 mai 1945", "1er sept. 1939", "11 nov. 1918"], correct: 0 },
+      { q: "Combien de Juifs victimes de la Shoah ?", choices: ["6 millions", "1 million", "18 millions", "3 millions"], correct: 0 },
       { q: "L'appel du 18 juin 1940 est lancé par…", choices: ["De Gaulle", "Pétain", "Churchill", "Roosevelt"], correct: 0 },
-      { q: "Combien de Juifs ont été victimes de la Shoah ?", choices: ["6 millions", "1 million", "18 millions", "3 millions"], correct: 0 },
+      { q: "Capitulation de l'Allemagne ?", choices: ["8 mai 1945", "6 juin 1944", "2 sept. 1945", "25 déc. 1941"], correct: 0 },
       { q: "Le régime de Vichy est dirigé par…", choices: ["Pétain", "De Gaulle", "Laval seul", "Hitler"], correct: 0 },
-      { q: "L'opération Barbarossa (1941) est l'invasion de…", choices: ["L'URSS", "La France", "La Pologne", "La Grande-Bretagne"], correct: 0 },
-      { q: "Jean Moulin est célèbre pour avoir…", choices: ["Unifié la Résistance en 1943", "Lancé l'appel du 18 juin", "Signé l'armistice", "Libéré Paris"], correct: 0 },
-      { q: "La capitulation de l'Allemagne est le…", choices: ["8 mai 1945", "6 juin 1944", "2 sept. 1945", "25 déc. 1941"], correct: 0 },
-      { q: "Qu'est-ce que le pacte germano-soviétique (1939) ?", choices: ["Un accord de non-agression", "Une alliance militaire", "Un traité de paix", "Un accord économique"], correct: 0 },
+      { q: "Opération Barbarossa (1941) = invasion de…", choices: ["L'URSS", "La France", "La Pologne", "La Grande-Bretagne"], correct: 0 },
+      { q: "Jean Moulin est célèbre pour…", choices: ["avoir unifié la Résistance en 1943", "l'appel du 18 juin", "avoir signé l'armistice", "libéré Paris"], correct: 0 },
+      { q: "Pacte germano-soviétique (1939) ?", choices: ["accord de non-agression", "alliance militaire", "traité de paix", "accord économique"], correct: 0 },
+      { q: "Conférence de Wannsee (1942) décide…", choices: ["la Solution finale", "l'invasion de l'URSS", "la capitulation allemande", "le débarquement allié"], correct: 0 },
     ],
-    // Ch 2 — Guerre froide
+    // Ch 2 — Guerre Froide
     [
-      { q: "La Guerre Froide est un affrontement entre…", choices: ["USA et URSS", "France et Allemagne", "OTAN et Chine", "USA et Chine"], correct: 0 },
+      { q: "La Guerre Froide oppose…", choices: ["USA et URSS", "France et Allemagne", "OTAN et Chine", "USA et Chine"], correct: 0 },
       { q: "Le mur de Berlin est construit en…", choices: ["1961", "1949", "1989", "1962"], correct: 0 },
-      { q: "L'OTAN est une alliance…", choices: ["militaire occidentale", "économique soviétique", "commerciale mondiale", "politique européenne"], correct: 0 },
-      { q: "La crise des missiles de Cuba a lieu en…", choices: ["1962", "1950", "1975", "1989"], correct: 0 },
-      { q: "Quand le mur de Berlin tombe-t-il ?", choices: ["1989", "1991", "1985", "1979"], correct: 0 },
-      { q: "Le Plan Marshall est…", choices: ["Une aide économique américaine à l'Europe", "Une alliance militaire soviétique", "Un traité de paix", "Une doctrine militaire"], correct: 0 },
-      { q: "La dissolution de l'URSS date de…", choices: ["1991", "1989", "1985", "1979"], correct: 0 },
-      { q: "La conférence de Bandung (1955) rassemble…", choices: ["Les pays non-alignés", "Les pays de l'OTAN", "Les pays du Pacte de Varsovie", "Les pays de l'ONU"], correct: 0 },
-      { q: "La guerre de Corée (1950-53) est…", choices: ["La première guerre de la Guerre Froide", "Une guerre civile", "La dernière guerre coloniale", "Un conflit nucléaire"], correct: 0 },
-      { q: "Gorbatchev lance en URSS…", choices: ["La glasnost et la perestroïka", "Le Plan Marshall", "La doctrine Truman", "La déstalinisation"], correct: 0 },
+      { q: "Crise des missiles de Cuba ?", choices: ["1962", "1950", "1975", "1989"], correct: 0 },
+      { q: "Chute du mur de Berlin ?", choices: ["1989", "1991", "1985", "1979"], correct: 0 },
+      { q: "Le Plan Marshall est…", choices: ["aide économique américaine à l'Europe", "alliance militaire soviétique", "traité de paix", "doctrine militaire"], correct: 0 },
+      { q: "Dissolution de l'URSS ?", choices: ["1991", "1989", "1985", "1979"], correct: 0 },
+      { q: "Gorbatchev lance…", choices: ["la glasnost et la perestroïka", "le Plan Marshall", "la doctrine Truman", "la déstalinisation"], correct: 0 },
+      { q: "L'OTAN est créée en…", choices: ["1949", "1947", "1955", "1957"], correct: 0 },
+      { q: "La conférence de Bandung (1955) rassemble…", choices: ["les pays non-alignés", "les pays de l'OTAN", "les pays du Pacte de Varsovie", "les pays de l'ONU"], correct: 0 },
+      { q: "La guerre de Corée (1950-53) est…", choices: ["la première guerre de la GF", "une guerre civile", "la dernière guerre coloniale", "un conflit nucléaire"], correct: 0 },
     ],
     // Ch 3 — France depuis 1958
     [
       { q: "La Ve République est fondée en…", choices: ["1958", "1945", "1962", "1968"], correct: 0 },
-      { q: "Les accords d'Évian (1962) mettent fin à…", choices: ["La guerre d'Algérie", "La 2ème GM", "La Guerre Froide", "La décolonisation africaine"], correct: 0 },
-      { q: "Mai 1968 est d'abord une révolte…", choices: ["étudiante", "ouvrière", "paysanne", "militaire"], correct: 0 },
-      { q: "Le Traité de Maastricht (1992) crée…", choices: ["L'Union Européenne", "La CECA", "La CEE", "L'euro"], correct: 0 },
-      { q: "Le président de la Ve République est élu au suffrage universel direct depuis…", choices: ["1962", "1958", "1945", "1981"], correct: 0 },
+      { q: "Accords d'Évian (1962) mettent fin à…", choices: ["la guerre d'Algérie", "la 2ème GM", "la Guerre Froide", "la décolonisation africaine"], correct: 0 },
+      { q: "Mai 1968 : d'abord une révolte…", choices: ["étudiante", "ouvrière", "paysanne", "militaire"], correct: 0 },
+      { q: "Traité de Maastricht (1992) crée…", choices: ["l'Union Européenne", "la CECA", "la CEE", "l'euro"], correct: 0 },
+      { q: "Le président au suffrage universel direct depuis…", choices: ["1962", "1958", "1945", "1981"], correct: 0 },
       { q: "L'euro remplace les monnaies nationales en…", choices: ["2002", "1999", "1992", "2008"], correct: 0 },
-      { q: "Les accords de Grenelle (1968) accordent principalement…", choices: ["Des augmentations de salaires", "Le droit de vote à 18 ans", "La liberté de la presse", "La dépénalisation"], correct: 0 },
-      { q: "Combien de pays composent l'UE aujourd'hui ?", choices: ["27", "28", "25", "30"], correct: 0 },
+      { q: "Accords de Grenelle (1968) accordent…", choices: ["des augmentations de salaires", "le droit de vote à 18 ans", "la liberté de la presse", "des nationalisations"], correct: 0 },
+      { q: "Combien de pays dans l'UE aujourd'hui ?", choices: ["27", "28", "25", "30"], correct: 0 },
       { q: "La CECA est créée en…", choices: ["1951", "1957", "1992", "1949"], correct: 0 },
-      { q: "Quel est le rôle du Conseil constitutionnel ?", choices: ["Contrôler la constitutionnalité des lois", "Diriger le gouvernement", "Élire le président", "Voter les lois"], correct: 0 },
+      { q: "Mandat présidentiel : combien d'années ?", choices: ["5 ans", "4 ans", "6 ans", "7 ans"], correct: 0 },
     ],
-    // Ch 4 — Géo monde
+    // Ch 4 — Colonisation et décolonisation
     [
-      { q: "Quelle est la 1ère puissance économique mondiale ?", choices: ["USA", "Chine", "UE", "Japon"], correct: 0 },
-      { q: "L'IDH mesure…", choices: ["Espérance de vie + éducation + revenu", "Uniquement le revenu", "La croissance économique", "La superficie du pays"], correct: 0 },
-      { q: "Les BRICS comprennent…", choices: ["Brésil, Russie, Inde, Chine, Afrique du Sud", "Belgique, Russie, Italie, Corée, Suède", "Bolivie, Roumanie, Irak, Chili, Arabie", "Birmanie, Rwanda, Iran, Colombie, Sénégal"], correct: 0 },
-      { q: "Une FMN est…", choices: ["Une firme multinationale", "Un fond monétaire national", "Une force militaire de l'ONU", "Un mouvement politique"], correct: 0 },
-      { q: "Plus de 50% de la population mondiale vit aujourd'hui…", choices: ["En ville", "À la campagne", "Dans des zones côtières", "Dans des mégapoles"], correct: 0 },
-      { q: "L'OMC est une organisation qui gère…", choices: ["Le commerce mondial", "La santé mondiale", "L'éducation mondiale", "La paix mondiale"], correct: 0 },
-      { q: "Quel pays est la 2ème puissance économique mondiale ?", choices: ["Chine", "Japon", "Inde", "Allemagne"], correct: 0 },
-      { q: "Les PMA sont…", choices: ["Les Pays les Moins Avancés", "Les Premiers Marchés Africains", "Les Pays Moyennement Avancés", "Les Pays Membres de l'Asie"], correct: 0 },
-      { q: "La métropolisation désigne…", choices: ["La concentration des fonctions dans les grandes villes", "La construction de nouvelles villes", "L'exode rural", "La croissance démographique urbaine"], correct: 0 },
-      { q: "Le soft power américain désigne…", choices: ["L'influence culturelle des USA", "La puissance militaire des USA", "L'aide économique des USA", "La diplomatie américaine"], correct: 0 },
+      { q: "Conférence de Berlin (1885) : partage de…", choices: ["l'Afrique entre puissances européennes", "l'Asie", "l'Amérique", "le Proche-Orient"], correct: 0 },
+      { q: "Défaite française à Diên Biên Phu ?", choices: ["1954", "1945", "1962", "1956"], correct: 0 },
+      { q: "'Année de l'Afrique' ?", choices: ["1960", "1945", "1962", "1956"], correct: 0 },
+      { q: "Le CNR est créé par…", choices: ["Jean Moulin sur ordre de De Gaulle", "Pétain", "Churchill", "Roosevelt"], correct: 0 },
+      { q: "Programme du CNR s'appelle…", choices: ["Les Jours heureux", "La France libre", "La Résistance", "Le Plan Marshall"], correct: 0 },
+      { q: "Aimé Césaire est associé au mouvement de la…", choices: ["Négritude", "Décolonisation pacifique", "Résistance", "Non-alignement"], correct: 0 },
+      { q: "Les Pieds-noirs sont…", choices: ["les Français d'Algérie rentrant en France", "des soldats français", "des Algériens pro-France", "des colons espagnols"], correct: 0 },
+      { q: "Accords d'Évian datent de…", choices: ["1962", "1954", "1958", "1956"], correct: 0 },
+      { q: "Le FLN est…", choices: ["le Front de Libération Nationale algérien", "un parti politique français", "une organisation internationale", "un mouvement pacifiste"], correct: 0 },
+      { q: "La 'mission civilisatrice' était…", choices: ["un prétexte raciste pour justifier la colonisation", "un programme éducatif réel", "une aide humanitaire", "un traité international"], correct: 0 },
     ],
-    // Ch 5 — Géo France
+    // Ch 5 — Géo monde
     [
-      { q: "La superficie de la France métropolitaine est d'environ…", choices: ["551 000 km²", "250 000 km²", "1 000 000 km²", "300 000 km²"], correct: 0 },
-      { q: "La ZEE française est la ___ du monde.", choices: ["2ème", "1ère", "3ème", "5ème"], correct: 0 },
-      { q: "La 'diagonale du vide' désigne…", choices: ["Une zone peu peuplée allant du NE au SO", "Une autoroute", "Une frontière naturelle", "Une zone industrielle"], correct: 0 },
-      { q: "Quelle est la 1ère métropole française ?", choices: ["Paris", "Lyon", "Marseille", "Toulouse"], correct: 0 },
-      { q: "La France compte environ combien d'habitants (2024) ?", choices: ["68 millions", "45 millions", "80 millions", "55 millions"], correct: 0 },
-      { q: "L'énergie nucléaire représente environ ___ de l'électricité française.", choices: ["75%", "30%", "50%", "10%"], correct: 0 },
-      { q: "Combien de pays voisins a la France métropolitaine ?", choices: ["6", "4", "8", "5"], correct: 0 },
-      { q: "Les DROM comprennent notamment…", choices: ["Guadeloupe, Martinique, Guyane, Réunion", "Polynésie, Nouvelle-Calédonie, Wallis", "Corse, Bretagne, Alsace", "Monaco, Andorre, Luxembourg"], correct: 0 },
-      { q: "La DATAR/CGET est chargée de…", choices: ["L'aménagement du territoire", "La défense nationale", "La politique étrangère", "Le budget de l'État"], correct: 0 },
-      { q: "La France est le ___ pays par superficie en Europe.", choices: ["6ème", "1er", "2ème", "3ème"], correct: 0 },
+      { q: "1ère puissance économique mondiale ?", choices: ["USA", "Chine", "UE", "Japon"], correct: 0 },
+      { q: "L'IDH mesure…", choices: ["espérance de vie + éducation + revenu", "uniquement le revenu", "la croissance économique", "la superficie du pays"], correct: 0 },
+      { q: "BRICS = ?", choices: ["Brésil, Russie, Inde, Chine, Afrique du Sud", "Belgique, Russie, Italie, Corée, Suède", "USA, Chine, Inde, Brésil, Mexique", "France, Russie, Inde, Chine, Espagne"], correct: 0 },
+      { q: "Plus de 50% de la pop. mondiale vit…", choices: ["en ville", "à la campagne", "dans des zones côtières", "dans des mégapoles"], correct: 0 },
+      { q: "L'OMC gère…", choices: ["le commerce mondial", "la santé mondiale", "l'éducation mondiale", "la paix mondiale"], correct: 0 },
+      { q: "2ème puissance économique mondiale ?", choices: ["Chine", "Japon", "Inde", "Allemagne"], correct: 0 },
+      { q: "PMA = ?", choices: ["Pays les Moins Avancés", "Premiers Marchés Africains", "Pays Moyennement Avancés", "Pays Membres de l'Asie"], correct: 0 },
+      { q: "Le soft power américain désigne…", choices: ["l'influence culturelle des USA", "la puissance militaire", "l'aide économique", "la diplomatie"], correct: 0 },
+      { q: "90% du commerce mondial se fait par…", choices: ["voie maritime", "voie aérienne", "voie terrestre", "voie ferroviaire"], correct: 0 },
+      { q: "GAFAM = ?", choices: ["Google, Apple, Facebook, Amazon, Microsoft", "Google, Amazon, Firefox, Apple, Meta", "GitHub, Apple, Facebook, Amazon, Microsoft", "Google, Apple, Firefox, Amazon, Meta"], correct: 0 },
+    ],
+    // Ch 6 — Géo France
+    [
+      { q: "Superficie de la France métropolitaine ?", choices: ["551 000 km²", "250 000 km²", "1 000 000 km²", "300 000 km²"], correct: 0 },
+      { q: "1ère métropole française ?", choices: ["Paris", "Lyon", "Marseille", "Toulouse"], correct: 0 },
+      { q: "Population de la France (2024) ?", choices: ["68 millions", "45 millions", "80 millions", "55 millions"], correct: 0 },
+      { q: "Part du nucléaire dans l'électricité française ?", choices: ["75%", "30%", "50%", "10%"], correct: 0 },
+      { q: "DROM comprennent notamment…", choices: ["Guadeloupe, Martinique, Guyane, Réunion", "Polynésie, Nouvelle-Calédonie", "Corse, Bretagne, Alsace", "Monaco, Andorre, Luxembourg"], correct: 0 },
+      { q: "La 'diagonale du vide' désigne…", choices: ["zone peu peuplée du NE au SO", "une autoroute", "une frontière naturelle", "une zone industrielle"], correct: 0 },
+      { q: "ZEE française : rang mondial ?", choices: ["2ème", "1ère", "3ème", "5ème"], correct: 0 },
+      { q: "Combien de pays voisins la France métropolitaine ?", choices: ["6", "4", "8", "5"], correct: 0 },
+      { q: "Part des Français vivant en ville ?", choices: ["80%", "50%", "30%", "95%"], correct: 0 },
+      { q: "La métropolisation désigne…", choices: ["concentration dans les grandes villes", "construction de nouvelles villes", "l'exode rural", "la croissance démographique"], correct: 0 },
+    ],
+    // Ch 7 — EMC Démocratie
+    [
+      { q: "Devise de la République française ?", choices: ["Liberté, Égalité, Fraternité", "Travail, Famille, Patrie", "Justice, Vérité, Liberté", "Paix, Force, Honneur"], correct: 0 },
+      { q: "Loi de laïcité ?", choices: ["1905", "1789", "1958", "1945"], correct: 0 },
+      { q: "Droit de vote en France dès…", choices: ["18 ans", "16 ans", "21 ans", "20 ans"], correct: 0 },
+      { q: "DDHC date de…", choices: ["1789", "1948", "1905", "1958"], correct: 0 },
+      { q: "DUDH date de…", choices: ["1948", "1789", "1905", "1945"], correct: 0 },
+      { q: "L'Assemblée nationale compte…", choices: ["577 députés", "348 sénateurs", "500 membres", "700 élus"], correct: 0 },
+      { q: "Le Conseil constitutionnel vérifie…", choices: ["la conformité des lois à la Constitution", "les comptes de l'État", "les élections", "la politique étrangère"], correct: 0 },
+      { q: "La démocratie directe c'est…", choices: ["le référendum", "l'élection de représentants", "la monarchie", "le vote parlementaire"], correct: 0 },
+      { q: "Présomption d'innocence = ?", choices: ["innocent jusqu'à preuve du contraire", "coupable jusqu'à preuve du contraire", "toujours acquitté", "toujours condamné"], correct: 0 },
+      { q: "Mandat d'un sénateur ?", choices: ["6 ans", "5 ans", "4 ans", "7 ans"], correct: 0 },
+    ],
+    // Ch 8 — EMC Citoyenneté
+    [
+      { q: "Loi de 2004 interdit à l'école…", choices: ["les signes religieux ostensibles", "la prière", "les discussions politiques", "les vêtements noirs"], correct: 0 },
+      { q: "Citoyenneté européenne : droit de…", choices: ["circuler librement dans l'UE", "voter en France à 16 ans", "travailler sans visa dans le monde", "avoir deux nationalités"], correct: 0 },
+      { q: "SNU = ?", choices: ["Service National Universel", "Syndicat National Unifié", "Service Numérique Universel", "Système National d'Urgence"], correct: 0 },
+      { q: "DUDH : combien d'articles ?", choices: ["30", "15", "50", "10"], correct: 0 },
+      { q: "Un devoir du citoyen est…", choices: ["payer ses impôts", "voter obligatoirement", "participer à l'armée", "adhérer à un parti"], correct: 0 },
+      { q: "La laïcité garantit…", choices: ["la liberté de conscience", "l'athéisme obligatoire", "la pratique d'une religion", "l'interdiction de la religion"], correct: 0 },
+      { q: "CPI juge…", choices: ["les crimes contre l'humanité", "les conflits commerciaux", "les litiges entre États", "les infractions routières"], correct: 0 },
+      { q: "Amnesty International défend…", choices: ["les droits humains", "l'environnement", "le commerce équitable", "la paix mondiale"], correct: 0 },
+      { q: "Justice pénale juge…", choices: ["les infractions pénales (crimes, délits)", "les litiges entre particuliers", "les décisions administratives", "les conflits commerciaux"], correct: 0 },
+      { q: "Vote aux élections européennes depuis…", choices: ["18 ans", "16 ans", "21 ans", "25 ans"], correct: 0 },
+    ],
+    // Ch 9 — Trente Glorieuses et Mai 68
+    [
+      { q: "Les Trente Glorieuses : de ___ à ___", choices: ["1945 à 1975", "1918 à 1945", "1960 à 1990", "1950 à 1980"], correct: 0 },
+      { q: "Choc pétrolier mettant fin aux Trente Glorieuses ?", choices: ["1973", "1968", "1975", "1971"], correct: 0 },
+      { q: "Mai 1968 : combien de grévistes ?", choices: ["9 millions", "1 million", "500 000", "15 millions"], correct: 0 },
+      { q: "Accords de Grenelle (1968) accordent…", choices: ["augmentations de salaires", "droit de vote à 18 ans", "liberté de la presse", "nationalisations"], correct: 0 },
+      { q: "Accord de Paris sur le climat ?", choices: ["2015", "2009", "2020", "2012"], correct: 0 },
+      { q: "Brexit effectif en…", choices: ["2020", "2016", "2019", "2021"], correct: 0 },
+      { q: "L'état-providence comprend…", choices: ["Sécu, allocations, retraites", "l'armée nationale", "les entreprises publiques", "le système éducatif uniquement"], correct: 0 },
+      { q: "11 septembre 2001 : combien de morts ?", choices: ["3 000", "1 000", "10 000", "500"], correct: 0 },
+      { q: "Crise financière mondiale ?", choices: ["2008", "2001", "2010", "2005"], correct: 0 },
+      { q: "Daech s'étend principalement en…", choices: ["Irak et Syrie", "Afghanistan et Pakistan", "Libye et Mali", "Somalie et Éthiopie"], correct: 0 },
     ],
   ],
   svt: [
     // Ch 0 — Cellule
     [
-      { q: "Toute cellule eucaryote possède…", choices: ["Un noyau", "Une paroi", "Des chloroplastes", "Des flagelles"], correct: 0 },
-      { q: "L'ADN est une molécule en…", choices: ["Double hélice", "Simple brin", "Triple hélice", "Forme sphérique"], correct: 0 },
+      { q: "Toute cellule eucaryote possède…", choices: ["un noyau", "une paroi", "des chloroplastes", "des flagelles"], correct: 0 },
+      { q: "L'ADN est une molécule en…", choices: ["double hélice", "simple brin", "triple hélice", "forme sphérique"], correct: 0 },
       { q: "L'humain possède combien de chromosomes ?", choices: ["46", "23", "48", "22"], correct: 0 },
       { q: "La mitose produit…", choices: ["2 cellules identiques", "4 cellules différentes", "1 cellule fille", "2 cellules à 23 chromosomes"], correct: 0 },
-      { q: "Les mitochondries produisent…", choices: ["De l'énergie", "Des protéines", "De l'ADN", "Des lipides"], correct: 0 },
-      { q: "Un gène est…", choices: ["Une séquence d'ADN codant pour une protéine", "Un chromosome entier", "Un nucléotide", "Une cellule"], correct: 0 },
+      { q: "Les mitochondries produisent…", choices: ["de l'énergie", "des protéines", "de l'ADN", "des lipides"], correct: 0 },
+      { q: "Un gène est…", choices: ["une séquence d'ADN codant pour une protéine", "un chromosome entier", "un nucléotide", "une cellule"], correct: 0 },
       { q: "La méiose produit des cellules avec…", choices: ["23 chromosomes", "46 chromosomes", "24 chromosomes", "48 chromosomes"], correct: 0 },
-      { q: "Les ribosomes servent à…", choices: ["Synthétiser les protéines", "Produire de l'énergie", "Stocker l'ADN", "Digérer les molécules"], correct: 0 },
-      { q: "Quelle est la différence entre cellule procaryote et eucaryote ?", choices: ["Le noyau", "La taille", "La membrane", "Les chromosomes"], correct: 0 },
+      { q: "Les ribosomes servent à…", choices: ["synthétiser les protéines", "produire de l'énergie", "stocker l'ADN", "digérer les molécules"], correct: 0 },
       { q: "L'ADN est composé de 4 bases notées…", choices: ["A, T, G, C", "A, U, G, C", "A, B, G, D", "A, T, G, U"], correct: 0 },
+      { q: "La fécondation restaure…", choices: ["46 chromosomes", "23 chromosomes", "48 chromosomes", "le phénotype des parents"], correct: 0 },
     ],
     // Ch 1 — Génétique
     [
-      { q: "Un allèle dominant s'exprime…", choices: ["Même si un seul exemplaire", "Seulement si deux exemplaires", "Jamais", "Uniquement chez les femmes"], correct: 0 },
-      { q: "AA signifie que l'individu est…", choices: ["Homozygote dominant", "Hétérozygote", "Homozygote récessif", "Mutant"], correct: 0 },
-      { q: "Le phénotype correspond à…", choices: ["Les caractères observables", "La constitution génétique", "Les allèles", "Les chromosomes"], correct: 0 },
-      { q: "Aa × Aa donne quelle proportion de aa ?", choices: ["1/4", "1/2", "3/4", "0"], correct: 0 },
-      { q: "Un allèle récessif s'exprime uniquement si…", choices: ["L'individu est aa", "L'individu est Aa", "L'individu est AA", "L'individu est hétérozygote"], correct: 0 },
-      { q: "La mutation est…", choices: ["Une modification de la séquence d'ADN", "Un changement de chromosome", "Un crossing-over", "Une duplication cellulaire"], correct: 0 },
-      { q: "Le génotype est…", choices: ["La constitution génétique de l'individu", "Les caractères visibles", "L'ensemble des chromosomes", "Le résultat d'un croisement"], correct: 0 },
-      { q: "AA × aa donne comme descendance…", choices: ["100% Aa", "50% AA, 50% aa", "25% AA, 50% Aa, 25% aa", "100% aa"], correct: 0 },
-      { q: "La fécondation restaure…", choices: ["46 chromosomes", "23 chromosomes", "48 chromosomes", "Le phénotype des parents"], correct: 0 },
-      { q: "Un locus est…", choices: ["La position d'un gène sur un chromosome", "Une mutation", "Un allèle récessif", "Un type de cellule"], correct: 0 },
+      { q: "Un allèle dominant s'exprime…", choices: ["même si un seul exemplaire", "seulement si deux exemplaires", "jamais", "uniquement chez les femmes"], correct: 0 },
+      { q: "AA signifie que l'individu est…", choices: ["homozygote dominant", "hétérozygote", "homozygote récessif", "mutant"], correct: 0 },
+      { q: "Le phénotype correspond à…", choices: ["les caractères observables", "la constitution génétique", "les allèles", "les chromosomes"], correct: 0 },
+      { q: "Aa × Aa : proportion de aa ?", choices: ["1/4", "1/2", "3/4", "0"], correct: 0 },
+      { q: "La mutation est…", choices: ["une modification de la séquence d'ADN", "un changement de chromosome", "un crossing-over", "une duplication cellulaire"], correct: 0 },
+      { q: "Le génotype est…", choices: ["la constitution génétique de l'individu", "les caractères visibles", "l'ensemble des chromosomes", "le résultat d'un croisement"], correct: 0 },
+      { q: "AA × aa donne…", choices: ["100% Aa", "50% AA, 50% aa", "25% AA, 50% Aa, 25% aa", "100% aa"], correct: 0 },
+      { q: "Un locus est…", choices: ["la position d'un gène sur un chromosome", "une mutation", "un allèle récessif", "un type de cellule"], correct: 0 },
+      { q: "Femme = ___ chromosomes sexuels", choices: ["XX", "XY", "YY", "X seulement"], correct: 0 },
+      { q: "Un allèle récessif s'exprime uniquement si…", choices: ["l'individu est aa", "l'individu est Aa", "l'individu est AA", "l'individu est hétérozygote"], correct: 0 },
     ],
     // Ch 2 — Digestion
     [
-      { q: "Où se fait l'absorption des nutriments ?", choices: ["Intestin grêle", "Estomac", "Gros intestin", "Bouche"], correct: 0 },
-      { q: "L'amylase salivaire digère…", choices: ["Les glucides", "Les protéines", "Les lipides", "L'eau"], correct: 0 },
-      { q: "Le rôle du foie dans la digestion est de…", choices: ["Produire la bile", "Digérer les protéines", "Absorber l'eau", "Synthétiser les enzymes"], correct: 0 },
-      { q: "Les protides servent principalement à…", choices: ["Construire et réparer les tissus", "Fournir de l'énergie immédiate", "Constituer des réserves", "Réguler le métabolisme"], correct: 0 },
-      { q: "L'estomac dégrade principalement…", choices: ["Les protéines", "Les glucides", "Les lipides", "Les vitamines"], correct: 0 },
-      { q: "Le gros intestin sert à…", choices: ["Absorber l'eau", "Digérer les protéines", "Absorber les nutriments", "Produire la bile"], correct: 0 },
-      { q: "L'insuline est produite par…", choices: ["Le pancréas", "Le foie", "L'estomac", "L'intestin grêle"], correct: 0 },
-      { q: "Les lipides sont des réserves de…", choices: ["Énergie", "Protéines", "Minéraux", "Vitamines"], correct: 0 },
+      { q: "Où se fait l'absorption des nutriments ?", choices: ["intestin grêle", "estomac", "gros intestin", "bouche"], correct: 0 },
+      { q: "L'amylase salivaire digère…", choices: ["les glucides", "les protéines", "les lipides", "l'eau"], correct: 0 },
+      { q: "Le foie produit…", choices: ["la bile", "des enzymes gastriques", "de l'insuline", "du glucagon"], correct: 0 },
+      { q: "Les protides servent principalement à…", choices: ["construire et réparer les tissus", "fournir de l'énergie immédiate", "constituer des réserves", "réguler le métabolisme"], correct: 0 },
+      { q: "L'estomac dégrade principalement…", choices: ["les protéines", "les glucides", "les lipides", "les vitamines"], correct: 0 },
+      { q: "Le gros intestin sert à…", choices: ["absorber l'eau", "digérer les protéines", "absorber les nutriments", "produire la bile"], correct: 0 },
+      { q: "L'insuline est produite par…", choices: ["le pancréas", "le foie", "l'estomac", "l'intestin grêle"], correct: 0 },
+      { q: "La bile émulsionne…", choices: ["les graisses", "les protéines", "les glucides", "les vitamines"], correct: 0 },
       { q: "L'eau représente environ ___ du corps humain.", choices: ["60%", "30%", "80%", "45%"], correct: 0 },
-      { q: "La bile émulsionne…", choices: ["Les graisses", "Les protéines", "Les glucides", "Les vitamines"], correct: 0 },
+      { q: "Les glucides sont la source d'énergie…", choices: ["principale", "de réserve", "de structure", "secondaire"], correct: 0 },
     ],
     // Ch 3 — Système nerveux
     [
-      { q: "Le SNC comprend…", choices: ["Cerveau + moelle épinière", "Nerfs + cerveau", "Nerfs seulement", "Moelle épinière seulement"], correct: 0 },
+      { q: "Le SNC comprend…", choices: ["cerveau + moelle épinière", "nerfs + cerveau", "nerfs seulement", "moelle épinière seulement"], correct: 0 },
       { q: "Un réflexe est une réponse…", choices: ["automatique et involontaire", "volontaire et consciente", "lente et réfléchie", "émotionnelle"], correct: 0 },
-      { q: "La synapse est…", choices: ["La jonction entre deux neurones", "Un type de neurone", "Le noyau du neurone", "Une partie du cerveau"], correct: 0 },
-      { q: "Quelle hormone déclenche la puberté chez les garçons ?", choices: ["Testostérone", "Œstrogène", "Progestérone", "Adrénaline"], correct: 0 },
-      { q: "La fécondation a lieu dans…", choices: ["La trompe utérine", "L'utérus", "L'ovaire", "Le vagin"], correct: 0 },
+      { q: "La synapse est…", choices: ["la jonction entre deux neurones", "un type de neurone", "le noyau du neurone", "une partie du cerveau"], correct: 0 },
+      { q: "Hormone déclenchant la puberté chez les garçons ?", choices: ["testostérone", "œstrogène", "progestérone", "adrénaline"], correct: 0 },
       { q: "Le cycle menstruel dure environ…", choices: ["28 jours", "14 jours", "7 jours", "35 jours"], correct: 0 },
-      { q: "Un neurone transmet…", choices: ["L'influx nerveux", "Le sang", "Les hormones", "L'énergie"], correct: 0 },
-      { q: "L'arc réflexe commence par…", choices: ["Un stimulus sur un récepteur", "La moelle épinière", "Le muscle effecteur", "Le nerf moteur"], correct: 0 },
-      { q: "La méiose produit les…", choices: ["Gamètes", "Cellules somatiques", "Neurones", "Hématies"], correct: 0 },
-      { q: "La puberté chez la fille est caractérisée notamment par…", choices: ["Les premières règles", "La mue de la voix", "La spermatogenèse", "La descente des testicules"], correct: 0 },
+      { q: "L'arc réflexe commence par…", choices: ["un stimulus sur un récepteur", "la moelle épinière", "le muscle effecteur", "le nerf moteur"], correct: 0 },
+      { q: "Durée d'une grossesse ?", choices: ["9 mois", "6 mois", "12 mois", "7 mois"], correct: 0 },
+      { q: "Le VIH détruit les…", choices: ["lymphocytes T", "lymphocytes B", "globules rouges", "plaquettes"], correct: 0 },
+      { q: "Puberté chez la fille : caractérisée notamment par…", choices: ["les premières règles", "la mue de la voix", "la spermatogenèse", "la descente des testicules"], correct: 0 },
+      { q: "Un neurone transmet…", choices: ["l'influx nerveux", "le sang", "les hormones", "l'énergie"], correct: 0 },
     ],
     // Ch 4 — Écologie
     [
-      { q: "Un écosystème comprend…", choices: ["Biocénose + biotope", "Uniquement les animaux", "Uniquement les plantes", "Le sol seulement"], correct: 0 },
-      { q: "La photosynthèse produit…", choices: ["Matière organique + O₂", "CO₂ + H₂O", "Uniquement O₂", "Uniquement du glucose"], correct: 0 },
-      { q: "La 6ème extinction de masse est causée par…", choices: ["L'être humain", "Les volcans", "Les météorites", "Les variations climatiques naturelles"], correct: 0 },
-      { q: "Le premier maillon d'une chaîne alimentaire est toujours…", choices: ["Un producteur (végétal)", "Un consommateur primaire", "Un décomposeur", "Un prédateur"], correct: 0 },
-      { q: "Le CO₂ atmosphérique augmente à cause de…", choices: ["La combustion des énergies fossiles", "La photosynthèse", "La respiration des plantes", "L'évaporation des océans"], correct: 0 },
-      { q: "Les accords de Paris (2015) visent à limiter le réchauffement à…", choices: ["+1,5°C", "+2°C", "+3°C", "+0,5°C"], correct: 0 },
-      { q: "La biodiversité comprend la diversité…", choices: ["Des espèces, des gènes et des écosystèmes", "Uniquement des espèces animales", "Des plantes seulement", "Des microbes seulement"], correct: 0 },
-      { q: "Le réchauffement climatique depuis l'ère préindustrielle est d'environ…", choices: ["+1,1°C", "+0,5°C", "+3°C", "+2°C"], correct: 0 },
-      { q: "La respiration cellulaire consomme…", choices: ["Glucose + O₂", "CO₂ + H₂O", "Uniquement du glucose", "Uniquement O₂"], correct: 0 },
-      { q: "Un réseau trophique est…", choices: ["L'ensemble des chaînes alimentaires d'un écosystème", "Une chaîne alimentaire simple", "Un cycle du carbone", "Un écosystème aquatique"], correct: 0 },
+      { q: "Un écosystème comprend…", choices: ["biocénose + biotope", "uniquement les animaux", "uniquement les plantes", "le sol seulement"], correct: 0 },
+      { q: "La photosynthèse produit…", choices: ["matière organique + O₂", "CO₂ + H₂O", "uniquement O₂", "uniquement du glucose"], correct: 0 },
+      { q: "La 6ème extinction est causée par…", choices: ["l'être humain", "les volcans", "les météorites", "les variations climatiques naturelles"], correct: 0 },
+      { q: "1er maillon d'une chaîne alimentaire ?", choices: ["un producteur (végétal)", "un consommateur primaire", "un décomposeur", "un prédateur"], correct: 0 },
+      { q: "Le CO₂ atmosphérique augmente à cause de…", choices: ["la combustion des énergies fossiles", "la photosynthèse", "la respiration des plantes", "l'évaporation des océans"], correct: 0 },
+      { q: "Accords de Paris (2015) : limiter le réchauffement à…", choices: ["+2°C", "+1°C", "+3°C", "+0,5°C"], correct: 0 },
+      { q: "Réchauffement climatique depuis l'ère préindustrielle ?", choices: ["+1,1°C", "+0,5°C", "+3°C", "+2°C"], correct: 0 },
+      { q: "La respiration cellulaire consomme…", choices: ["glucose + O₂", "CO₂ + H₂O", "uniquement du glucose", "uniquement O₂"], correct: 0 },
+      { q: "La biodiversité comprend la diversité…", choices: ["des espèces, des gènes et des écosystèmes", "uniquement des espèces animales", "des plantes seulement", "des microbes seulement"], correct: 0 },
+      { q: "Un réseau trophique est…", choices: ["l'ensemble des chaînes alimentaires", "une chaîne alimentaire simple", "un cycle du carbone", "un écosystème aquatique"], correct: 0 },
     ],
     // Ch 5 — Géologie
     [
-      { q: "La croûte continentale est composée principalement de…", choices: ["Granit", "Basalte", "Calcaire", "Argile"], correct: 0 },
-      { q: "Les plaques tectoniques se déplacent de…", choices: ["Quelques cm/an", "Quelques km/an", "Quelques mm/siècle", "Quelques m/an"], correct: 0 },
+      { q: "Croûte continentale composée de…", choices: ["granit", "basalte", "calcaire", "argile"], correct: 0 },
+      { q: "Vitesse de déplacement des plaques ?", choices: ["quelques cm/an", "quelques km/an", "quelques mm/siècle", "quelques m/an"], correct: 0 },
       { q: "Une dorsale océanique est une frontière…", choices: ["divergente", "convergente", "transformante", "subductive"], correct: 0 },
-      { q: "Le foyer d'un séisme est aussi appelé…", choices: ["Hypocentre", "Épicentre", "Magnitude", "Faille"], correct: 0 },
-      { q: "Un volcanisme effusif produit une lave…", choices: ["Fluide, peu dangereuse", "Visqueuse, très dangereuse", "Gazeuse", "Solide"], correct: 0 },
-      { q: "La croûte océanique est composée principalement de…", choices: ["Basalte", "Granit", "Calcaire", "Marbre"], correct: 0 },
-      { q: "La subduction est…", choices: ["Le plongement d'une plaque sous une autre", "L'écartement de deux plaques", "Le coulissement de deux plaques", "La collision de deux plaques continentales"], correct: 0 },
-      { q: "Le noyau externe de la Terre est composé de…", choices: ["Fer et nickel liquides", "Fer et nickel solides", "Silicates", "Basalte"], correct: 0 },
-      { q: "L'échelle de Richter mesure…", choices: ["La magnitude d'un séisme", "L'intensité ressentie", "La profondeur du foyer", "La distance à l'épicentre"], correct: 0 },
-      { q: "La convection mantellique est la cause du…", choices: ["Déplacement des plaques tectoniques", "Volcanisme effusif", "Séisme", "Changement climatique"], correct: 0 },
+      { q: "Foyer d'un séisme = ?", choices: ["hypocentre", "épicentre", "magnitude", "faille"], correct: 0 },
+      { q: "Volcanisme effusif : lave…", choices: ["fluide, peu dangereuse", "visqueuse, très dangereuse", "gazeuse", "solide"], correct: 0 },
+      { q: "Croûte océanique composée de…", choices: ["basalte", "granit", "calcaire", "marbre"], correct: 0 },
+      { q: "La subduction est…", choices: ["le plongement d'une plaque sous une autre", "l'écartement de deux plaques", "le coulissement de deux plaques", "la collision de deux plaques continentales"], correct: 0 },
+      { q: "Noyau externe de la Terre : composé de…", choices: ["fer et nickel liquides", "fer et nickel solides", "silicates", "basalte"], correct: 0 },
+      { q: "L'échelle de Richter mesure…", choices: ["la magnitude d'un séisme", "l'intensité ressentie", "la profondeur du foyer", "la distance à l'épicentre"], correct: 0 },
+      { q: "La convection mantellique cause le…", choices: ["déplacement des plaques tectoniques", "volcanisme effusif", "séisme", "changement climatique"], correct: 0 },
+    ],
+    // Ch 6 — Immunité
+    [
+      { q: "La phagocytose appartient à l'immunité…", choices: ["innée", "adaptative", "acquise par vaccin", "passive"], correct: 0 },
+      { q: "Les lymphocytes B produisent…", choices: ["des anticorps", "des phagocytes", "de l'interféron", "des plaquettes"], correct: 0 },
+      { q: "Un vaccin crée…", choices: ["une mémoire immunitaire sans maladie", "des anticorps immédiatement", "une immunité temporaire", "une immunité innée"], correct: 0 },
+      { q: "Le VIH détruit les lymphocytes T → cause le…", choices: ["SIDA", "grippe", "allergie", "cancer"], correct: 0 },
+      { q: "Une allergie est une réaction…", choices: ["excessive contre un allergène inoffensif", "normale contre un virus", "insuffisante", "contre ses propres cellules"], correct: 0 },
+      { q: "Les anticorps sont…", choices: ["des protéines spécifiques d'un antigène", "des cellules sanguines", "des virus affaiblis", "des médicaments"], correct: 0 },
+      { q: "L'immunité adaptative met en jeu…", choices: ["les lymphocytes B et T", "les phagocytes uniquement", "la peau et les muqueuses", "la fièvre"], correct: 0 },
+      { q: "L'inflammation est un signe de…", choices: ["l'immunité innée en action", "l'immunité adaptative", "une allergie", "un manque de vitamines"], correct: 0 },
+      { q: "Un antigène est…", choices: ["une molécule étrangère reconnue par le système immunitaire", "une protéine du corps", "un anticorps", "un vaccin"], correct: 0 },
+      { q: "La mémoire immunitaire permet…", choices: ["une réponse plus rapide lors d'une 2ème infection", "d'éliminer tous les virus", "de ne jamais tomber malade", "d'éviter les allergies"], correct: 0 },
+    ],
+    // Ch 7 — Micro-organismes
+    [
+      { q: "Les antibiotiques sont efficaces contre…", choices: ["les bactéries uniquement", "les virus uniquement", "les champignons uniquement", "tous les agents pathogènes"], correct: 0 },
+      { q: "Le VIH est un…", choices: ["virus", "bactérie", "champignon", "parasite"], correct: 0 },
+      { q: "La résistance aux antibiotiques est causée par…", choices: ["leur utilisation excessive et inappropriée", "un manque d'antibiotiques", "les virus", "l'évolution normale"], correct: 0 },
+      { q: "Le paludisme est transmis par…", choices: ["un moustique (anophèle)", "l'eau contaminée", "le contact direct", "l'air"], correct: 0 },
+      { q: "La grippe est causée par…", choices: ["un virus", "une bactérie", "un parasite", "un champignon"], correct: 0 },
+      { q: "Prévention la plus efficace ?", choices: ["lavage des mains", "les antibiotiques", "les masques seuls", "la vaccination seule"], correct: 0 },
+      { q: "Une bactérie est un organisme…", choices: ["procaryote unicellulaire", "eucaryote pluricellulaire", "virus", "champignon"], correct: 0 },
+      { q: "Transmission aérienne concerne…", choices: ["la grippe, le Covid", "la gastro-entérite", "le paludisme", "les IST"], correct: 0 },
+      { q: "Pourquoi les antibiotiques ne soignent pas la grippe ?", choices: ["car la grippe est un virus", "car ils sont trop forts", "car la grippe est résistante", "car ils ne passent pas dans le sang"], correct: 0 },
+      { q: "La vaccination protège en créant…", choices: ["des anticorps et des cellules mémoire", "une immunité innée", "des phagocytes", "une fièvre protectrice"], correct: 0 },
+    ],
+    // Ch 8 — Évolution et biodiversité
+    [
+      { q: "La sélection naturelle favorise…", choices: ["les individus les mieux adaptés", "les plus grands", "les plus rapides", "les plus forts"], correct: 0 },
+      { q: "Les fossiles prouvent…", choices: ["l'évolution des espèces", "la création simultanée", "l'immuabilité des espèces", "la génération spontanée"], correct: 0 },
+      { q: "Darwin est connu pour…", choices: ["la théorie de l'évolution par sélection naturelle", "la découverte de l'ADN", "la classification des espèces", "la génétique mendélienne"], correct: 0 },
+      { q: "La classification phylogénétique est basée sur…", choices: ["l'évolution et les liens de parenté", "la morphologie uniquement", "l'habitat", "la taille des organismes"], correct: 0 },
+      { q: "Une espèce est définie par…", choices: ["des individus qui se reproduisent entre eux", "la même apparence", "le même habitat", "le même régime alimentaire"], correct: 0 },
+      { q: "Membres homologues (bras/aile) prouvent…", choices: ["un ancêtre commun", "une convergence évolutive", "une adaptation identique", "une espèce identique"], correct: 0 },
+      { q: "La 6ème extinction de masse est due à…", choices: ["l'activité humaine", "une météorite", "des volcans", "un changement climatique naturel"], correct: 0 },
+      { q: "La photosynthèse a lieu dans…", choices: ["les chloroplastes", "les mitochondries", "le noyau", "le réticulum endoplasmique"], correct: 0 },
+      { q: "Nom scientifique de l'humain ?", choices: ["Homo sapiens", "Homo erectus", "Homo habilis", "Pan troglodytes"], correct: 0 },
+      { q: "L'écosystème = biocénose + …", choices: ["biotope", "chaîne alimentaire", "réseau trophique", "population"], correct: 0 },
+    ],
+    // Ch 9 — Astronomie
+    [
+      { q: "Premier homme sur la Lune ?", choices: ["Neil Armstrong", "Buzz Aldrin", "Youri Gagarine", "John Glenn"], correct: 0 },
+      { q: "Big Bang : il y a…", choices: ["13,8 milliards d'années", "4,5 milliards d'années", "1 milliard d'années", "100 milliards d'années"], correct: 0 },
+      { q: "1 UA = ?", choices: ["distance Terre-Soleil (150 millions km)", "distance Terre-Lune", "distance Terre-Mars", "1 million de km"], correct: 0 },
+      { q: "Planètes rocheuses ?", choices: ["Mercure, Vénus, Terre, Mars", "Jupiter, Saturne, Uranus, Neptune", "Terre, Mars, Jupiter, Saturne", "Mercure, Vénus, Mars, Jupiter"], correct: 0 },
+      { q: "Fusion nucléaire dans les étoiles : H → ?", choices: ["He", "H", "O", "Fe"], correct: 0 },
+      { q: "Spoutnik lancé en…", choices: ["1957", "1961", "1969", "1945"], correct: 0 },
+      { q: "Notre galaxie s'appelle…", choices: ["La Voie Lactée", "Andromède", "La Magellan", "Milkomeda"], correct: 0 },
+      { q: "Vitesse de la lumière ?", choices: ["300 000 km/s", "30 000 km/s", "3 000 km/s", "3 000 000 km/s"], correct: 0 },
+      { q: "Fin de vie du Soleil ?", choices: ["géante rouge puis naine blanche", "supernova puis trou noir", "simple extinction", "explosion immédiate"], correct: 0 },
+      { q: "Télescope James Webb lancé en…", choices: ["2022", "2015", "2019", "2010"], correct: 0 },
     ],
   ],
   physchim: [
     // Ch 0 — Mécanique
     [
-      { q: "La formule de la vitesse est…", choices: ["v = d/t", "v = d×t", "v = t/d", "v = m×a"], correct: 0 },
-      { q: "Le poids d'un objet de masse 10 kg sur Terre (g=9,8) est…", choices: ["98 N", "10 N", "9,8 N", "980 N"], correct: 0 },
-      { q: "F = m × a est la ___ loi de Newton.", choices: ["2ème", "1ère", "3ème", "4ème"], correct: 0 },
-      { q: "L'énergie cinétique est…", choices: ["½mv²", "mgh", "mv", "m/v"], correct: 0 },
-      { q: "L'unité de force est…", choices: ["Newton (N)", "Joule (J)", "Watt (W)", "Pascal (Pa)"], correct: 0 },
+      { q: "Formule de la vitesse ?", choices: ["v = d/t", "v = d×t", "v = t/d", "v = m×a"], correct: 0 },
+      { q: "Poids d'un objet de 10 kg (g=9,8) ?", choices: ["98 N", "10 N", "9,8 N", "980 N"], correct: 0 },
+      { q: "F = m × a : quelle loi de Newton ?", choices: ["2ème", "1ère", "3ème", "4ème"], correct: 0 },
+      { q: "Énergie cinétique = ?", choices: ["½mv²", "mgh", "mv", "m/v"], correct: 0 },
+      { q: "Unité de force ?", choices: ["Newton (N)", "Joule (J)", "Watt (W)", "Pascal (Pa)"], correct: 0 },
       { q: "Sans frottements, l'énergie mécanique est…", choices: ["conservée", "nulle", "croissante", "décroissante"], correct: 0 },
-      { q: "La 1ère loi de Newton dit que si les forces se compensent…", choices: ["Le mouvement est uniforme (ou repos)", "L'objet accélère", "L'objet freine", "L'objet tourne"], correct: 0 },
-      { q: "L'énergie potentielle est…", choices: ["mgh", "½mv²", "Ec + Ep", "F×d"], correct: 0 },
-      { q: "La 3ème loi de Newton dit que…", choices: ["Action = réaction", "F = ma", "v = constante si ΣF = 0", "E = mc²"], correct: 0 },
-      { q: "Convertir 90 km/h en m/s…", choices: ["25 m/s", "90 m/s", "324 m/s", "9 m/s"], correct: 0 },
+      { q: "1ère loi de Newton : si forces compensées…", choices: ["mouvement uniforme (ou repos)", "l'objet accélère", "l'objet freine", "l'objet tourne"], correct: 0 },
+      { q: "Énergie potentielle = ?", choices: ["mgh", "½mv²", "Ec + Ep", "F×d"], correct: 0 },
+      { q: "3ème loi de Newton : …", choices: ["action = réaction", "F = ma", "v = constante si ΣF = 0", "E = mc²"], correct: 0 },
+      { q: "Convertir 90 km/h en m/s ?", choices: ["25 m/s", "90 m/s", "324 m/s", "9 m/s"], correct: 0 },
     ],
     // Ch 1 — Électricité
     [
-      { q: "La loi d'Ohm est…", choices: ["U = R × I", "P = U × I", "I = U + R", "U = I / R"], correct: 0 },
-      { q: "Dans un circuit série, l'intensité est…", choices: ["identique partout", "différente partout", "nulle", "maximale aux bornes"], correct: 0 },
-      { q: "Dans un circuit dérivation, la tension est…", choices: ["identique aux bornes de chaque branche", "différente partout", "nulle", "multipliée"], correct: 0 },
+      { q: "Loi d'Ohm ?", choices: ["U = R × I", "P = U × I", "I = U + R", "U = I / R"], correct: 0 },
+      { q: "Circuit série : l'intensité est…", choices: ["identique partout", "différente partout", "nulle", "maximale aux bornes"], correct: 0 },
+      { q: "Circuit dérivation : la tension est…", choices: ["identique aux bornes de chaque branche", "différente partout", "nulle", "multipliée"], correct: 0 },
       { q: "L'ampèremètre se branche…", choices: ["en série", "en parallèle", "en court-circuit", "entre deux nœuds"], correct: 0 },
-      { q: "La puissance électrique est…", choices: ["P = U × I", "P = U + I", "P = U / I", "P = R × I"], correct: 0 },
-      { q: "1 kWh = combien de Joules ?", choices: ["3 600 000 J", "1000 J", "3600 J", "1 000 000 J"], correct: 0 },
-      { q: "Le voltmètre se branche…", choices: ["en parallèle", "en série", "en court-circuit", "en dérivation avec la source"], correct: 0 },
-      { q: "L'unité de résistance est…", choices: ["Ohm (Ω)", "Ampère (A)", "Volt (V)", "Watt (W)"], correct: 0 },
-      { q: "Dans un circuit série : U total = ?", choices: ["U1 + U2 + U3", "U1 = U2 = U3", "U1 × U2", "U1 / U2"], correct: 0 },
-      { q: "L'effet Joule transforme l'électricité en…", choices: ["Chaleur", "Lumière", "Mouvement", "Magnétisme"], correct: 0 },
+      { q: "Puissance électrique = ?", choices: ["P = U × I", "P = U + I", "P = U / I", "P = R × I"], correct: 0 },
+      { q: "1 kWh = ?", choices: ["3 600 000 J", "1000 J", "3600 J", "1 000 000 J"], correct: 0 },
+      { q: "Le voltmètre se branche…", choices: ["en parallèle", "en série", "en court-circuit", "avec la source"], correct: 0 },
+      { q: "Unité de résistance ?", choices: ["Ohm (Ω)", "Ampère (A)", "Volt (V)", "Watt (W)"], correct: 0 },
+      { q: "Circuit série : U total = ?", choices: ["U1 + U2 + U3", "U1 = U2 = U3", "U1 × U2", "U1 / U2"], correct: 0 },
+      { q: "L'effet Joule transforme l'électricité en…", choices: ["chaleur", "lumière", "mouvement", "magnétisme"], correct: 0 },
     ],
     // Ch 2 — Optique
     [
-      { q: "La vitesse de la lumière dans le vide est…", choices: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁵ km/s"], correct: 0 },
-      { q: "L'angle de réflexion est…", choices: ["Égal à l'angle d'incidence", "Le double de l'angle d'incidence", "La moitié", "Toujours 90°"], correct: 0 },
-      { q: "La lumière visible va de…", choices: ["400 nm (violet) à 700 nm (rouge)", "200 nm à 400 nm", "700 nm à 1000 nm", "100 nm à 200 nm"], correct: 0 },
-      { q: "La vergence s'exprime en…", choices: ["Dioptries", "Mètres", "Hz", "Newtons"], correct: 0 },
-      { q: "Une lentille convergente fait converger les rayons vers…", choices: ["Le foyer F'", "Le centre optique", "L'infini", "La source"], correct: 0 },
-      { q: "La réfraction est…", choices: ["Le changement de direction de la lumière en changeant de milieu", "Le renvoi de la lumière", "La décomposition de la lumière", "L'absorption de la lumière"], correct: 0 },
-      { q: "La loi de Snell-Descartes est…", choices: ["n₁ sin i₁ = n₂ sin i₂", "n₁ + n₂ = 1", "n₁ / n₂ = sin i₂", "n₁ × i₁ = n₂ × i₂"], correct: 0 },
-      { q: "Un prisme décompose la lumière blanche en…", choices: ["Un spectre coloré", "Lumière noire", "Lumière rouge seulement", "Infrarouges"], correct: 0 },
-      { q: "Un rayon passant par le centre optique d'une lentille…", choices: ["N'est pas dévié", "Est réfléchi", "Est absorbé", "Passe par le foyer"], correct: 0 },
-      { q: "La réflexion totale est la base de…", choices: ["La fibre optique", "La lentille", "Le prisme", "Le miroir concave"], correct: 0 },
+      { q: "Vitesse de la lumière dans le vide ?", choices: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁵ km/s"], correct: 0 },
+      { q: "Angle de réflexion = ?", choices: ["angle d'incidence", "double de l'angle d'incidence", "la moitié", "toujours 90°"], correct: 0 },
+      { q: "Lumière visible : de ___ à ___", choices: ["400 nm (violet) à 700 nm (rouge)", "200 nm à 400 nm", "700 nm à 1000 nm", "100 nm à 200 nm"], correct: 0 },
+      { q: "La vergence s'exprime en…", choices: ["dioptries", "mètres", "Hz", "newtons"], correct: 0 },
+      { q: "Lentille convergente : rayons convergent vers…", choices: ["le foyer F'", "le centre optique", "l'infini", "la source"], correct: 0 },
+      { q: "La réfraction est…", choices: ["le changement de direction de la lumière en changeant de milieu", "le renvoi de la lumière", "la décomposition de la lumière", "l'absorption de la lumière"], correct: 0 },
+      { q: "Loi de Snell-Descartes ?", choices: ["n₁ sin i₁ = n₂ sin i₂", "n₁ + n₂ = 1", "n₁ / n₂ = sin i₂", "n₁ × i₁ = n₂ × i₂"], correct: 0 },
+      { q: "Un prisme décompose la lumière blanche en…", choices: ["un spectre coloré", "lumière noire", "lumière rouge seulement", "infrarouges"], correct: 0 },
+      { q: "Rayon par le centre optique d'une lentille…", choices: ["n'est pas dévié", "est réfléchi", "est absorbé", "passe par le foyer"], correct: 0 },
+      { q: "La réflexion totale est la base de…", choices: ["la fibre optique", "la lentille", "le prisme", "le miroir concave"], correct: 0 },
     ],
     // Ch 3 — Atomes
     [
-      { q: "Le nombre de protons d'un atome est appelé…", choices: ["Numéro atomique Z", "Nombre de masse A", "Charge ionique", "Valence"], correct: 0 },
-      { q: "Un atome neutre a…", choices: ["Autant d'électrons que de protons", "Plus d'électrons que de protons", "Moins d'électrons que de protons", "Aucun électron"], correct: 0 },
-      { q: "La couche K peut accueillir au maximum…", choices: ["2 électrons", "8 électrons", "18 électrons", "1 électron"], correct: 0 },
-      { q: "Un cation est un ion à charge…", choices: ["Positive", "Négative", "Nulle", "Variable"], correct: 0 },
-      { q: "La liaison covalente est un…", choices: ["Partage d'électrons entre deux atomes", "Échange d'électrons", "Attraction entre ions", "Transfert de protons"], correct: 0 },
-      { q: "La formule de l'eau est…", choices: ["H₂O", "HO₂", "H₂O₂", "OH"], correct: 0 },
-      { q: "Le carbone (Z=6) a sa configuration électronique…", choices: ["K²L⁴", "K²L⁶", "K⁶", "K²L²M²"], correct: 0 },
-      { q: "Un anion est un ion qui a…", choices: ["Gagné des électrons", "Perdu des électrons", "Gagné des protons", "Perdu des neutrons"], correct: 0 },
-      { q: "La règle de l'octet dit que les atomes tendent à avoir…", choices: ["8 électrons sur leur couche externe", "8 protons", "8 neutrons", "8 liaisons"], correct: 0 },
-      { q: "Le nombre de masse A = ?", choices: ["Protons + neutrons", "Protons + électrons", "Protons seulement", "Neutrons seulement"], correct: 0 },
+      { q: "Numéro atomique Z = nombre de…", choices: ["protons", "neutrons", "électrons", "nucléons"], correct: 0 },
+      { q: "Atome neutre : nb d'électrons = nb de…", choices: ["protons", "neutrons", "nucléons", "noyaux"], correct: 0 },
+      { q: "Couche K : max d'électrons ?", choices: ["2", "8", "18", "1"], correct: 0 },
+      { q: "Un cation est un ion à charge…", choices: ["positive", "négative", "nulle", "variable"], correct: 0 },
+      { q: "Liaison covalente = ?", choices: ["partage d'électrons", "échange d'électrons", "attraction entre ions", "transfert de protons"], correct: 0 },
+      { q: "Formule de l'eau ?", choices: ["H₂O", "HO₂", "H₂O₂", "OH"], correct: 0 },
+      { q: "Un anion a…", choices: ["gagné des électrons", "perdu des électrons", "gagné des protons", "perdu des neutrons"], correct: 0 },
+      { q: "Règle de l'octet : les atomes tendent à avoir…", choices: ["8 électrons sur leur couche externe", "8 protons", "8 neutrons", "8 liaisons"], correct: 0 },
+      { q: "Nombre de masse A = ?", choices: ["protons + neutrons", "protons + électrons", "protons seulement", "neutrons seulement"], correct: 0 },
+      { q: "Carbone (Z=6) : configuration électronique ?", choices: ["K²L⁴", "K²L⁶", "K⁶", "K²L²M²"], correct: 0 },
     ],
     // Ch 4 — Réactions chimiques
     [
-      { q: "La loi de conservation de la masse est due à…", choices: ["Lavoisier", "Newton", "Einstein", "Mendeleïev"], correct: 0 },
-      { q: "La combustion complète produit…", choices: ["CO₂ + H₂O", "CO + H₂", "CO₂ seulement", "H₂O seulement"], correct: 0 },
-      { q: "La concentration molaire est…", choices: ["C = n/V", "C = m/V", "C = n×V", "C = V/n"], correct: 0 },
-      { q: "Un pH de 3 indique une solution…", choices: ["acide", "basique", "neutre", "saturée"], correct: 0 },
-      { q: "Pour équilibrer une équation chimique, on doit…", choices: ["Avoir le même nombre d'atomes de chaque côté", "Avoir la même charge", "Avoir la même masse molaire", "Avoir le même nombre de molécules"], correct: 0 },
-      { q: "La neutralisation est la réaction entre…", choices: ["Un acide et une base", "Deux acides", "Deux bases", "Un métal et un non-métal"], correct: 0 },
-      { q: "En solution basique, l'ion dominant est…", choices: ["HO⁻", "H₃O⁺", "Na⁺", "Cl⁻"], correct: 0 },
-      { q: "La dilution respecte la relation…", choices: ["C₁V₁ = C₂V₂", "C₁/V₁ = C₂/V₂", "C₁ + V₁ = C₂ + V₂", "C₁ × C₂ = V₁ × V₂"], correct: 0 },
-      { q: "La rouille est…", choices: ["Une oxydation du fer", "Une combustion", "Une précipitation", "Une neutralisation"], correct: 0 },
-      { q: "Un pH de 7 indique une solution…", choices: ["neutre", "acide", "basique", "fortement acide"], correct: 0 },
+      { q: "Loi de conservation de la masse : due à…", choices: ["Lavoisier", "Newton", "Einstein", "Mendeleïev"], correct: 0 },
+      { q: "Combustion complète produit…", choices: ["CO₂ + H₂O", "CO + H₂", "CO₂ seulement", "H₂O seulement"], correct: 0 },
+      { q: "Concentration molaire = ?", choices: ["C = n/V", "C = m/V", "C = n×V", "C = V/n"], correct: 0 },
+      { q: "pH de 3 : solution…", choices: ["acide", "basique", "neutre", "saturée"], correct: 0 },
+      { q: "La neutralisation est la réaction entre…", choices: ["un acide et une base", "deux acides", "deux bases", "un métal et un non-métal"], correct: 0 },
+      { q: "En solution basique, ion dominant ?", choices: ["HO⁻", "H₃O⁺", "Na⁺", "Cl⁻"], correct: 0 },
+      { q: "Dilution : relation ?", choices: ["C₁V₁ = C₂V₂", "C₁/V₁ = C₂/V₂", "C₁ + V₁ = C₂ + V₂", "C₁ × C₂ = V₁ × V₂"], correct: 0 },
+      { q: "La rouille est…", choices: ["une oxydation du fer", "une combustion", "une précipitation", "une neutralisation"], correct: 0 },
+      { q: "pH de 7 : solution…", choices: ["neutre", "acide", "basique", "fortement acide"], correct: 0 },
+      { q: "Équilibrer une équation chimique : on ajuste…", choices: ["les coefficients stœchiométriques", "les formules chimiques", "les indices", "les états physiques"], correct: 0 },
+    ],
+    // Ch 5 — Énergie
+    [
+      { q: "Fission nucléaire : combustible utilisé ?", choices: ["l'uranium", "le charbon", "le pétrole", "l'hydrogène"], correct: 0 },
+      { q: "Les énergies renouvelables sont…", choices: ["inépuisables", "toujours disponibles", "sans impact environnemental", "moins chères"], correct: 0 },
+      { q: "Rendement = ?", choices: ["énergie utile / énergie totale", "énergie totale / énergie utile", "puissance / temps", "énergie / puissance"], correct: 0 },
+      { q: "Part du nucléaire dans l'électricité française ?", choices: ["75%", "30%", "50%", "90%"], correct: 0 },
+      { q: "Inconvénient majeur du nucléaire ?", choices: ["déchets radioactifs à longue durée de vie", "émission de CO₂", "utilisation de pétrole", "prix de l'uranium"], correct: 0 },
+      { q: "L'énergie solaire photovoltaïque convertit…", choices: ["la lumière en électricité", "la chaleur en électricité", "le vent en électricité", "l'eau en électricité"], correct: 0 },
+      { q: "80% de l'énergie mondiale vient de…", choices: ["énergies fossiles", "énergie nucléaire", "énergies renouvelables", "biomasse"], correct: 0 },
+      { q: "L'énergie éolienne utilise…", choices: ["le vent", "le soleil", "l'eau", "la chaleur terrestre"], correct: 0 },
+      { q: "L'énergie hydraulique exploite…", choices: ["les chutes d'eau (barrages)", "les vagues", "les marées uniquement", "la pluie"], correct: 0 },
+      { q: "La transition énergétique vise à…", choices: ["réduire les fossiles et développer les renouvelables", "augmenter le nucléaire", "supprimer toute énergie", "revenir aux énergies anciennes"], correct: 0 },
+    ],
+    // Ch 6 — Ondes et lumière
+    [
+      { q: "Le son se propage à environ ___ dans l'air.", choices: ["340 m/s", "3000 m/s", "150 m/s", "1500 m/s"], correct: 0 },
+      { q: "Ultrasons : fréquence…", choices: ["> 20 000 Hz", "< 20 Hz", "entre 20 et 200 Hz", "exactement 440 Hz"], correct: 0 },
+      { q: "Ec = ½mv² est…", choices: ["l'énergie cinétique", "l'énergie potentielle", "l'énergie mécanique", "la puissance"], correct: 0 },
+      { q: "Ep = mgh est…", choices: ["l'énergie potentielle de pesanteur", "l'énergie cinétique", "l'énergie électrique", "la puissance"], correct: 0 },
+      { q: "Sans frottements, Em = Ec + Ep est…", choices: ["constante", "croissante", "décroissante", "nulle"], correct: 0 },
+      { q: "La lumière est une onde…", choices: ["électromagnétique", "mécanique", "sonore", "sismique"], correct: 0 },
+      { q: "Audible pour l'humain : entre…", choices: ["20 Hz et 20 000 Hz", "0 Hz et 100 Hz", "1000 Hz et 100 000 Hz", "0 Hz et 1000 Hz"], correct: 0 },
+      { q: "Vergence d'une lentille = 1/f' est en…", choices: ["dioptries", "mètres", "newtons", "joules"], correct: 0 },
+      { q: "Dispersion de la lumière blanche par un prisme donne…", choices: ["un arc-en-ciel de couleurs", "de la lumière rouge", "de la lumière noire", "rien de visible"], correct: 0 },
+      { q: "Lentille divergente : image…", choices: ["virtuelle, réduite et droite", "réelle, agrandie et renversée", "réelle et droite", "virtuelle et renversée"], correct: 0 },
+    ],
+    // Ch 7 — Électromagnétisme
+    [
+      { q: "Courant électrique → …", choices: ["champ magnétique", "de la lumière", "du son", "de la chaleur uniquement"], correct: 0 },
+      { q: "Moteur électrique convertit…", choices: ["énergie électrique en énergie mécanique", "énergie mécanique en électricité", "énergie chimique en électricité", "chaleur en mouvement"], correct: 0 },
+      { q: "Générateur/alternateur convertit…", choices: ["énergie mécanique en électricité", "électricité en mouvement", "chaleur en électricité", "lumière en électricité"], correct: 0 },
+      { q: "Tension dangereuse en milieu humide : au-delà de…", choices: ["25 V", "50 V", "100 V", "220 V"], correct: 0 },
+      { q: "P = R × I² est la formule de…", choices: ["l'effet Joule", "la loi d'Ohm", "la puissance mécanique", "l'énergie potentielle"], correct: 0 },
+      { q: "1 kWh = ?", choices: ["3 600 000 J", "1000 J", "3600 J", "100 000 J"], correct: 0 },
+      { q: "Le fusible protège contre…", choices: ["les surcharges électriques", "les court-circuits uniquement", "l'électrocution", "la foudre"], correct: 0 },
+      { q: "La mise à la terre protège contre…", choices: ["l'électrocution", "les surcharges", "la surtension", "les pannes"], correct: 0 },
+      { q: "L'induction électromagnétique est utilisée dans…", choices: ["les générateurs et transformateurs", "les moteurs uniquement", "les piles", "les panneaux solaires"], correct: 0 },
+      { q: "E = P × t donne l'énergie en…", choices: ["joules (si P en W et t en s)", "watts", "volts", "ampères"], correct: 0 },
+    ],
+  ],
+  techno: [
+    // Ch 0 — Objets et systèmes
+    [
+      { q: "La FP d'un objet technique c'est…", choices: ["ce pour quoi il a été créé", "sa contrainte de sécurité", "son mode d'emploi", "sa durée de vie"], correct: 0 },
+      { q: "La bête à cornes permet de…", choices: ["identifier le besoin", "choisir les matériaux", "calculer le coût", "programmer le système"], correct: 0 },
+      { q: "Chaîne fonctionnelle : Alimenter → ? → Traiter → ? → Agir", choices: ["Acquérir … Communiquer", "Mesurer … Stocker", "Calculer … Afficher", "Capter … Transmettre"], correct: 0 },
+      { q: "Le cycle de vie d'un produit commence par…", choices: ["la conception", "la fabrication", "la distribution", "l'utilisation"], correct: 0 },
+      { q: "Le diagramme pieuvre représente…", choices: ["les relations entre l'objet et son milieu extérieur", "le flux d'énergie", "la structure interne", "le mode de fabrication"], correct: 0 },
+      { q: "Un prototype est…", choices: ["le premier exemplaire avant fabrication en série", "un modèle réduit", "un dessin technique", "un schéma fonctionnel"], correct: 0 },
+      { q: "Un actionneur transforme…", choices: ["un signal de commande en action physique", "une énergie en signal", "une information en décision", "un mouvement en électricité"], correct: 0 },
+      { q: "Une FC est…", choices: ["une contrainte à respecter (sécurité, normes)", "la fonction principale", "un besoin de l'utilisateur", "un mode d'emploi"], correct: 0 },
+      { q: "CAO signifie…", choices: ["Conception Assistée par Ordinateur", "Calcul Automatique d'Objets", "Construction Analogique d'Outils", "Codage Automatique Optimisé"], correct: 0 },
+      { q: "Le niveau structurel décrit…", choices: ["comment l'objet est fait (pièces, matériaux)", "ce que fait l'objet", "comment il remplit sa fonction", "son impact environnemental"], correct: 0 },
+    ],
+    // Ch 1 — Matériaux
+    [
+      { q: "Quelle famille de matériaux est la plus recyclable ?", choices: ["les métaux", "les plastiques", "les céramiques", "les composites"], correct: 0 },
+      { q: "La fibre de carbone est un matériau…", choices: ["composite (léger et très résistant)", "métallique", "céramique", "plastique"], correct: 0 },
+      { q: "ACV = ?", choices: ["Analyse du Cycle de Vie", "Association des Constructeurs de Véhicules", "Analyse de la Charge de Vapeur", "Assemblage de Composants Variables"], correct: 0 },
+      { q: "Le verre est recyclable…", choices: ["à 100% et à l'infini", "à 50%", "une seule fois", "jamais"], correct: 0 },
+      { q: "La résistance à la traction est une propriété…", choices: ["mécanique", "physique", "chimique", "environnementale"], correct: 0 },
+      { q: "L'aluminium recyclé économise ___ d'énergie.", choices: ["95%", "50%", "10%", "30%"], correct: 0 },
+      { q: "PET, PVC, polyéthylène : famille ?", choices: ["plastiques (polymères)", "métaux", "céramiques", "composites"], correct: 0 },
+      { q: "Choisir un matériau : analyser…", choices: ["fonction + contraintes + coût + environnement", "seulement le coût", "seulement la résistance", "seulement l'esthétique"], correct: 0 },
+      { q: "La conductivité thermique est une propriété…", choices: ["physique", "mécanique", "chimique", "sensorielle"], correct: 0 },
+      { q: "Matériau à mémoire de forme : il…", choices: ["reprend sa forme initiale quand chauffé", "ne se déforme jamais", "change de couleur sous pression", "devient transparent"], correct: 0 },
+    ],
+    // Ch 2 — Programmation
+    [
+      { q: "Un algorithme est…", choices: ["une suite d'instructions précises pour résoudre un problème", "un langage de programmation", "un type d'ordinateur", "un composant électronique"], correct: 0 },
+      { q: "En Python, 'if x > 0:' est une…", choices: ["condition", "boucle", "variable", "fonction"], correct: 0 },
+      { q: "'for i in range(10):' répète…", choices: ["10 fois", "9 fois", "11 fois", "indéfiniment"], correct: 0 },
+      { q: "1 octet = ?", choices: ["8 bits", "4 bits", "16 bits", "1 bit"], correct: 0 },
+      { q: "1010 en binaire vaut en décimal…", choices: ["10", "2", "8", "12"], correct: 0 },
+      { q: "DNS sert à…", choices: ["traduire les noms de domaine en adresses IP", "sécuriser les connexions", "accélérer internet", "stocker les données"], correct: 0 },
+      { q: "HTTPS est plus sécurisé car…", choices: ["les données sont chiffrées", "il est plus rapide", "il n'utilise pas d'adresse IP", "il ne passe pas par internet"], correct: 0 },
+      { q: "Le RGPD protège…", choices: ["les données personnelles des utilisateurs", "les droits d'auteur", "les brevets industriels", "les logiciels"], correct: 0 },
+      { q: "Une variable en programmation sert à…", choices: ["stocker une valeur", "faire une boucle", "tester une condition", "afficher un résultat"], correct: 0 },
+      { q: "'while x > 0:' est une…", choices: ["boucle conditionnelle", "condition simple", "variable", "fonction"], correct: 0 },
+    ],
+    // Ch 3 — Développement durable
+    [
+      { q: "Le développement durable satisfait les besoins du présent…", choices: ["sans compromettre l'avenir", "au détriment de l'avenir", "en ignorant l'environnement", "uniquement économiquement"], correct: 0 },
+      { q: "Les 3 piliers du développement durable ?", choices: ["économique + social + environnemental", "énergie + eau + air", "production + consommation + recyclage", "nature + humanité + technologie"], correct: 0 },
+      { q: "L'économie circulaire s'oppose à…", choices: ["l'économie linéaire (extraire→produire→jeter)", "l'économie de marché", "l'économie locale", "l'économie numérique"], correct: 0 },
+      { q: "L'éco-conception consiste à…", choices: ["intégrer l'environnement dès la conception", "recycler après utilisation", "réduire le prix de vente", "utiliser des matériaux exotiques"], correct: 0 },
+      { q: "L'empreinte carbone mesure…", choices: ["la quantité de CO₂ émise par une activité", "la superficie d'une forêt", "la consommation d'eau", "le poids d'un produit"], correct: 0 },
+      { q: "Rendement énergétique = ?", choices: ["énergie utile / énergie consommée × 100%", "énergie perdue / énergie totale", "puissance / temps", "énergie / masse"], correct: 0 },
+      { q: "ODD = ?", choices: ["Objectifs de Développement Durable", "Organisation pour le Développement Durable", "Office des Données Durables", "Organisation de Défense Durable"], correct: 0 },
+      { q: "Pour réduire son empreinte carbone…", choices: ["prendre les transports en commun", "acheter plus de voitures", "augmenter sa consommation d'énergie", "voyager plus en avion"], correct: 0 },
+      { q: "La domotique dans un bâtiment permet de…", choices: ["gérer automatiquement énergie et confort", "construire plus vite", "réduire la surface habitable", "augmenter le nombre de pièces"], correct: 0 },
+      { q: "Le tri sélectif contribue à…", choices: ["l'économie circulaire", "l'économie linéaire", "l'augmentation des déchets", "la production de CO₂"], correct: 0 },
     ],
   ],
 };
 
-// ---- QUIZ ENGINE ----
+
 let quizState = null;
 
 function startQuiz(matKey, chIdx) {
   const allQ = QUIZ_DATA[matKey]?.[chIdx] || [];
-  if (!allQ.length) return;
-  // Mélanger et prendre 10 questions
+  if (!allQ.length) { alert('Pas de quiz disponible pour ce chapitre.'); return; }
   const shuffled = [...allQ].sort(() => Math.random() - 0.5).slice(0, 10);
-  // Mélanger les choices de chaque question
   shuffled.forEach(q => {
     const correctAns = q.choices[q.correct];
     const mixed = [...q.choices].sort(() => Math.random() - 0.5);
@@ -7294,36 +8038,54 @@ function startQuiz(matKey, chIdx) {
     q.shuffledCorrect = mixed.indexOf(correctAns);
   });
   quizState = { matKey, chIdx, questions: shuffled, current: 0, score: 0, answers: [] };
+  const container = getQuizContainer();
+  if (!container) { alert('Erreur : conteneur introuvable.'); return; }
   renderQuizQuestion();
+  // Scroll to top of section
+  try { document.querySelector('.section.active').scrollTop = 0; } catch(e) {}
+  try { window.scrollTo(0, 0); } catch(e) {}
+}
+
+function getQuizContainer() {
+  // Check if anglais container is actually visible (not just in active section)
+  const anglaisContainer = document.getElementById('cours-anglais-container');
+  if (anglaisContainer && anglaisContainer.style.display !== 'none') {
+    return document.getElementById('anglais-content');
+  }
+  return document.getElementById('brevet-chapitre-content');
 }
 
 function renderQuizQuestion() {
   const { questions, current } = quizState;
   const q = questions[current];
-  const mat = BREVET_DATA[quizState.matKey];
-  const ch = mat.chapitres[quizState.chIdx];
-  document.getElementById('brevet-chapitre-content').innerHTML = `
-    <div style="background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:16px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-size:11px;font-weight:700;color:${mat.color};text-transform:uppercase;letter-spacing:1px">Quiz — ${ch.titre}</div>
-        <div style="font-size:13px;color:var(--muted);margin-top:3px">Question ${current+1} / ${questions.length}</div>
-      </div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:${mat.color}">${quizState.score}/${current}</div>
-    </div>
-    <!-- Barre de progression -->
-    <div style="background:var(--border);border-radius:10px;height:8px;margin-bottom:24px;overflow:hidden">
-      <div style="height:100%;background:${mat.color};border-radius:10px;width:${(current/questions.length)*100}%;transition:width 0.4s ease"></div>
-    </div>
-    <!-- Question -->
-    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;line-height:1.4">${q.q}</div>
-    <!-- Choix -->
-    <div style="display:flex;flex-direction:column;gap:10px" id="quiz-choices">
-      ${q.shuffledChoices.map((c, i) => `
-        <button onclick="answerQuiz(${i})" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:12px" id="choice-${i}">
-          <span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:${mat.color}">${['A','B','C','D'][i]}</span>
-          ${c}
-        </button>`).join('')}
-    </div>`;
+  const isExam = quizState.matKey === 'exam';
+  const mat = isExam
+    ? { color: '#f0c14b', label: '📝 Examen Blanc' }
+    : BREVET_DATA[quizState.matKey];
+  const chTitle = isExam
+    ? 'Examen blanc — toutes matières'
+    : (mat.chapitres && mat.chapitres[quizState.chIdx] ? mat.chapitres[quizState.chIdx].titre : '');
+
+  getQuizContainer().innerHTML =
+    '<div style="background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center">'
+      + '<div>'
+        + '<div style="font-size:11px;font-weight:700;color:' + mat.color + ';text-transform:uppercase;letter-spacing:1px">' + chTitle + '</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-top:3px">Question ' + (current+1) + ' / ' + questions.length + '</div>'
+      + '</div>'
+      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:800;color:' + mat.color + '">' + quizState.score + '/' + current + '</div>'
+    + '</div>'
+    + '<div style="background:var(--border);border-radius:10px;height:8px;margin-bottom:24px;overflow:hidden">'
+      + '<div style="height:100%;background:' + mat.color + ';border-radius:10px;width:' + (current/questions.length*100) + '%;transition:width 0.4s ease"></div>'
+    + '</div>'
+    + '<div style="font-family:\'Syne\',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;line-height:1.4">' + q.q + '</div>'
+    + '<div style="display:flex;flex-direction:column;gap:10px" id="quiz-choices">'
+      + q.shuffledChoices.map(function(c, i) {
+          return '<button onclick="answerQuiz(' + i + ')" style="text-align:left;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:12px" id="choice-' + i + '">'
+            + '<span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:' + mat.color + '">' + ['A','B','C','D'][i] + '</span>'
+            + c
+          + '</button>';
+        }).join('')
+    + '</div>';
 }
 
 function answerQuiz(choiceIdx) {
@@ -7361,14 +8123,21 @@ function answerQuiz(choiceIdx) {
 
 function renderQuizResult() {
   const { score, questions, matKey, chIdx, answers } = quizState;
-  const mat = BREVET_DATA[matKey];
+  const isExam = matKey === 'exam';
+  const mat = isExam ? { color: '#f0c14b', label: '📝 Examen Blanc', chapitres: [] } : BREVET_DATA[matKey];
   const total = questions.length;
   const note = Math.round((score / total) * 20 * 10) / 10;
   const pct = Math.round((score / total) * 100);
   const emoji = note >= 16 ? '🏆' : note >= 12 ? '😊' : note >= 8 ? '😐' : '😔';
   const msg = note >= 16 ? 'Excellent ! Tu maîtrises ce chapitre !' : note >= 12 ? 'Bien ! Quelques points à revoir.' : note >= 8 ? 'Moyen. Relis le cours.' : 'Insuffisant. Révise bien ce chapitre.';
 
-  document.getElementById('brevet-chapitre-content').innerHTML = `
+  // Save score to chapter progress
+  if (!isExam && matKey && chIdx >= 0) {
+    setChapterStatus(matKey, chIdx, { lastScore: note, mastered: note >= 14 });
+  }
+
+
+  getQuizContainer().innerHTML = `
     <div style="text-align:center;padding:28px 20px;background:linear-gradient(135deg,${mat.color}22,${mat.color}08);border:1px solid ${mat.color}44;border-radius:20px;margin-bottom:24px">
       <div style="font-size:56px;margin-bottom:12px">${emoji}</div>
       <div style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:800;color:${mat.color};line-height:1">${note}<span style="font-size:28px">/20</span></div>
@@ -7395,7 +8164,7 @@ function renderQuizResult() {
     <!-- Boutons -->
     <div style="display:flex;gap:10px">
       <button class="btn btn-primary" style="flex:1" onclick="startQuiz('${matKey}', ${chIdx})">🔄 Refaire le quiz</button>
-      <button class="btn btn-ghost" style="flex:1" onclick="showBrevetCoursOnly(${chIdx})">📖 Relire le cours</button>
+      ${isExam ? '<button class="btn btn-ghost" style="flex:1" onclick="closeBrevetchapitre()">🏠 Retour</button>' : '<button class="btn btn-ghost" style="flex:1" onclick="showBrevetCoursOnly(' + chIdx + ')">📖 Relire le cours</button>'}
     </div>`;
 
   launchConfetti();
@@ -7556,7 +8325,6 @@ function openBrevetChapitre(idx) {
   const ch = mat.chapitres[idx];
   const st = getChapterStatus(currentBrevetMat, idx);
 
-  // Mark as seen + update streak
   setChapterStatus(currentBrevetMat, idx, { seen: true });
   updateBrevetStreak();
 
@@ -7564,40 +8332,104 @@ function openBrevetChapitre(idx) {
   document.getElementById('brevet-chapitre').style.display = 'block';
 
   const fontSize = store.get('brevetFontSize', 15);
+  const hasQuiz = !!(QUIZ_DATA && QUIZ_DATA[currentBrevetMat] && QUIZ_DATA[currentBrevetMat][idx] && QUIZ_DATA[currentBrevetMat][idx].length > 0);
 
-  document.getElementById('brevet-chapitre-content').innerHTML =
-    // Header
-    '<div style="background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:18px;margin-bottom:16px">'
-      + '<div style="font-size:11px;font-weight:700;color:' + mat.color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">' + mat.label + ' — Chapitre ' + (idx+1) + '</div>'
-      + '<div style="font-family:\'Syne\',sans-serif;font-size:20px;font-weight:800">' + ch.titre + '</div>'
-      + '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + ch.resume + '</div>'
-    + '</div>'
-    // Controls bar
-    + '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">'
-      + '<button class="btn btn-ghost btn-sm" onclick="toggleBookmark(' + idx + ')" id="bookmark-btn">' + (st.bookmarked ? '🔖 Marqué' : '🔖 Marquer') + '</button>'
-      + '<button class="btn btn-ghost btn-sm" onclick="toggleMastered(' + idx + ')" id="mastered-btn">' + (st.mastered ? '✅ Maîtrisé' : '○ À maîtriser') + '</button>'
-      + '<div style="display:flex;align-items:center;gap:6px;margin-left:auto">'
-        + '<span style="font-size:11px;color:var(--muted)">Aa</span>'
-        + '<input type="range" min="13" max="18" value="' + fontSize + '" style="width:80px;accent-color:var(--accent)" oninput="setBrevFontSize(this.value)" id="font-slider">'
-        + '<span style="font-size:15px;color:var(--muted)">Aa</span>'
-      + '</div>'
-    + '</div>'
-    // Course content
-    + '<div class="brevet-cours-content" id="brevet-cours-text" style="font-size:' + fontSize + 'px">' + ch.contenu + '</div>'
-    // Navigation between chapters
-    + '<div style="display:flex;gap:10px;margin-top:20px">'
-      + (idx > 0 ? '<button class="btn btn-ghost" style="flex:1" onclick="openBrevetChapitre(' + (idx-1) + ')">‹ Précédent</button>' : '<div style="flex:1"></div>')
-      + (idx < mat.chapitres.length - 1 ? '<button class="btn btn-ghost" style="flex:1" onclick="openBrevetChapitre(' + (idx+1) + ')">Suivant ›</button>' : '<div style="flex:1"></div>')
-    + '</div>'
-    // Quiz section
-    + '<div style="margin-top:20px;padding:20px;background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;text-align:center">'
-      + '<div style="font-size:24px;margin-bottom:8px">🎯</div>'
-      + '<div style="font-family:\'Syne\',sans-serif;font-size:16px;font-weight:800;margin-bottom:4px">Prêt à te tester ?</div>'
-      + '<div style="font-size:13px;color:var(--muted);margin-bottom:14px">10 questions aléatoires — Note sur 20</div>'
-      + '<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;border-radius:14px" onclick="startQuiz(\'' + currentBrevetMat + '\', ' + idx + ')">🚀 Lancer le quiz !</button>'
-    + '</div>';
+  const el = document.getElementById('brevet-chapitre-content');
+  el.innerHTML = '';
+
+  // Header
+  const header = document.createElement('div');
+  header.style.cssText = 'background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:18px;margin-bottom:16px';
+  header.innerHTML = '<div style="font-size:11px;font-weight:700;color:' + mat.color + ';text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">' + mat.label + ' — Chapitre ' + (idx+1) + '</div>'
+    + '<div style="font-family:Syne,sans-serif;font-size:20px;font-weight:800">' + ch.titre + '</div>'
+    + '<div style="font-size:13px;color:var(--muted);margin-top:4px">' + ch.resume + '</div>';
+  el.appendChild(header);
+
+  // Controls bar
+  const controls = document.createElement('div');
+  controls.style.cssText = 'display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap';
+  const bkBtn = document.createElement('button');
+  bkBtn.className = 'btn btn-ghost btn-sm';
+  bkBtn.id = 'bookmark-btn';
+  bkBtn.textContent = st.bookmarked ? '🔖 Marqué' : '🔖 Marquer';
+  bkBtn.onclick = function() { toggleBookmark(idx); };
+  const mBtn = document.createElement('button');
+  mBtn.className = 'btn btn-ghost btn-sm';
+  mBtn.id = 'mastered-btn';
+  mBtn.textContent = st.mastered ? '✅ Maîtrisé' : '○ À maîtriser';
+  mBtn.onclick = function() { toggleMastered(idx); };
+  const sizeWrap = document.createElement('div');
+  sizeWrap.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:auto';
+  sizeWrap.innerHTML = '<span style="font-size:11px;color:var(--muted)">Aa</span>'
+    + '<input type="range" min="13" max="18" value="' + fontSize + '" style="width:80px;accent-color:var(--accent)" oninput="setBrevFontSize(this.value)" id="font-slider">'
+    + '<span style="font-size:15px;color:var(--muted)">Aa</span>';
+  controls.appendChild(bkBtn);
+  controls.appendChild(mBtn);
+  controls.appendChild(sizeWrap);
+  el.appendChild(controls);
+
+  // Course content
+  const coursDiv = document.createElement('div');
+  coursDiv.className = 'brevet-cours-content';
+  coursDiv.id = 'brevet-cours-text';
+  coursDiv.style.fontSize = fontSize + 'px';
+  coursDiv.innerHTML = ch.contenu;
+  el.appendChild(coursDiv);
+
+  // Navigation
+  const nav = document.createElement('div');
+  nav.style.cssText = 'display:flex;gap:10px;margin-top:20px';
+  if (idx > 0) {
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'btn btn-ghost';
+    prevBtn.style.flex = '1';
+    prevBtn.textContent = '‹ Précédent';
+    prevBtn.onclick = function() { openBrevetChapitre(idx - 1); };
+    nav.appendChild(prevBtn);
+  } else {
+    const spacer = document.createElement('div');
+    spacer.style.flex = '1';
+    nav.appendChild(spacer);
+  }
+  if (idx < mat.chapitres.length - 1) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn btn-ghost';
+    nextBtn.style.flex = '1';
+    nextBtn.textContent = 'Suivant ›';
+    nextBtn.onclick = function() { openBrevetChapitre(idx + 1); };
+    nav.appendChild(nextBtn);
+  } else {
+    const spacer = document.createElement('div');
+    spacer.style.flex = '1';
+    nav.appendChild(spacer);
+  }
+  el.appendChild(nav);
+
+  // Quiz section
+  const quizBox = document.createElement('div');
+  quizBox.style.cssText = 'margin-top:20px;padding:20px;background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;text-align:center';
+  if (hasQuiz) {
+    quizBox.innerHTML = '<div style="font-size:24px;margin-bottom:8px">🎯</div>'
+      + '<div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;margin-bottom:4px">Prêt à te tester ?</div>'
+      + '<div style="font-size:13px;color:var(--muted);margin-bottom:14px">10 questions aléatoires — Note sur 20</div>';
+    const quizBtn = document.createElement('button');
+    quizBtn.className = 'btn btn-primary';
+    quizBtn.style.cssText = 'width:100%;padding:14px;font-size:15px;border-radius:14px';
+    quizBtn.textContent = '🚀 Lancer le quiz !';
+    quizBtn.onclick = function() { startQuiz(currentBrevetMat, idx); };
+    quizBox.appendChild(quizBtn);
+    if (st.lastScore !== null && st.lastScore !== undefined) {
+      const scoreDiv = document.createElement('div');
+      scoreDiv.style.cssText = 'margin-top:12px;font-size:13px;color:var(--muted)';
+      scoreDiv.textContent = 'Dernier score : ' + st.lastScore + '/20';
+      quizBox.appendChild(scoreDiv);
+    }
+  } else {
+    quizBox.innerHTML = '<div style="font-size:20px;margin-bottom:8px">📖</div>'
+      + '<div style="font-size:13px;color:var(--muted)">Quiz disponible prochainement pour ce chapitre</div>';
+  }
+  el.appendChild(quizBox);
 }
-
 function setBrevFontSize(val) {
   store.set('brevetFontSize', parseInt(val));
   const el = document.getElementById('brevet-cours-text');
@@ -7627,26 +8459,7 @@ function closeBrevetchapitre() {
   renderBrevetListe(); // refresh to show updated status
 }
 
-// Override startQuiz to save score to chapter status
-const _origStartQuiz = startQuiz;
-function startQuiz(matKey, chIdx) {
-  window._quizMatKey = matKey;
-  window._quizChIdx = chIdx;
-  _origStartQuiz(matKey, chIdx);
-}
-// Override renderQuizResult to save score
-const _origRenderQuizResult = renderQuizResult;
-function renderQuizResult() {
-  _origRenderQuizResult();
-  const { score, questions } = quizState;
-  const note = Math.round((score / questions.length) * 20 * 10) / 10;
-  if (window._quizMatKey !== undefined && window._quizChIdx !== undefined) {
-    setChapterStatus(window._quizMatKey, window._quizChIdx, {
-      lastScore: note,
-      mastered: note >= 14
-    });
-  }
-}
+
 
 // EXAMEN BLANC — 20 questions aléatoires toutes matières
 function startExamBlanc() {
