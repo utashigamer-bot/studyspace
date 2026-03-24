@@ -17,6 +17,73 @@
   font-weight: 700 800;
   unicode-range: U+0000-00FF;
 }
+
+/* ===== ONBOARDING ===== */
+.ob-step-dot { flex:1; height:4px; border-radius:2px; background:var(--border); transition:background 0.3s; }
+.ob-step-dot.active { background:var(--accent); }
+.ob-step-dot.done { background:var(--accent)66; }
+.ob-title { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; margin-bottom:8px; line-height:1.2; }
+.ob-sub { font-size:14px; color:var(--muted); margin-bottom:28px; line-height:1.5; }
+.ob-emoji { font-size:52px; margin-bottom:16px; display:block; }
+.ob-option {
+  display:flex; align-items:center; gap:12px;
+  padding:16px 18px; border-radius:14px;
+  border:2px solid var(--border); background:var(--card);
+  cursor:pointer; margin-bottom:10px; transition:all 0.15s;
+  font-size:14px; font-weight:600;
+}
+.ob-option:active { transform:scale(0.98); }
+.ob-option.selected { border-color:var(--accent); background:var(--accent)15; color:var(--accent); }
+.ob-option-icon { font-size:22px; width:32px; text-align:center; }
+.ob-btn {
+  width:100%; padding:16px; border-radius:14px;
+  background:var(--accent); color:#0c0b14;
+  font-family:'Syne',sans-serif; font-size:16px; font-weight:800;
+  border:none; cursor:pointer; margin-top:8px;
+  transition:opacity 0.2s;
+}
+.ob-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.ob-btn-ghost {
+  width:100%; padding:14px; border-radius:14px;
+  background:transparent; color:var(--muted);
+  font-size:14px; font-weight:600;
+  border:none; cursor:pointer; margin-top:4px;
+}
+.ob-input {
+  width:100%; padding:16px 18px; border-radius:14px;
+  border:2px solid var(--border); background:var(--card);
+  color:var(--text); font-size:16px; font-family:inherit;
+  margin-bottom:16px; box-sizing:border-box;
+  transition:border-color 0.2s;
+}
+.ob-input:focus { outline:none; border-color:var(--accent); }
+.ob-toggle-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; border-radius:14px;
+  border:1px solid var(--border); background:var(--card);
+  margin-bottom:10px;
+}
+.ob-toggle-label { font-size:14px; font-weight:600; }
+.ob-toggle-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+
+/* ===== PARAMÈTRES ===== */
+.settings-group { margin-bottom:20px; }
+.settings-group-title {
+  font-size:10px; font-weight:800; text-transform:uppercase;
+  letter-spacing:1px; color:var(--muted); margin-bottom:10px; padding:0 4px;
+}
+.settings-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; border-radius:14px;
+  background:var(--card); border:1px solid var(--border);
+  margin-bottom:8px;
+}
+.settings-row-left { display:flex; align-items:center; gap:12px; }
+.settings-row-icon { font-size:20px; width:28px; text-align:center; }
+.settings-row-label { font-size:14px; font-weight:600; }
+.settings-row-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.settings-chevron { color:var(--muted); font-size:16px; }
+
 </style>
 <style>
 /* ============================================================
@@ -1011,30 +1078,51 @@ body {
 /* More drawer */
 .more-drawer {
   position: absolute; bottom: 100%; left: 0; right: 0;
-  background: var(--bg); border-top: 1px solid var(--border);
-  border-radius: 20px 20px 0 0;
-  padding: 16px 16px 8px;
+  background: var(--surface); border-top: 1px solid var(--border);
+  border-radius: 24px 24px 0 0;
+  padding: 8px 16px 12px;
   transform: translateY(100%); opacity: 0; pointer-events: none;
   transition: transform 0.3s cubic-bezier(.4,0,.2,1), opacity 0.3s;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 -12px 48px rgba(0,0,0,0.4);
+  max-height: 75vh; overflow-y: auto;
 }
 .more-drawer.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+.drawer-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 8px auto 14px; flex-shrink: 0; }
+.drawer-cat-label {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--muted);
+  padding: 4px 2px 8px; margin-top: 4px;
+}
 .more-drawer-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 8px; margin-bottom: 14px;
+  gap: 8px; margin-bottom: 4px;
 }
 .more-drawer-item {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 5px; padding: 12px 6px; border-radius: 14px;
-  cursor: pointer; font-size: 11px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 12px 4px 10px; border-radius: 14px;
+  cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.2px;
   color: var(--muted); background: var(--card);
   border: 1px solid var(--border); transition: all 0.15s;
-  text-align: center;
+  text-align: center; min-height: 68px; position: relative;
 }
-.more-drawer-item:hover, .more-drawer-item.active { color: var(--text); border-color: var(--accent2); background: var(--card2); }
-.di-emoji { font-size: 20px; }
-.more-drawer-sep { height: 1px; background: var(--border); margin: 8px 0; }
-.drawer-bottom-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 8px; }
+.more-drawer-item:active { transform: scale(0.94); opacity: 0.8; }
+.more-drawer-item.active { color: var(--accent); border-color: var(--accent)44; background: var(--accent)11; }
+.di-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.di-label { font-size: 10px; font-weight: 600; color: inherit; line-height: 1.2; }
+.di-badge {
+  position: absolute; top: 5px; right: 5px;
+  min-width: 15px; height: 15px; border-radius: 8px;
+  background: #f87171; color: #fff;
+  font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+}
+.more-drawer-sep { height: 1px; background: var(--border); margin: 10px 0 10px; }
+.drawer-bottom-row { display: flex; align-items: center; justify-content: space-between; padding: 0 0 4px; }
 .drawer-logo { display: flex; align-items: center; gap: 8px; }
 .drawer-logo-icon { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); color: #0c0b14; display: flex; align-items: center; justify-content: center; font-size: 11px; }
 .drawer-logo-text { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; }
@@ -1593,6 +1681,25 @@ body {
 <body>
 
 <!-- SPLASH SCREEN -->
+
+<!-- ===================== ONBOARDING ===================== -->
+<div id="onboarding" style="display:none;position:fixed;inset:0;z-index:9000;background:var(--bg);overflow-y:auto">
+  <div style="max-width:420px;margin:0 auto;padding:32px 24px 48px">
+
+    <!-- Progress bar -->
+    <div style="display:flex;gap:4px;margin-bottom:32px" id="ob-progress">
+      <div class="ob-step-dot active"></div>
+      <div class="ob-step-dot"></div>
+      <div class="ob-step-dot"></div>
+      <div class="ob-step-dot"></div>
+      <div class="ob-step-dot"></div>
+      <div class="ob-step-dot"></div>
+    </div>
+
+    <div id="ob-content"></div>
+  </div>
+</div>
+
 <div id="splash">
   <div class="splash-icon">✦</div>
   <div class="splash-title">StudySpace</div>
@@ -1621,58 +1728,79 @@ body {
 <nav class="sidebar">
   <!-- Drawer "Plus" qui s'ouvre vers le haut -->
   <div class="more-drawer" id="moreDrawer">
+    <div class="drawer-handle"></div>
+
+    <!-- Catégorie : Travail -->
+    <div class="drawer-cat-label">📚 Travail</div>
     <div class="more-drawer-grid">
       <div class="more-drawer-item" data-section="objectifs" onclick="showFromDrawer('objectifs', this)">
-        <span class="di-emoji">🎯</span>Objectifs
-        <span class="nav-badge" id="badge-obj" style="position:static;margin-top:2px;background:rgba(248,113,113,0.2);color:#f87171">0</span>
+        <div class="di-icon" style="background:#f8717122">🎯</div>
+        <span class="di-label">Objectifs</span>
+        <span class="di-badge" id="badge-obj" style="display:none">0</span>
       </div>
       <div class="more-drawer-item" data-section="pomodoro" onclick="showFromDrawer('pomodoro', this)">
-        <span class="di-emoji">⏱️</span>Chrono
+        <div class="di-icon" style="background:#fb923c22">⏱️</div>
+        <span class="di-label">Chrono</span>
       </div>
       <div class="more-drawer-item" data-section="notes" onclick="showFromDrawer('notes', this)">
-        <span class="di-emoji">📝</span>Notes
-        <span class="nav-badge" id="badge-notes" style="position:static;margin-top:2px;background:rgba(248,113,113,0.2);color:#f87171">0</span>
+        <div class="di-icon" style="background:#facc1522">📝</div>
+        <span class="di-label">Notes</span>
+        <span class="di-badge" id="badge-notes" style="display:none">0</span>
       </div>
-      <div class="more-drawer-item" data-section="famille" onclick="showFromDrawer('famille', this)">
-        <span class="di-emoji">🏠</span>Famille
-      </div>
-      <div class="more-drawer-item" data-section="challenges" onclick="showFromDrawer('challenges', this)">
-        <span class="di-emoji">🏆</span>Challenges
-        <span class="nav-badge" id="badge-ch" style="position:static;margin-top:2px;background:rgba(248,113,113,0.2);color:#f87171">0</span>
-      </div>
-      <div class="more-drawer-item" data-section="anniversaires" onclick="showFromDrawer('anniversaires', this)">
-        <span class="di-emoji">🎂</span>Anniversaires
-        <span class="nav-badge" id="badge-bday" style="position:static;margin-top:2px;background:rgba(248,113,113,0.2);color:#f87171">0</span>
-      </div>
-      <div class="more-drawer-item" data-section="courses" onclick="showFromDrawer('courses', this)">
-        <span class="di-emoji">🛒</span>Courses
-      </div>
-      <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
-        <span class="di-emoji">🎡</span>Roue
-      </div>
-<div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
-        <span class="di-emoji">🔧</span>Outils
-      </div>
-      <div class="more-drawer-item" data-section="dictionnaire" onclick="showFromDrawer('dictionnaire', this)">
-        <span class="di-emoji">📖</span>Dictionnaire
-      </div>
-      <div class="more-drawer-item" data-section="fiches" onclick="showFromDrawer('fiches', this)">
-        <span class="di-emoji">⚡</span>Fiches express
-      </div>
-      <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
-        <span class="di-emoji">🎨</span>Apparence
-      </div>
-      <div class="more-drawer-item" data-section="infos" onclick="showFromDrawer('infos', this)">
-        <span class="di-emoji">ℹ️</span>Infos
-      </div>
-      <div class="more-drawer-item" onclick="openPwaModal()">
-        <span class="di-emoji">📲</span>Installer
-      </div>
-      <div class="more-drawer-item" onclick="toggleTheme()">
-        <span class="di-emoji">🌙</span>Mode
-        <div class="toggle-track" style="width:28px;height:16px;margin:0 auto"><div class="toggle-thumb" style="width:12px;height:12px"></div></div>
+      <div class="more-drawer-item" data-section="outils" onclick="showFromDrawer('outils', this)">
+        <div class="di-icon" style="background:#94a3b822">🔧</div>
+        <span class="di-label">Outils</span>
       </div>
     </div>
+
+    <!-- Catégorie : Révisions -->
+    <div class="drawer-cat-label">🎓 Révisions</div>
+    <div class="more-drawer-grid">
+      <div class="more-drawer-item" data-section="dictionnaire" onclick="showFromDrawer('dictionnaire', this)">
+        <div class="di-icon" style="background:#38bdf822">📖</div>
+        <span class="di-label">Dico</span>
+      </div>
+      <div class="more-drawer-item" data-section="fiches" onclick="showFromDrawer('fiches', this)">
+        <div class="di-icon" style="background:#fbbf2422">⚡</div>
+        <span class="di-label">Fiches</span>
+      </div>
+      <div class="more-drawer-item" data-section="challenges" onclick="showFromDrawer('challenges', this)">
+        <div class="di-icon" style="background:#f0c14b22">🏆</div>
+        <span class="di-label">Challenges</span>
+        <span class="di-badge" id="badge-ch" style="display:none">0</span>
+      </div>
+      <div class="more-drawer-item" data-section="roulette" onclick="showFromDrawer('roulette', this)">
+        <div class="di-icon" style="background:#a78bfa22">🎡</div>
+        <span class="di-label">Roulette</span>
+      </div>
+    </div>
+
+    <!-- Catégorie : Perso -->
+    <div class="drawer-cat-label">🙂 Perso</div>
+    <div class="more-drawer-grid">
+      <div class="more-drawer-item" data-section="anniversaires" onclick="showFromDrawer('anniversaires', this)">
+        <div class="di-icon" style="background:#e879f922">🎂</div>
+        <span class="di-label">Anniv.</span>
+        <span class="di-badge" id="badge-bday" style="display:none">0</span>
+      </div>
+      <div class="more-drawer-item" data-section="courses" onclick="showFromDrawer('courses', this)">
+        <div class="di-icon" style="background:#34d39922">🛒</div>
+        <span class="di-label">Courses</span>
+      </div>
+      <div class="more-drawer-item" data-section="apparence" onclick="showFromDrawer('apparence', this)">
+        <div class="di-icon" style="background:#9b8afb22">🎨</div>
+        <span class="di-label">Thème</span>
+      </div>
+      <div class="more-drawer-item" data-section="parametres" onclick="showFromDrawer('parametres', this)">
+        <div class="di-icon" style="background:#6366f122">⚙️</div>
+        <span class="di-label">Paramètres</span>
+      </div>
+      <div class="more-drawer-item" data-section="infos" onclick="showFromDrawer('infos', this)">
+        <div class="di-icon" style="background:#64748b22">ℹ️</div>
+        <span class="di-label">Infos</span>
+      </div>
+    </div>
+
     <div class="more-drawer-sep"></div>
     <div class="drawer-bottom-row">
       <div class="drawer-logo">
@@ -1703,7 +1831,7 @@ body {
       <span class="nav-emoji">📅</span><span>Agenda</span>
       <span class="nav-badge" id="badge-agenda">0</span>
     </div>
-    <div class="nav-item" onclick="showSection('famille', this)">
+    <div class="nav-item" data-section="famille" onclick="showSection('famille', this)">
       <span class="nav-emoji">🏠</span><span>Famille</span>
     </div>
     <div class="nav-item" onclick="toggleMoreDrawer()" id="more-nav-btn">
@@ -1763,8 +1891,8 @@ body {
         <div style="font-size:10px;color:var(--muted);margin-top:3px">Tes notes perso</div>
       </div>
       <div onclick="setCoursMode('brevet')" id="mode-brevet" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
-        <div style="font-size:28px;margin-bottom:6px">🎓</div>
-        <div style="font-size:13px;font-weight:700;color:var(--muted)">Brevet 3ème</div>
+        <div style="font-size:28px;margin-bottom:6px" id="brevet-mode-icon">🎓</div>
+        <div style="font-size:13px;font-weight:700;color:var(--muted)" id="brevet-mode-label">Brevet 3ème</div>
         <div style="font-size:10px;color:var(--muted);margin-top:3px">Cours + Quiz</div>
       </div>
       <div onclick="setCoursMode('anglais')" id="mode-anglais" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
@@ -1834,7 +1962,7 @@ body {
       <div style="display:flex;align-items:center;gap:12px">
         <button class="cours-back-btn" onclick="setCoursMode(null)">‹</button>
         <div>
-          <div class="page-title">🎓 <span>Brevet 3ème</span></div>
+          <div class="page-title" id="brevet-main-title">🎓 <span id="brevet-level-label">Brevet 3ème</span></div>
           <div class="page-sub">Cours complets + Quiz</div>
         </div>
       </div>
@@ -2483,6 +2611,17 @@ body {
   </div>
 </section>
 
+<!-- ===================== PARAMÈTRES ===================== -->
+<section id="parametres" class="section">
+  <div class="page-header">
+    <div>
+      <div class="page-title">⚙️ <span>Paramètres</span></div>
+      <div class="page-sub">Personnalise ton expérience</div>
+    </div>
+  </div>
+  <div id="parametres-content"></div>
+</section>
+
 <!-- ===================== DICTIONNAIRE ===================== -->
 <section id="dictionnaire" class="section">
   <div class="page-header">
@@ -2906,6 +3045,11 @@ function showFromDrawer(id, el) {
   if (id === 'outils') renderOutils();
   if (id === 'apparence') { renderApparence(); setTimeout(function(){ renderExtraThemesGrid(); renderFontGrid(); }, 50); }
   if (id === 'infos') renderInfos();
+  if (id === 'parametres') renderParametres();
+  if (id === 'dictionnaire') renderDictionnaire();
+  if (id === 'fiches') renderFiches();
+  if (id === 'notes') renderStickies();
+  if (id === 'pomodoro') { updatePomoDisplay(); updatePomoStats(); }
 }
 
 function showSection(id, el) {
@@ -2922,8 +3066,9 @@ function showSection(id, el) {
   el.classList.add('active');
   if (id === 'dashboard') renderDashboard();
   if (id === 'agenda') { renderCalendar(); renderAgendaView(); renderEvents(); }
-  if (id === 'cours') { setCoursMode(null); }
+  if (id === 'cours') { setCoursMode(null); updateBrevetModeCard(); }
   if (id === 'dictionnaire') { renderDictionnaire(); }
+  if (id === 'parametres') { renderParametres(); }
   if (id === 'fiches') { renderFiches(); }
   if (id === 'objectifs') renderObjs();
   if (id === 'famille') renderFamille();
@@ -4230,9 +4375,20 @@ if (!store.get('pwaHintShown', false)) {
 
 function updateBadges() {
   document.getElementById('badge-cours').textContent = store.get('matieres',[]).length;
-  document.getElementById('badge-ch') && (document.getElementById('badge-ch').textContent = store.get('challenges',[]).filter(c=>!c.done).length);
   document.getElementById('badge-agenda').textContent = store.get('agendaEvents',[]).length;
-  document.getElementById('badge-obj').textContent = store.get('objectifs',[]).filter(o=>!o.done).length;
+
+  // Drawer badges — show only if count > 0
+  const chCount = store.get('challenges',[]).filter(c=>!c.done).length;
+  const objCount = store.get('objectifs',[]).filter(o=>!o.done).length;
+  const notesCount = store.get('stickies',[]).length;
+
+  const badgeCh = document.getElementById('badge-ch');
+  const badgeObj = document.getElementById('badge-obj');
+  const badgeNotes = document.getElementById('badge-notes');
+
+  if (badgeCh) { badgeCh.textContent = chCount; badgeCh.style.display = chCount > 0 ? 'flex' : 'none'; }
+  if (badgeObj) { badgeObj.textContent = objCount; badgeObj.style.display = objCount > 0 ? 'flex' : 'none'; }
+  if (badgeNotes) { badgeNotes.textContent = notesCount; badgeNotes.style.display = notesCount > 0 ? 'flex' : 'none'; }
 }
 
 function showXPPop(msg) {
@@ -4505,7 +4661,17 @@ function hideSplash() {
   splash.classList.add('hide');
   setTimeout(() => splash.remove(), 600);
 }
-setTimeout(hideSplash, 2000);
+setTimeout(function() {
+  hideSplash();
+  // Check if first launch
+  const profile = store.get('userProfile', null);
+  if (!profile) {
+    setTimeout(startOnboarding, 300);
+  } else {
+    applyProfileSettings(profile);
+    updateDrawerVisibility();
+  }
+}, 2000);
 
 // ============================================================
 //  CONFETTIS
@@ -4878,6 +5044,482 @@ function renderFontGrid() {
   });
   grid.innerHTML = html;
 }
+
+// ============================================================
+//  PROFIL UTILISATEUR & ONBOARDING
+// ============================================================
+
+const NIVEAUX = [
+  { id: '6e', label: '6ème', emoji: '🌱' },
+  { id: '5e', label: '5ème', emoji: '📗' },
+  { id: '4e', label: '4ème', emoji: '📘' },
+  { id: '3e', label: '3ème (Brevet)', emoji: '🎯' },
+  { id: '2nde', label: '2nde', emoji: '🔥' },
+  { id: '1ere', label: '1ère', emoji: '⚡' },
+  { id: 'tle', label: 'Terminale (Bac)', emoji: '🏆' },
+];
+
+let obStep = 0;
+let obData = {};
+
+function getProfile() {
+  return store.get('userProfile', null);
+}
+
+function saveProfile(data) {
+  store.set('userProfile', data);
+  applyProfileSettings(data);
+}
+
+function updateDrawerVisibility() {
+  const profile = getProfile() || {};
+  // famille: hidden unless hasFamily is explicitly true, or family === 'separated'
+  const showFamille = profile.hasFamily === true || profile.family === 'separated';
+  const sections = [
+    { id: 'famille', show: showFamille },
+    { id: 'challenges', show: profile.hasXP !== false },
+    { id: 'pomodoro', show: profile.hasPomodoro !== false },
+    { id: 'courses', show: profile.hasCourses === true },
+    { id: 'roulette', show: profile.hasRoulette === true },
+  ];
+  sections.forEach(function(s) {
+    document.querySelectorAll('[data-section="' + s.id + '"]').forEach(function(el) {
+      el.style.display = s.show ? '' : 'none';
+    });
+  });
+}
+
+function applyProfileSettings(profile) {
+  if (!profile) return;
+  // Apply theme
+  if (profile.theme) applyPreset(profile.theme);
+  // Hide/show sections based on preferences
+  const hideNav = (id, hidden) => {
+    const items = document.querySelectorAll('[data-section="' + id + '"]');
+    items.forEach(el => el.style.display = hidden ? 'none' : '');
+  };
+  hideNav('famille', !profile.hasFamily);
+  hideNav('challenges', !profile.hasXP);
+  // Agenda hidden from nav badge but not removed
+}
+
+function startOnboarding() {
+  obStep = 0;
+  obData = {};
+  document.getElementById('onboarding').style.display = 'block';
+  renderObStep();
+}
+
+function renderObStep() {
+  // Update progress dots
+  const dots = document.querySelectorAll('.ob-step-dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('active', i === obStep);
+    d.classList.toggle('done', i < obStep);
+  });
+
+  const el = document.getElementById('ob-content');
+  const steps = [obStep0, obStep1, obStep2, obStep3, obStep4, obStep5];
+  if (steps[obStep]) steps[obStep](el);
+}
+
+// Étape 0 — Bienvenue
+function obStep0(el) {
+  el.innerHTML = '<span class="ob-emoji">👋</span>'
+    + '<div class="ob-title">Bienvenue sur StudySpace !</div>'
+    + '<div class="ob-sub">Ton espace de révision personnalisé. Réponds à quelques questions pour que l\'app soit parfaitement adaptée à toi.</div>'
+    + '<div style="margin-bottom:16px">'
+      + '<label style="font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Ton prénom</label>'
+      + '<input class="ob-input" id="ob-name" placeholder="Ex : Léo, Emma..." maxlength="20" oninput="document.getElementById(\'ob-next-0\').disabled=!this.value.trim()">'
+    + '</div>'
+    + '<button class="ob-btn" id="ob-next-0" disabled onclick="obData.name=document.getElementById(\'ob-name\').value.trim();obNext()">Continuer →</button>';
+  setTimeout(function() {
+    const inp = document.getElementById('ob-name');
+    if (inp) inp.focus();
+  }, 100);
+}
+
+// Étape 1 — Niveau scolaire
+function obStep1(el) {
+  let opts = NIVEAUX.map(function(n) {
+    return '<div class="ob-option" data-id="' + n.id + '" onclick="obSelectOne(this,\'level\')">'
+      + '<span class="ob-option-icon">' + n.emoji + '</span>'
+      + '<span>' + n.label + '</span>'
+    + '</div>';
+  }).join('');
+
+  el.innerHTML = '<span class="ob-emoji">📚</span>'
+    + '<div class="ob-title">Tu es en quelle classe ?</div>'
+    + '<div class="ob-sub">L\'app adaptera les cours et les révisions selon ton niveau.</div>'
+    + opts
+    + '<button class="ob-btn" id="ob-next-1" disabled onclick="obNext()">Continuer →</button>'
+    + '<button class="ob-btn-ghost" onclick="obBack()">← Retour</button>';
+}
+
+// Étape 2 — Situation familiale
+function obStep2(el) {
+  el.innerHTML = '<span class="ob-emoji">🏠</span>'
+    + '<div class="ob-title">Ta situation familiale</div>'
+    + '<div class="ob-sub">Cela nous permet d\'activer ou désactiver certaines fonctionnalités.</div>'
+    + '<div class="ob-option" data-id="together" onclick="obSelectOne(this,\'family\')">'
+      + '<span class="ob-option-icon">👨‍👩‍👧</span>'
+      + '<div><div style="font-weight:700">Parents ensemble</div><div style="font-size:12px;color:var(--muted)">Je vis avec mes deux parents</div></div>'
+    + '</div>'
+    + '<div class="ob-option" data-id="separated" onclick="obSelectOne(this,\'family\')">'
+      + '<span class="ob-option-icon">🔄</span>'
+      + '<div><div style="font-weight:700">Garde alternée</div><div style="font-size:12px;color:var(--muted)">Je vis chez les deux parents en alternance</div></div>'
+    + '</div>'
+    + '<div class="ob-option" data-id="single" onclick="obSelectOne(this,\'family\')">'
+      + '<span class="ob-option-icon">👤</span>'
+      + '<div><div style="font-weight:700">Parent unique</div><div style="font-size:12px;color:var(--muted)">Je vis avec un seul parent</div></div>'
+    + '</div>'
+    + '<div class="ob-option" data-id="other" onclick="obSelectOne(this,\'family\')">'
+      + '<span class="ob-option-icon">🏡</span>'
+      + '<div><div style="font-weight:700">Autre</div><div style="font-size:12px;color:var(--muted)">Ma situation est différente</div></div>'
+    + '</div>'
+    + '<button class="ob-btn" id="ob-next-2" disabled onclick="obNext()">Continuer →</button>'
+    + '<button class="ob-btn-ghost" onclick="obBack()">← Retour</button>';
+}
+
+// Étape 3 — Fonctionnalités à activer
+function obStep3(el) {
+  const features = [
+    { id: 'hasAgenda', icon: '📅', label: 'Agenda', sub: 'Gérer tes devoirs et événements', default: true },
+    { id: 'hasXP', icon: '🏆', label: 'Challenges & XP', sub: 'Système de points et récompenses', default: true },
+    { id: 'hasPomodoro', icon: '⏱️', label: 'Chronomètre', sub: 'Timer Pomodoro pour les révisions', default: true },
+    { id: 'hasCourses', icon: '🛒', label: 'Liste de courses', sub: 'Liste de courses partageable', default: false },
+    { id: 'hasRoulette', icon: '🎡', label: 'Roulette', sub: 'Outil de décision aléatoire', default: false },
+  ];
+
+  // Init defaults
+  features.forEach(function(f) { if (obData[f.id] === undefined) obData[f.id] = f.default; });
+
+  let rows = features.map(function(f) {
+    const checked = obData[f.id];
+    return '<div class="ob-toggle-row">'
+      + '<div>'
+        + '<div style="display:flex;align-items:center;gap:8px">'
+          + '<span style="font-size:20px">' + f.icon + '</span>'
+          + '<div>'
+            + '<div class="ob-toggle-label">' + f.label + '</div>'
+            + '<div style="font-size:11px;color:var(--muted)">' + f.sub + '</div>'
+          + '</div>'
+        + '</div>'
+      + '</div>'
+      + '<label class="toggle"><input type="checkbox" id="ob-toggle-' + f.id + '" ' + (checked ? 'checked' : '') + ' onchange="obData[\'' + f.id + '\']=this.checked"><span class="toggle-track"><span class="toggle-thumb"></span></span></label>'
+    + '</div>';
+  }).join('');
+
+  el.innerHTML = '<span class="ob-emoji">⚙️</span>'
+    + '<div class="ob-title">Quelles fonctions veux-tu ?</div>'
+    + '<div class="ob-sub">Tu pourras toujours changer ça dans les Paramètres.</div>'
+    + rows
+    + '<button class="ob-btn" onclick="obNext()">Continuer →</button>'
+    + '<button class="ob-btn-ghost" onclick="obBack()">← Retour</button>';
+}
+
+// Étape 4 — Thème
+function obStep4(el) {
+  const themes = [
+    { id: 'default', label: '🌙 Sombre', bg: '#16142a', accent: '#9b8afb' },
+    { id: 'blue', label: '🌊 Bleu', bg: '#0d1b2e', accent: '#60a5fa' },
+    { id: 'green', label: '🌿 Vert', bg: '#0d1f13', accent: '#4ade80' },
+    { id: 'sunset', label: '🌅 Sunset', bg: '#1a0f07', accent: '#fb923c' },
+    { id: 'rose', label: '🌸 Rose', bg: '#1a0d1a', accent: '#f472b6' },
+    { id: 'light', label: '☀️ Clair', bg: '#f5f3ff', accent: '#7c3aed' },
+  ];
+
+  if (!obData.theme) obData.theme = 'default';
+
+  let opts = themes.map(function(t) {
+    const sel = obData.theme === t.id;
+    return '<div onclick="obData.theme=\'' + t.id + '\';applyPreset(\'' + t.id + '\');renderObStep()" '
+      + 'style="border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;background:' + t.bg + ';border:2px solid ' + (sel ? t.accent : '#333') + ';transition:all 0.2s">'
+      + '<div style="font-size:22px;margin-bottom:4px">' + t.label.split(' ')[0] + '</div>'
+      + '<div style="font-size:11px;color:' + t.accent + ';font-weight:700">' + t.label.split(' ').slice(1).join(' ') + '</div>'
+    + '</div>';
+  }).join('');
+
+  el.innerHTML = '<span class="ob-emoji">🎨</span>'
+    + '<div class="ob-title">Choisis ton thème</div>'
+    + '<div class="ob-sub">Tu pourras le changer à tout moment.</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px">' + opts + '</div>'
+    + '<button class="ob-btn" onclick="obNext()">Continuer →</button>'
+    + '<button class="ob-btn-ghost" onclick="obBack()">← Retour</button>';
+}
+
+// Étape 5 — Résumé / Prêt
+function obStep5(el) {
+  const levelLabel = NIVEAUX.find(function(n) { return n.id === obData.level; });
+  const familyLabels = { together: 'Parents ensemble', separated: 'Garde alternée', single: 'Parent unique', other: 'Autre' };
+
+  el.innerHTML = '<span class="ob-emoji">🚀</span>'
+    + '<div class="ob-title">Tout est prêt, ' + obData.name + ' !</div>'
+    + '<div class="ob-sub">Voici ton profil :</div>'
+    + '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:24px">'
+      + '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">'
+        + '<span style="color:var(--muted);font-size:13px">Prénom</span>'
+        + '<span style="font-weight:700;font-size:13px">' + obData.name + '</span>'
+      + '</div>'
+      + '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">'
+        + '<span style="color:var(--muted);font-size:13px">Classe</span>'
+        + '<span style="font-weight:700;font-size:13px">' + (levelLabel ? levelLabel.label : '') + '</span>'
+      + '</div>'
+      + '<div style="display:flex;justify-content:space-between;padding:8px 0">'
+        + '<span style="color:var(--muted);font-size:13px">Situation</span>'
+        + '<span style="font-weight:700;font-size:13px">' + (familyLabels[obData.family] || '') + '</span>'
+      + '</div>'
+    + '</div>'
+    + '<button class="ob-btn" onclick="finishOnboarding()">C\'est parti ! 🎉</button>';
+}
+
+function obSelectOne(el, key) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.ob-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  obData[key] = el.dataset.id;
+  const btn = document.getElementById('ob-next-' + obStep);
+  if (btn) btn.disabled = false;
+}
+
+function obNext() {
+  // Save toggles on step 3
+  if (obStep === 3) {
+    ['hasAgenda','hasXP','hasPomodoro','hasCourses','hasRoulette'].forEach(function(k) {
+      const el = document.getElementById('ob-toggle-' + k);
+      if (el) obData[k] = el.checked;
+    });
+  }
+  if (obStep < 5) {
+    obStep++;
+    renderObStep();
+  }
+}
+
+function obBack() {
+  if (obStep > 0) { obStep--; renderObStep(); }
+}
+
+function finishOnboarding() {
+  // Set hasFamily based on family answer
+  obData.hasFamily = obData.family === 'separated';
+
+  // Defaults for anything not set
+  if (obData.hasAgenda === undefined) obData.hasAgenda = true;
+  if (obData.hasXP === undefined) obData.hasXP = true;
+  if (obData.hasPomodoro === undefined) obData.hasPomodoro = true;
+  if (obData.hasCourses === undefined) obData.hasCourses = false;
+  if (obData.hasRoulette === undefined) obData.hasRoulette = false;
+
+  saveProfile(obData);
+  store.set('profileName', obData.name);
+
+  // Hide onboarding
+  const ob = document.getElementById('onboarding');
+  ob.style.opacity = '0';
+  ob.style.transition = 'opacity 0.4s';
+  setTimeout(function() { ob.style.display = 'none'; }, 400);
+
+  // Re-render dashboard with name
+  renderDashboard();
+  if (typeof updateDrawerVisibility === 'function') updateDrawerVisibility();
+}
+
+// ============================================================
+//  PARAMÈTRES
+// ============================================================
+
+function renderParametres() {
+  const el = document.getElementById('parametres-content');
+  if (!el) return;
+  const profile = getProfile() || {};
+  const level = NIVEAUX.find(function(n) { return n.id === profile.level; });
+  const familyLabels = { together: 'Parents ensemble', separated: 'Garde alternée', single: 'Parent unique', other: 'Autre' };
+
+  el.innerHTML =
+    // ── Profil
+    '<div class="settings-group">'
+      + '<div class="settings-group-title">👤 Mon profil</div>'
+      + '<div class="settings-row" onclick="settingsEditName()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">✏️</span>'
+        + '<div><div class="settings-row-label">Prénom</div>'
+        + '<div class="settings-row-sub">' + (profile.name || 'Non défini — appuie pour modifier') + '</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+      + '<div class="settings-row" onclick="settingsEditLevel()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">📚</span>'
+        + '<div><div class="settings-row-label">Classe</div>'
+        + '<div class="settings-row-sub">' + (level ? level.label : 'Non défini — appuie pour modifier') + '</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+      + '<div class="settings-row" onclick="settingsEditFamily()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">🏠</span>'
+        + '<div><div class="settings-row-label">Situation familiale</div>'
+        + '<div class="settings-row-sub">' + (familyLabels[profile.family] || 'Non défini — appuie pour modifier') + '</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+    + '</div>'
+
+    // ── Sections actives
+    + '<div class="settings-group">'
+      + '<div class="settings-group-title">🔧 Sections actives</div>'
+      + makeSettingsToggle('hasFamily', '🏠', 'Famille', 'Planning garde alternée', profile.hasFamily)
+      + makeSettingsToggle('hasAgenda', '📅', 'Agenda', 'Devoirs et événements', profile.hasAgenda !== false)
+      + makeSettingsToggle('hasXP', '🏆', 'Challenges & XP', 'Points et récompenses', profile.hasXP !== false)
+      + makeSettingsToggle('hasPomodoro', '⏱️', 'Chronomètre', 'Timer Pomodoro', profile.hasPomodoro !== false)
+      + makeSettingsToggle('hasCourses', '🛒', 'Liste de courses', 'Courses partageable', profile.hasCourses)
+      + makeSettingsToggle('hasRoulette', '🎡', 'Roulette', 'Outil de décision', profile.hasRoulette)
+    + '</div>'
+
+    // ── Danger zone
+    + '<div class="settings-group">'
+      + '<div class="settings-group-title">⚠️ Zone dangereuse</div>'
+      + '<div class="settings-row" onclick="confirmResetOnboarding()" style="border-color:#f8717133">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">🔄</span>'
+        + '<div><div class="settings-row-label" style="color:#f87171">Refaire le tutoriel</div>'
+        + '<div class="settings-row-sub">Recommencer la configuration</div></div></div>'
+        + '<span class="settings-chevron" style="color:#f87171">›</span></div>'
+      + '<div class="settings-row" onclick="confirmResetAll()" style="border-color:#f8717133">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">🗑️</span>'
+        + '<div><div class="settings-row-label" style="color:#f87171">Effacer toutes les données</div>'
+        + '<div class="settings-row-sub">Remet l&rsquo;app à zéro</div></div></div>'
+        + '<span class="settings-chevron" style="color:#f87171">›</span></div>'
+    + '</div>';
+}
+
+// Ouvre un mini-panneau d'édition inline (pas de prompt)
+function makeSettingsToggle(key, icon, label, sub, value) {
+  return '<div class="settings-row">'
+    + '<div class="settings-row-left">'
+      + '<span class="settings-row-icon">' + icon + '</span>'
+      + '<div><div class="settings-row-label">' + label + '</div>'
+      + '<div class="settings-row-sub">' + sub + '</div></div>'
+    + '</div>'
+    + '<label class="toggle"><input type="checkbox" ' + (value ? 'checked' : '')
+      + ' onchange="toggleProfileSetting(\'' + key + '\',this.checked)">'
+      + '<span class="toggle-track"><span class="toggle-thumb"></span></span></label>'
+  + '</div>';
+}
+
+function toggleProfileSetting(key, value) {
+  const profile = getProfile() || {};
+  profile[key] = value;
+  saveProfile(profile);
+  updateDrawerVisibility();
+}
+
+// Ouvre un mini-panneau d'édition inline (pas de prompt)
+function settingsEditName() {
+  const profile = getProfile() || {};
+  const panel = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;margin-bottom:10px">✏️ Modifier le prénom</div>'
+    + '<input class="ob-input" id="settings-name-input" value="' + (profile.name || '') + '" placeholder="Ton prénom" maxlength="20" style="margin-bottom:10px">'
+    + '<div style="display:flex;gap:8px">'
+      + '<button class="btn btn-primary" style="flex:1" onclick="saveSettingsName()">Sauvegarder</button>'
+      + '<button class="btn btn-ghost" style="flex:1" onclick="renderParametres()">Annuler</button>'
+    + '</div></div>';
+  const el = document.getElementById('parametres-content');
+  el.innerHTML = panel + el.innerHTML;
+}
+
+function saveSettingsName() {
+  const val = document.getElementById('settings-name-input');
+  if (!val || !val.value.trim()) return;
+  const profile = getProfile() || {};
+  profile.name = val.value.trim();
+  store.set('profileName', profile.name);
+  saveProfile(profile);
+  renderParametres();
+  renderDashboard();
+}
+
+function settingsEditLevel() {
+  const profile = getProfile() || {};
+  let opts = NIVEAUX.map(function(n) {
+    const sel = profile.level === n.id;
+    return '<div data-id="' + n.id + '" onclick="saveSettingsLevel(this.dataset.id)" '
+      + 'style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;'
+      + 'border:2px solid ' + (sel ? 'var(--accent)' : 'var(--border)') + ';'
+      + 'background:' + (sel ? 'var(--accent)15' : 'var(--card)') + ';'
+      + 'cursor:pointer;margin-bottom:8px">'
+      + '<span style="font-size:20px">' + n.emoji + '</span>'
+      + '<span style="font-size:14px;font-weight:700">' + n.label + '</span>'
+      + (sel ? '<span style="margin-left:auto;color:var(--accent)">✓</span>' : '')
+    + '</div>';
+  }).join('');
+
+  const panel = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;margin-bottom:12px">📚 Choisir ta classe</div>'
+    + opts
+    + '<button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="renderParametres()">Annuler</button>'
+  + '</div>';
+  const el = document.getElementById('parametres-content');
+  el.innerHTML = panel;
+}
+
+function saveSettingsLevel(levelId) {
+  const profile = getProfile() || {};
+  profile.level = levelId;
+  saveProfile(profile);
+  renderParametres();
+  // Refresh brevet if open
+  if (document.getElementById('cours-brevet-container') &&
+      document.getElementById('cours-brevet-container').style.display !== 'none') {
+    renderBrevet();
+  }
+}
+
+function settingsEditFamily() {
+  const profile = getProfile() || {};
+  const options = [
+    { id: 'together', icon: '👨‍👩‍👧', label: 'Parents ensemble', sub: 'Je vis avec mes deux parents' },
+    { id: 'separated', icon: '🔄', label: 'Garde alternée', sub: 'Je vis chez les deux en alternance' },
+    { id: 'single', icon: '👤', label: 'Parent unique', sub: 'Je vis avec un seul parent' },
+    { id: 'other', icon: '🏡', label: 'Autre', sub: 'Ma situation est différente' },
+  ];
+
+  let opts = options.map(function(o) {
+    const sel = profile.family === o.id;
+    return '<div data-id="' + o.id + '" onclick="saveSettingsFamily(this.dataset.id)" '
+      + 'style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;'
+      + 'border:2px solid ' + (sel ? 'var(--accent)' : 'var(--border)') + ';'
+      + 'background:' + (sel ? 'var(--accent)15' : 'var(--card)') + ';'
+      + 'cursor:pointer;margin-bottom:8px">'
+      + '<span style="font-size:22px">' + o.icon + '</span>'
+      + '<div><div style="font-size:14px;font-weight:700">' + o.label + '</div>'
+      + '<div style="font-size:11px;color:var(--muted)">' + o.sub + '</div></div>'
+      + (sel ? '<span style="margin-left:auto;color:var(--accent)">✓</span>' : '')
+    + '</div>';
+  }).join('');
+
+  const panel = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;margin-bottom:12px">🏠 Situation familiale</div>'
+    + opts
+    + '<button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="renderParametres()">Annuler</button>'
+  + '</div>';
+  document.getElementById('parametres-content').innerHTML = panel;
+}
+
+function saveSettingsFamily(familyId) {
+  const profile = getProfile() || {};
+  profile.family = familyId;
+  profile.hasFamily = familyId === 'separated';
+  saveProfile(profile);
+  updateDrawerVisibility();
+  renderParametres();
+}
+
+function confirmResetOnboarding() {
+  if (confirm('Recommencer le tutoriel ? Tes données seront conservées.')) {
+    store.set('userProfile', null);
+    startOnboarding();
+  }
+}
+
+function confirmResetAll() {
+  if (confirm('Effacer TOUTES les données ? Cette action est irréversible !')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
 
 // Init all
 // Reset any bad saved text colors from previous versions
@@ -5963,6 +6605,953 @@ function renderEnglishResult() {
 // ============================================================
 //  BREVET — renderBrevet (updated)
 // ============================================================
+// ============================================================
+//  DONNÉES COURS — 6ÈME
+// ============================================================
+const NIVEAU_DATA_6E = {
+  maths: {
+    label: '📐 Mathématiques', color: '#f0c14b',
+    chapitres: [
+      {
+        titre: 'Nombres entiers et décimaux',
+        resume: 'Lire, écrire, comparer et ranger les nombres',
+        contenu: `<h3>🔢 Les nombres entiers</h3>
+<p>Un <strong>nombre entier</strong> est un nombre sans virgule : 0, 1, 2, 3, 100, 1000…<br>
+Chaque chiffre a une <strong>valeur positionnelle</strong> selon sa place :<br>
+• Unités | Dizaines | Centaines | Milliers | Dizaines de milliers…<br>
+Ex : Dans 4 527 → 4 milliers, 5 centaines, 2 dizaines, 7 unités</p>
+
+<h3>🔢 Les nombres décimaux</h3>
+<p>Un <strong>nombre décimal</strong> a une partie entière et une partie décimale séparées par une virgule.<br>
+Ex : 3,14 → partie entière = 3, partie décimale = 14 centièmes<br>
+• Dixièmes (1/10) | Centièmes (1/100) | Millièmes (1/1000)<br>
+Ex : 2,375 = 2 + 3/10 + 7/100 + 5/1000</p>
+
+<h3>📊 Comparer et ranger</h3>
+<p>Pour comparer deux nombres décimaux :<br>
+1. Comparer la partie entière d'abord<br>
+2. Si égales, comparer les dixièmes, puis centièmes…<br>
+Ex : 3,45 > 3,39 car 4 dixièmes > 3 dixièmes</p>
+
+<h3>🔄 Arrondir un nombre</h3>
+<p>• À l'unité : regarder les dixièmes → si ≥ 5, on arrondit à l'entier supérieur<br>
+• Au dixième : regarder les centièmes → même règle<br>
+Ex : 3,67 arrondi au dixième = 3,7 | 3,64 arrondi au dixième = 3,6</p>`
+      },
+      {
+        titre: 'Les fractions',
+        resume: 'Notion de fraction, fractions égales, comparaison',
+        contenu: `<h3>📐 Qu\'est-ce qu\'une fraction ?</h3>
+<p>Une <strong>fraction</strong> représente une partie d\'un tout.<br>
+Notation : a/b où <strong>a = numérateur</strong> (nombre de parts) et <strong>b = dénominateur</strong> (nombre de parts au total)<br>
+Ex : 3/4 = 3 parts sur 4 parts égales</p>
+
+<h3>🔄 Fractions égales</h3>
+<p>On peut multiplier (ou diviser) numérateur et dénominateur par le même nombre :<br>
+1/2 = 2/4 = 3/6 = 5/10<br>
+Pour simplifier : diviser par le même diviseur<br>
+Ex : 6/8 = 3/4 (divisé par 2)</p>
+
+<h3>📊 Fractions et nombres décimaux</h3>
+<p>• 1/2 = 0,5 | 1/4 = 0,25 | 3/4 = 0,75<br>
+• 1/10 = 0,1 | 1/100 = 0,01<br>
+Pour convertir : effectuer la division numérateur ÷ dénominateur</p>
+
+<h3>⚖️ Comparer des fractions</h3>
+<p>• Même dénominateur : comparer les numérateurs → 3/7 < 5/7<br>
+• Même numérateur : plus le dénominateur est grand, plus la fraction est petite → 1/3 > 1/5<br>
+• Dénominateurs différents : réduire au même dénominateur</p>`
+      },
+      {
+        titre: 'Les opérations',
+        resume: 'Addition, soustraction, multiplication, division',
+        contenu: `<h3>➕ Addition et soustraction de décimaux</h3>
+<p>Règle : <strong>aligner les virgules</strong> sous forme de colonne<br>
+Ex : 12,3 + 4,56 → aligner 12,30 et 4,56 (ajouter des zéros si nécessaire)<br>
+Vérification : l\'ordre de grandeur doit être cohérent</p>
+
+<h3>✖️ Multiplication</h3>
+<p>• Entiers : technique de la multiplication posée<br>
+• Par 10, 100, 1000 : déplacer la virgule vers la droite<br>
+Ex : 3,4 × 10 = 34 | 3,4 × 100 = 340<br>
+• Décimaux : compter le nombre de chiffres après la virgule au total<br>
+Ex : 2,3 × 1,4 = 3,22 (1+1 = 2 chiffres après la virgule)</p>
+
+<h3>➗ Division</h3>
+<p>• Division euclidienne : dividende = quotient × diviseur + reste<br>
+• Division par 10, 100 : déplacer la virgule vers la gauche<br>
+• Division décimale : on peut ajouter des zéros après la virgule au dividende<br>
+<strong>Priorités</strong> : parenthèses → × et ÷ → + et −</p>
+
+<h3>📐 Calcul de fractions</h3>
+<p>Addition/soustraction : même dénominateur obligatoire<br>
+1/3 + 1/6 = 2/6 + 1/6 = 3/6 = 1/2<br>
+Multiplication : numérateur × numérateur / dénominateur × dénominateur<br>
+2/3 × 3/4 = 6/12 = 1/2</p>`
+      },
+      {
+        titre: 'Géométrie — les formes',
+        resume: 'Polygones, cercles, angles, symétrie',
+        contenu: `<h3>📐 Les polygones</h3>
+<p>Un <strong>polygone</strong> est une figure plane fermée à côtés droits.<br>
+• Triangle (3 côtés) | Quadrilatère (4) | Pentagone (5) | Hexagone (6)<br>
+• Polygone régulier : tous les côtés et angles égaux<br>
+• Périmètre = somme des côtés</p>
+
+<h3>⭕ Le cercle</h3>
+<p><strong>Rayon</strong> r : distance du centre à un point du cercle<br>
+<strong>Diamètre</strong> d = 2r : distance d\'un bout à l\'autre en passant par le centre<br>
+<strong>Circonférence</strong> (périmètre) : C = 2πr ≈ 6,28 × r<br>
+<strong>Aire</strong> : A = πr² ≈ 3,14 × r²</p>
+
+<h3>📐 Les angles</h3>
+<p>• Angle droit = 90° | Angle plat = 180° | Angle nul = 0° | Tour complet = 360°<br>
+• Aigu : entre 0° et 90° | Obtus : entre 90° et 180°<br>
+Mesure avec le rapporteur</p>
+
+<h3>🪞 La symétrie axiale</h3>
+<p>Une figure a un <strong>axe de symétrie</strong> si on peut la plier et les deux parties se superposent exactement.<br>
+• Construire le symétrique : perpendiculaire à mi-distance<br>
+• Carré : 4 axes | Rectangle : 2 axes | Cercle : infiniment</p>`
+      },
+      {
+        titre: 'Périmètres et aires',
+        resume: 'Calculer périmètres et aires des figures usuelles',
+        contenu: `<h3>📏 Périmètres</h3>
+<p><strong>Carré</strong> de côté c : P = 4c<br>
+<strong>Rectangle</strong> de longueur L et largeur l : P = 2(L + l)<br>
+<strong>Triangle</strong> : P = a + b + c (somme des trois côtés)<br>
+<strong>Cercle</strong> : C = 2πr (π ≈ 3,14)</p>
+
+<h3>📐 Aires</h3>
+<p><strong>Carré</strong> : A = c²<br>
+<strong>Rectangle</strong> : A = L × l<br>
+<strong>Triangle</strong> : A = (base × hauteur) / 2<br>
+<strong>Disque</strong> : A = πr²<br>
+<strong>Parallélogramme</strong> : A = base × hauteur</p>
+
+<h3>⚠️ Attention aux unités</h3>
+<p>1 cm² = 100 mm² | 1 m² = 10 000 cm² | 1 km² = 1 000 000 m²<br>
+1 ha (hectare) = 10 000 m²<br>
+Toujours préciser l\'unité dans la réponse !</p>
+
+<h3>🔧 Méthode</h3>
+<p>1. Identifier la figure<br>
+2. Repérer les mesures nécessaires<br>
+3. Appliquer la formule<br>
+4. Vérifier l\'unité et l\'ordre de grandeur</p>`
+      },
+      {
+        titre: 'Les proportions',
+        resume: 'Proportionnalité, tableaux, pourcentages simples',
+        contenu: `<h3>📊 La proportionnalité</h3>
+<p>Deux grandeurs sont <strong>proportionnelles</strong> si leurs quotients sont tous égaux (= coefficient de proportionnalité).<br>
+Ex : vitesse constante → temps et distance sont proportionnels<br>
+Vérifier : dans un tableau, si tous les quotients y/x sont égaux → proportionnel</p>
+
+<h3>🔢 Le tableau de proportionnalité</h3>
+<p>Pour trouver une valeur manquante : <strong>règle de trois</strong><br>
+Ex : 3 stylos coûtent 6€, combien coûtent 5 stylos ?<br>
+3 → 6 | 1 → 2 | 5 → 10€<br>
+Ou : produit en croix → 6 × 5 / 3 = 10</p>
+
+<h3>💯 Les pourcentages</h3>
+<p>Un pourcentage est une fraction de dénominateur 100.<br>
+25% = 25/100 = 0,25<br>
+<strong>Calculer x% de y</strong> : y × x/100<br>
+Ex : 20% de 150 = 150 × 20/100 = 30<br>
+<strong>Trouver le pourcentage</strong> : (partie/total) × 100</p>
+
+<h3>🗺️ Échelle</h3>
+<p>Échelle 1/25 000 signifie : 1 cm sur la carte = 25 000 cm = 250 m dans la réalité<br>
+Distance réelle = distance carte × dénominateur de l\'échelle</p>`
+      },
+      {
+        titre: 'Statistiques',
+        resume: 'Recueillir, organiser et représenter des données',
+        contenu: `<h3>📊 Recueillir des données</h3>
+<p>• <strong>Population</strong> : ensemble étudié | <strong>Individu</strong> : élément de la population<br>
+• <strong>Caractère</strong> : ce qu\'on mesure (taille, couleur…)<br>
+• <strong>Effectif</strong> : nombre d\'individus ayant une valeur donnée<br>
+• <strong>Effectif total</strong> : nombre total d\'individus</p>
+
+<h3>📈 Organiser les données</h3>
+<p>• <strong>Tableau de fréquences</strong> : valeur | effectif | fréquence (%)<br>
+• <strong>Fréquence</strong> = effectif / effectif total × 100<br>
+• Vérification : la somme des effectifs = effectif total<br>
+• La somme des fréquences = 100%</p>
+
+<h3>📊 Représentations graphiques</h3>
+<p>• <strong>Diagramme en barres</strong> : pour des données qualitatives ou quantitatives discrètes<br>
+• <strong>Diagramme circulaire</strong> (camembert) : angles proportionnels aux fréquences<br>
+• <strong>Diagramme en ligne brisée</strong> : pour des évolutions dans le temps<br>
+Règles : titre, légende, axes gradués</p>
+
+<h3>📐 La moyenne</h3>
+<p><strong>Moyenne</strong> = somme des valeurs / nombre de valeurs<br>
+Ex : notes 12, 15, 10, 14 → moyenne = (12+15+10+14)/4 = 51/4 = 12,75</p>`
+      },
+      {
+        titre: 'Introduction à la géométrie dans l\'espace',
+        resume: 'Solides usuels, patrons, volumes simples',
+        contenu: `<h3>📦 Les solides usuels</h3>
+<p>• <strong>Cube</strong> : 6 faces carrées égales, 8 sommets, 12 arêtes<br>
+• <strong>Pavé droit</strong> (parallélépipède rectangle) : 6 faces rectangulaires<br>
+• <strong>Prisme</strong> : 2 bases parallèles et égales, faces latérales rectangulaires<br>
+• <strong>Pyramide</strong> : une base polygonale, faces latérales triangulaires<br>
+• <strong>Cylindre</strong> : 2 bases circulaires parallèles<br>
+• <strong>Cône</strong> : une base circulaire et un sommet<br>
+• <strong>Sphère</strong> : ensemble des points à égale distance du centre</p>
+
+<h3>📋 Le patron</h3>
+<p>Un <strong>patron</strong> est le développement à plat d\'un solide.<br>
+En repliant le patron, on reconstitue le solide.<br>
+• Patron du cube : 6 carrés liés<br>
+• Patron du pavé droit : 6 rectangles</p>
+
+<h3>📐 Volumes simples</h3>
+<p><strong>Cube</strong> d\'arête a : V = a³<br>
+<strong>Pavé droit</strong> : V = longueur × largeur × hauteur<br>
+Unités : cm³, m³, dm³ (1 dm³ = 1 litre)<br>
+1 m³ = 1000 dm³ = 1 000 000 cm³</p>`
+      },
+    ]
+  },
+  francais: {
+    label: '📖 Français', color: '#9b8afb',
+    chapitres: [
+      {
+        titre: 'La lecture et la compréhension',
+        resume: 'Lire un texte, identifier les informations essentielles',
+        contenu: `<h3>📖 Lire efficacement</h3>
+<p>Avant de lire : observer le titre, les sous-titres, les illustrations → anticiper le contenu.<br>
+Pendant : identifier le thème, les personnages, le lieu, le temps.<br>
+Après : résumer en quelques phrases.</p>
+
+<h3>🎯 Identifier les informations</h3>
+<p>• <strong>Questions littérales</strong> : réponse directe dans le texte<br>
+• <strong>Questions inférentielles</strong> : il faut déduire, interpréter<br>
+• <strong>Idée principale</strong> vs <strong>détails</strong> : ne retenir que l\'essentiel<br>
+• <strong>Le point de vue</strong> : qui parle ? Quelle opinion ?</p>
+
+<h3>📝 Les types de textes en 6ème</h3>
+<p>• <strong>Récit</strong> : conte, fable, roman d\'aventures<br>
+• <strong>Descriptif</strong> : portrait, description de lieu<br>
+• <strong>Documentaire</strong> : texte explicatif informatif<br>
+• <strong>Poème</strong> : texte en vers avec sonorités</p>
+
+<h3>🔍 Vocabulaire du texte</h3>
+<p>• <strong>Narrateur</strong> : celui qui raconte<br>
+• <strong>Personnage principal</strong> vs secondaire<br>
+• <strong>Cadre spatio-temporel</strong> : où et quand se déroule l\'action<br>
+• <strong>Schéma narratif</strong> : situation initiale → élément perturbateur → péripéties → résolution → situation finale</p>`
+      },
+      {
+        titre: 'La grammaire de la phrase',
+        resume: 'Sujet, verbe, compléments, types de phrases',
+        contenu: `<h3>📝 La phrase simple</h3>
+<p>Une phrase simple contient <strong>un seul verbe conjugué</strong>.<br>
+Elle commence par une majuscule et se termine par un signe de ponctuation.<br>
+<strong>Types</strong> : déclarative (.) | interrogative (?) | exclamative (!) | injonctive (.)</p>
+
+<h3>🎯 Sujet et verbe</h3>
+<p>• Le <strong>sujet</strong> fait l\'action ou est l\'état décrit → Qui est-ce qui ? Qu\'est-ce qui ?<br>
+• Le <strong>verbe</strong> indique l\'action ou l\'état<br>
+• Accord sujet-verbe : le verbe s\'accorde en personne et en nombre avec le sujet<br>
+Ex : Les élèves travaillent. (sujet = Les élèves → 3ème personne pluriel)</p>
+
+<h3>📚 Les compléments</h3>
+<p>• <strong>COD</strong> (Complément d\'Objet Direct) : répond à Qui ? Quoi ? sans préposition<br>
+• <strong>COI</strong> : répond à À qui ? De qui ? avec préposition<br>
+• <strong>Compléments circonstanciels</strong> : de lieu (Où ?), de temps (Quand ?), de manière (Comment ?)</p>
+
+<h3>🔢 Les classes grammaticales</h3>
+<p>Nom | Verbe | Adjectif | Déterminant | Pronom | Adverbe | Préposition | Conjonction<br>
+Variable (s\'accorde) : nom, adjectif, déterminant, pronom, verbe<br>
+Invariable : adverbe, préposition, conjonction</p>`
+      },
+      {
+        titre: 'L\'orthographe',
+        resume: 'Accords, homophones, règles essentielles',
+        contenu: `<h3>✍️ L\'accord du groupe nominal</h3>
+<p>Le nom et ses déterminants et adjectifs s\'accordent en <strong>genre et nombre</strong>.<br>
+Ex : une belle fleur → des belles fleurs<br>
+Féminin : généralement + e | Pluriel : généralement + s<br>
+Exceptions : beau/belle, vieux/vieille, gros/grosse</p>
+
+<h3>🔤 L\'accord sujet-verbe</h3>
+<p>Le verbe s\'accorde avec son sujet en <strong>personne et en nombre</strong>.<br>
+Attention : sujet inversé, sujet éloigné du verbe<br>
+Ex : Les oiseaux <em>chantent</em>. | Chantent les oiseaux.</p>
+
+<h3>⚠️ Les homophones courants</h3>
+<p>• <strong>a/à</strong> : a = avoir (avait) | à = préposition<br>
+• <strong>est/et</strong> : est = être (était) | et = conjonction<br>
+• <strong>on/ont</strong> : ont = avoir (avaient) | on = pronom<br>
+• <strong>son/sont</strong> : sont = être (étaient) | son = déterminant possessif<br>
+• <strong>ou/où</strong> : où = lieu | ou = ou bien</p>
+
+<h3>📝 Le pluriel des noms</h3>
+<p>• Général : + s (chat → chats)<br>
+• Noms en -eau, -au, -eu : + x (bateau → bateaux)<br>
+• Noms en -al : → -aux (cheval → chevaux)<br>
+• Noms en -s, -x, -z : invariables (bras → bras)</p>`
+      },
+      {
+        titre: 'La conjugaison',
+        resume: 'Présent, passé composé, imparfait, futur',
+        contenu: `<h3>⏰ Le présent de l\'indicatif</h3>
+<p>Usages : action en cours, habitude, vérité générale<br>
+Verbes du 1er groupe (-er) : je chante, tu chantes, il chante, nous chantons, vous chantez, ils chantent<br>
+Verbes du 2ème groupe (-ir) : je finis, tu finis, il finit, nous finissons<br>
+Verbes irréguliers à connaître : être, avoir, aller, faire, venir, prendre, dire, voir</p>
+
+<h3>⏳ L\'imparfait</h3>
+<p>Usage : description dans le passé, action habituelle passée<br>
+Formation : radical du présent (nous) + ais, ais, ait, ions, iez, aient<br>
+Ex : chant<strong>er</strong> → nous chantons → je chantais<br>
+Être à l\'imparfait : j\'étais, tu étais, il était, nous étions…</p>
+
+<h3>📅 Le passé composé</h3>
+<p>Usage : action passée et terminée<br>
+Formation : auxiliaire avoir ou être au présent + participe passé<br>
+Avec être : PP s\'accorde avec le sujet<br>
+Ex : Elle est partie. | Ils sont arrivés.<br>
+Avec avoir : PP s\'accorde avec le COD placé avant</p>
+
+<h3>🔮 Le futur simple</h3>
+<p>Usage : action à venir<br>
+Formation : infinitif + rai, ras, ra, rons, rez, ront<br>
+Ex : je chanterai, tu chanteras…<br>
+Irréguliers : être → serai | avoir → aurai | aller → irai | faire → ferai</p>`
+      },
+      {
+        titre: 'La littérature — Contes et fables',
+        resume: 'Caractéristiques du conte, de la fable, morales',
+        contenu: `<h3>📖 Le conte</h3>
+<p>Le conte est un récit imaginaire qui se passe dans un monde merveilleux.<br>
+• <strong>Incipit typique</strong> : "Il était une fois…"<br>
+• <strong>Personnages</strong> : héros, adjuvant (aide), opposant, donateur<br>
+• <strong>Schéma</strong> : manque initial → quête → épreuves → récompense<br>
+• Types : conte de fées, conte merveilleux, conte philosophique</p>
+
+<h3>🦊 La fable</h3>
+<p>La fable est un court récit en vers ou en prose avec une <strong>morale</strong>.<br>
+• Les personnages sont souvent des animaux (qui symbolisent des humains)<br>
+• La Fontaine : "Le Corbeau et le Renard", "La Cigale et la Fourmi"…<br>
+• <strong>Morale</strong> : leçon de vie à la fin (parfois au début)<br>
+• Figures : <strong>personnification</strong> (animaux qui parlent), <strong>allégorie</strong></p>
+
+<h3>✍️ Rédiger un récit</h3>
+<p><strong>Schéma narratif</strong> à respecter :<br>
+1. Situation initiale (qui, où, quand, quoi)<br>
+2. Élément perturbateur (ce qui change tout)<br>
+3. Péripéties (aventures, problèmes)<br>
+4. Résolution (comment le problème est résolu)<br>
+5. Situation finale (nouveau équilibre)<br>
+Utiliser les temps : imparfait (description) + passé composé (actions)</p>`
+      },
+      {
+        titre: 'L\'expression écrite et orale',
+        resume: 'Rédiger, décrire, raconter, argumenter simplement',
+        contenu: `<h3>✍️ La description</h3>
+<p>Décrire, c\'est donner à voir avec des mots.<br>
+• Utiliser des <strong>adjectifs qualificatifs</strong> précis<br>
+• Organiser : du général au particulier, ou de haut en bas<br>
+• Les <strong>champs lexicaux</strong> : regrouper les mots d\'un même thème<br>
+• Les <strong>comparaisons</strong> : "aussi… que", "comme", "pareil à"</p>
+
+<h3>📖 Le récit</h3>
+<p>• <strong>Verbes d\'action</strong> au passé composé (1ère personne possible)<br>
+• <strong>Connecteurs temporels</strong> : d\'abord, ensuite, puis, enfin, soudain, le lendemain…<br>
+• Alterner description (imparfait) et actions (passé composé)<br>
+• Inclure des dialogues avec des tirets</p>
+
+<h3>🗣️ L\'oral</h3>
+<p>• Parler clairement, articuler, ne pas aller trop vite<br>
+• Organiser : introduction → développement → conclusion<br>
+• Regarder son auditoire<br>
+• Utiliser ses notes comme appui, pas les lire mot à mot</p>
+
+<h3>🔍 Réviser son écrit</h3>
+<p>1. Sens : est-ce que c\'est compréhensible ?<br>
+2. Grammaire : accord sujet-verbe, GN<br>
+3. Conjugaison : temps cohérents<br>
+4. Orthographe : homophones, pluriels<br>
+5. Ponctuation : majuscules et points</p>`
+      },
+    ]
+  },
+  histoire: {
+    label: '🌍 Histoire-Géographie', color: '#52e8a2',
+    chapitres: [
+      {
+        titre: 'La Préhistoire',
+        resume: 'Des origines de l\'humanité aux premières civilisations',
+        contenu: `<h3>🦴 Les origines de l\'humanité</h3>
+<p>La <strong>Préhistoire</strong> commence avec l\'apparition des premiers humains (~3 millions d\'années) et se termine avec l\'écriture (~3300 av. J.-C.).<br>
+• <strong>Lucy</strong> (~3,2 millions d\'années) : australopithèque d\'Éthiopie<br>
+• <strong>Homo habilis</strong> (~2,4 M ans) : premiers outils en pierre<br>
+• <strong>Homo erectus</strong> (~1,8 M ans) : maîtrise du feu<br>
+• <strong>Homo sapiens</strong> (~300 000 ans) : notre espèce</p>
+
+<h3>🏹 Le Paléolithique</h3>
+<p>Période des <strong>chasseurs-cueilleurs</strong> (avant -10 000 ans).<br>
+• Vie nomade : suivent les troupeaux<br>
+• Outils en pierre taillée, os, bois<br>
+• <strong>Art pariétal</strong> : peintures dans les grottes (Lascaux, Chauvet)<br>
+• Premières sépultures → croyances</p>
+
+<h3>🌾 Le Néolithique</h3>
+<p>Révolution agricole (~10 000 av. J.-C.) :<br>
+• Sédentarisation : construction de villages<br>
+• Agriculture : blé, orge | Élevage : moutons, bœufs, porcs<br>
+• Poterie, tissage, polissage de la pierre<br>
+• <strong>Mégalithes</strong> : dolmens (tombes), menhirs (monuments)</p>
+
+<h3>🏛️ Les premières civilisations</h3>
+<p>Vers 3500 av. J.-C. : apparition de l\'écriture → fin de la Préhistoire<br>
+• <strong>Mésopotamie</strong> (Irak actuel) : cunéiforme<br>
+• <strong>Égypte</strong> : hiéroglyphes<br>
+→ Début de l\'Histoire</p>`
+      },
+      {
+        titre: 'La Mésopotamie et l\'Égypte ancienne',
+        resume: 'Premières grandes civilisations de l\'Antiquité',
+        contenu: `<h3>🏛️ La Mésopotamie</h3>
+<p>La <strong>Mésopotamie</strong> (= "entre les fleuves") est le pays entre le Tigre et l\'Euphrate (Irak actuel).<br>
+• Premières villes : Ur, Uruk, Babylone<br>
+• <strong>Écriture cunéiforme</strong> sur tablettes d\'argile<br>
+• <strong>Code d\'Hammurabi</strong> (vers 1750 av. J.-C.) : premier code de lois<br>
+• Architecture : ziggurats (temples en escalier)<br>
+• Inventions : roue, charrue, irrigation</p>
+
+<h3>🌊 La civilisation égyptienne</h3>
+<p>L\'Égypte ancienne dure ~3000 ans (3100 → 30 av. J.-C.)<br>
+• Le <strong>Nil</strong> : source de vie (crues fertilisantes)<br>
+• <strong>Pharaon</strong> : roi-dieu, détient tous les pouvoirs<br>
+• <strong>Écriture hiéroglyphique</strong> : pictogrammes sacrés<br>
+• <strong>Pyramides</strong> : tombeaux des pharaons (Gizeh : Khéops, Khéphren, Mykérinos)<br>
+• <strong>Momification</strong> : croyance en la vie après la mort</p>
+
+<h3>🔮 La religion égyptienne</h3>
+<p>Polythéiste (plusieurs dieux) :<br>
+• Râ : dieu du soleil | Osiris : dieu des morts | Isis : déesse mère | Horus : dieu faucon<br>
+• <strong>Livre des Morts</strong> : guide pour l\'au-delà<br>
+• Jugement d\'Osiris : pesée du cœur (cœur < plume → paradis)</p>`
+      },
+      {
+        titre: 'La Grèce antique',
+        resume: 'Cité-états grecques, démocratie athénienne, mythologie',
+        contenu: `<h3>🏛️ Les cités grecques</h3>
+<p>La Grèce antique (~800 → 146 av. J.-C.) est organisée en <strong>cités-États</strong> (polis) indépendantes.<br>
+• Chaque cité a ses lois, ses dieux, sa monnaie<br>
+• <strong>Athènes</strong> : démocratie, commerce, culture<br>
+• <strong>Sparte</strong> : cité militaire, éducation guerrière<br>
+• <strong>Agora</strong> : place publique, cœur de la cité</p>
+
+<h3>🗳️ La démocratie athénienne</h3>
+<p><strong>Démocratie</strong> = pouvoir (kratos) du peuple (demos)<br>
+• Inventée à Athènes sous <strong>Clisthène</strong> (~508 av. J.-C.)<br>
+• <strong>Ecclésia</strong> : assemblée des citoyens<br>
+• Citoyens : hommes libres, nés à Athènes, ≥ 18 ans<br>
+⚠️ Exclus : femmes, esclaves, étrangers (= majorité !)</p>
+
+<h3>🌊 La mythologie grecque</h3>
+<p>Les Grecs adoraient de nombreux dieux vivant sur l\'<strong>Olympe</strong> :<br>
+Zeus (ciel) | Héra (mariage) | Poséidon (mer) | Athéna (sagesse) | Apollon (soleil/arts) | Artémis (chasse) | Arès (guerre) | Aphrodite (amour)<br>
+• Mythes : récits expliquant le monde (Ulysse, Hercule, Thésée)<br>
+• <strong>Jeux Olympiques</strong> : depuis 776 av. J.-C. à Olympie</p>
+
+<h3>🏛️ L\'héritage grec</h3>
+<p>• Philosophie : Socrate, Platon, Aristote<br>
+• Sciences : Pythagore, Euclide, Archimède<br>
+• Architecture : temples (Parthénon), ordres dorique/ionique/corinthien<br>
+• Théâtre : tragédie et comédie</p>`
+      },
+      {
+        titre: 'Rome antique',
+        resume: 'De la fondation de Rome à l\'Empire romain',
+        contenu: `<h3>🐺 La fondation de Rome</h3>
+<p>Selon la légende, Rome est fondée en <strong>753 av. J.-C.</strong> par <strong>Romulus</strong>.<br>
+• Située sur 7 collines au bord du Tibre (Italie)<br>
+• Période royale (753→509 av. J.-C.) : 7 rois<br>
+• <strong>République romaine</strong> (509→27 av. J.-C.) : gouvernement par le Sénat</p>
+
+<h3>🏛️ La République romaine</h3>
+<p>• <strong>Sénat</strong> : assemblée de 300 patriciens (nobles)<br>
+• <strong>Consuls</strong> : 2 chefs élus pour 1 an<br>
+• <strong>Patriciens</strong> (nobles) vs <strong>Plébéiens</strong> (peuple)<br>
+• Armée puissante → conquête de la Méditerranée<br>
+• <strong>Jules César</strong> : général conquérant la Gaule (52 av. J.-C.)</p>
+
+<h3>⚔️ L\'Empire romain</h3>
+<p><strong>Auguste</strong> → 1er empereur (27 av. J.-C.)<br>
+• Empire à son apogée sous Trajan : 50 millions d\'hab., 5 millions km²<br>
+• <strong>Pax Romana</strong> : 200 ans de paix<br>
+• Langue : latin | Droit romain | Routes | Aqueducs<br>
+• <strong>Christianisme</strong> : apparu en Palestine, persécuté puis religion officielle (313)</p>
+
+<h3>🌍 L\'héritage romain</h3>
+<p>• Langues latines : français, espagnol, italien, portugais<br>
+• Droit : base de nos lois<br>
+• Architecture : arcs, voûtes, amphithéâtres (Colisée)<br>
+• Calendrier : mois (janvier = Janus, mars = Mars…)</p>`
+      },
+      {
+        titre: 'Géographie — La Terre',
+        resume: 'Représenter la Terre, continents, océans, relief',
+        contenu: `<h3>🌍 Représenter la Terre</h3>
+<p>La Terre est une <strong>sphère</strong> légèrement aplatie aux pôles.<br>
+• <strong>Globe terrestre</strong> : représentation en 3D<br>
+• <strong>Planisphère</strong> : représentation plane (déformation inévitable)<br>
+• <strong>Méridiens</strong> : lignes verticales (longitude, de 0° à 180° E et W)<br>
+• <strong>Parallèles</strong> : lignes horizontales (latitude, de 0° à 90° N et S)<br>
+• <strong>Équateur</strong> : parallèle 0° | <strong>Greenwich</strong> : méridien 0°</p>
+
+<h3>🗺️ Les continents et océans</h3>
+<p><strong>6 continents</strong> : Europe | Asie | Afrique | Amériques | Océanie | Antarctique<br>
+<strong>5 océans</strong> : Pacifique (le plus grand) | Atlantique | Indien | Arctique | Antarctique<br>
+70% de la surface terrestre est recouverte d\'eau</p>
+
+<h3>⛰️ Le relief</h3>
+<p>• <strong>Montagnes</strong> : Himalaya (Everest 8848m), Alpes, Andes, Rocheuses<br>
+• <strong>Plaines</strong> : terres basses et plates (Amazonie, Sibérie)<br>
+• <strong>Plateaux</strong> : terres élevées et plates<br>
+• <strong>Déserts</strong> : Sahara (le plus grand chaud), Antarctique (le plus grand froid)<br>
+• <strong>Fleuves</strong> : Nil, Amazone, Yang-Tsé-Kiang</p>
+
+<h3>🌡️ Les grandes zones climatiques</h3>
+<p>• <strong>Zone polaire</strong> : très froide (pôles)<br>
+• <strong>Zone tempérée</strong> : 4 saisons (Europe, Amérique du Nord)<br>
+• <strong>Zone tropicale</strong> : chaude et humide<br>
+• <strong>Zone aride</strong> : sèche (déserts)<br>
+→ Le climat influence la végétation et les modes de vie</p>`
+      },
+      {
+        titre: 'Géographie — Les espaces habités',
+        resume: 'Population mondiale, villes, espaces ruraux',
+        contenu: `<h3>👥 La population mondiale</h3>
+<p>La Terre compte environ <strong>8 milliards</strong> d\'habitants (2023).<br>
+• Croissance démographique : +1 milliard tous les 12 ans environ<br>
+• La population est <strong>inégalement répartie</strong> : forte densité en Asie du Sud et de l\'Est, en Europe, dans les plaines côtières<br>
+• Faible densité : déserts, montagnes, zones polaires</p>
+
+<h3>🏙️ Villes et campagnes</h3>
+<p>Plus de <strong>50% de la population</strong> mondiale vit en ville.<br>
+• <strong>Urbanisation</strong> : processus de croissance des villes<br>
+• <strong>Mégapoles</strong> : villes de plus de 10 millions d\'habitants (Tokyo, Delhi, Shanghai…)<br>
+• <strong>Exode rural</strong> : départ des campagnes vers les villes</p>
+
+<h3>🌿 Les espaces ruraux</h3>
+<p>Espaces peu denses consacrés à l\'agriculture, à la nature.<br>
+• Différents types : plaines agricoles, montagnes, littoraux<br>
+• Agriculture : nourrir la planète (céréales, élevage, fruits)<br>
+• <strong>Désertification rurale</strong> dans certains pays riches (manque de services)</p>
+
+<h3>🌍 Inégalités de développement</h3>
+<p>• <strong>Pays riches</strong> (Europe, Amérique du Nord, Japon) : IDH élevé<br>
+• <strong>Pays émergents</strong> (Chine, Brésil, Inde) : forte croissance<br>
+• <strong>Pays pauvres</strong> (Afrique subsaharienne) : manque d\'accès aux soins, à l\'éducation<br>
+• <strong>IDH</strong> : indicateur de développement humain</p>`
+      },
+    ]
+  },
+  svt: {
+    label: '🌱 SVT', color: '#34d399',
+    chapitres: [
+      {
+        titre: 'Le vivant et ses caractéristiques',
+        resume: 'Caractéristiques du vivant, cellule, diversité',
+        contenu: `<h3>🌿 Qu\'est-ce que le vivant ?</h3>
+<p>Un <strong>être vivant</strong> est caractérisé par :<br>
+• La <strong>nutrition</strong> : se nourrir pour avoir de l\'énergie<br>
+• La <strong>respiration</strong> : utiliser de l\'oxygène<br>
+• La <strong>croissance</strong> : grandir, se développer<br>
+• La <strong>reproduction</strong> : se multiplier<br>
+• La <strong>sensibilité</strong> : réagir à l\'environnement</p>
+
+<h3>🔬 La cellule</h3>
+<p>Tout être vivant est composé de <strong>cellules</strong> (unité de base du vivant).<br>
+• <strong>Unicellulaires</strong> : 1 seule cellule (bactérie, amibe)<br>
+• <strong>Pluricellulaires</strong> : milliards de cellules (animaux, plantes)<br>
+Constituants : membrane + cytoplasme + noyau (pour les eucaryotes)</p>
+
+<h3>🌳 La biodiversité</h3>
+<p><strong>Biodiversité</strong> = diversité du vivant à toutes les échelles.<br>
+• Diversité des espèces (animaux, végétaux, champignons, bactéries)<br>
+• Diversité des milieux (forêt, mer, désert, prairie)<br>
+• Importance : équilibre des écosystèmes, ressources pour l\'humain<br>
+• Menaces : déforestation, pollution, réchauffement climatique</p>
+
+<h3>🔭 Observer et classer</h3>
+<p>Classification du vivant :<br>
+• Critères : présence d\'un noyau, type de nutrition, mode de reproduction<br>
+• Groupes : Bactéries | Protistes | Champignons | Végétaux | Animaux<br>
+Outils : microscope, loupe binoculaire, clé de détermination</p>`
+      },
+      {
+        titre: 'Les animaux et leurs régimes alimentaires',
+        resume: 'Chaînes alimentaires, régimes, adaptations',
+        contenu: `<h3>🦁 Les régimes alimentaires</h3>
+<p>• <strong>Herbivore</strong> : mange des végétaux (vache, lapin, girafe)<br>
+• <strong>Carnivore</strong> : mange d\'autres animaux (lion, aigle, requin)<br>
+• <strong>Omnivore</strong> : mange les deux (humain, ours, cochon)<br>
+• <strong>Détritivore</strong> : mange des matières en décomposition (ver de terre, cloportes)</p>
+
+<h3>⛓️ Les chaînes alimentaires</h3>
+<p>Une <strong>chaîne alimentaire</strong> montre qui mange qui.<br>
+Schéma : Producteur → Consommateur primaire → Consommateur secondaire<br>
+Ex : Herbe → Lapin → Renard → Aigle<br>
+• Les flèches indiquent le sens du transfert de matière et d\'énergie<br>
+• Le <strong>réseau alimentaire</strong> = ensemble des chaînes d\'un milieu</p>
+
+<h3>🔧 Adaptations des animaux</h3>
+<p>Les animaux sont adaptés à leur mode d\'alimentation :<br>
+• Herbivores : dents plates (broyer), long intestin<br>
+• Carnivores : crocs, griffes, bonne vue<br>
+• Oiseaux : bec adapté au régime (pic → insectes, flamant → filtration)<br>
+Ces adaptations résultent de millions d\'années d\'évolution</p>
+
+<h3>🌿 Les producteurs</h3>
+<p>Les <strong>végétaux verts</strong> sont les seuls producteurs de matière organique.<br>
+• <strong>Photosynthèse</strong> : CO₂ + eau + lumière → glucose + O₂<br>
+• À la base de toutes les chaînes alimentaires<br>
+• Sans végétaux → effondrement de tous les écosystèmes</p>`
+      },
+      {
+        titre: 'La reproduction des êtres vivants',
+        resume: 'Reproduction sexuée et asexuée, fleur, graine',
+        contenu: `<h3>🌸 Deux types de reproduction</h3>
+<p><strong>Reproduction asexuée</strong> : un seul parent, descendants identiques<br>
+• Bouturage (plantes), scissiparité (bactéries), stolons (fraisier)<br>
+• Rapide mais pas de diversité génétique<br><br>
+<strong>Reproduction sexuée</strong> : deux parents, descendants différents<br>
+• Fécondation : union d\'un gamète mâle et d\'un gamète femelle<br>
+• Produit de la diversité génétique → meilleure adaptation</p>
+
+<h3>🌺 La fleur et la reproduction des plantes</h3>
+<p>Parties d\'une fleur :<br>
+• <strong>Étamines</strong> (organes mâles) : produisent le pollen<br>
+• <strong>Pistil</strong> (organe femelle) : contient les ovules<br>
+• <strong>Pétales</strong> : attirent les pollinisateurs<br>
+• <strong>Sépales</strong> : protègent le bouton floral</p>
+
+<h3>🐝 La pollinisation</h3>
+<p>Transport du pollen des étamines vers le pistil.<br>
+• Par les <strong>insectes</strong> (abeilles, papillons) : plantes à fleurs colorées<br>
+• Par le <strong>vent</strong> : plantes à pollen léger (graminées)<br>
+Après pollinisation : fécondation → formation du fruit et de la graine</p>
+
+<h3>🌱 La graine et la germination</h3>
+<p>La graine contient l\'embryon + réserves nutritives.<br>
+Germination : eau + chaleur + air → la graine germe<br>
+<strong>Dispersion</strong> : vent (pissenlit), animaux (baies), eau, explosion (balsamine)</p>`
+      },
+      {
+        titre: 'Le corps humain — Les grandes fonctions',
+        resume: 'Digestion, respiration, circulation sanguine',
+        contenu: `<h3>🍎 La digestion</h3>
+<p>Transformation des aliments en nutriments utilisables par l\'organisme.<br>
+<strong>Trajet</strong> : bouche → œsophage → estomac → intestin grêle → gros intestin<br>
+• <strong>Bouche</strong> : mastication + salive (amylase)<br>
+• <strong>Estomac</strong> : brassage + acide<br>
+• <strong>Intestin grêle</strong> : absorption des nutriments<br>
+• <strong>Gros intestin</strong> : absorption de l\'eau</p>
+
+<h3>💨 La respiration</h3>
+<p>Échanges gazeux entre l\'organisme et l\'air.<br>
+• <strong>Inspiration</strong> : les poumons se dilatent, l\'air entre (O₂)<br>
+• <strong>Expiration</strong> : les poumons se contractent, l\'air sort (CO₂)<br>
+• <strong>Alvéoles pulmonaires</strong> : lieu des échanges O₂/CO₂ avec le sang<br>
+• Fréquence : ~15 fois/min au repos, ~60 fois/min à l\'effort</p>
+
+<h3>❤️ La circulation sanguine</h3>
+<p>Le <strong>cœur</strong> pompe le sang dans tout le corps.<br>
+• <strong>Artères</strong> : transportent le sang riche en O₂ (du cœur vers les organes)<br>
+• <strong>Veines</strong> : ramènent le sang pauvre en O₂ (des organes vers le cœur)<br>
+• <strong>Capillaires</strong> : échanges avec les cellules<br>
+• Fréquence cardiaque : ~70 bat/min au repos</p>`
+      },
+      {
+        titre: 'La géologie — La Terre',
+        resume: 'Structure de la Terre, roches, volcans, séismes',
+        contenu: `<h3>🌍 La structure de la Terre</h3>
+<p>La Terre est structurée en couches concentriques :<br>
+• <strong>Croûte terrestre</strong> : couche externe (5 à 70 km)<br>
+• <strong>Manteau</strong> : roche partiellement fondue (~2900 km d\'épaisseur)<br>
+• <strong>Noyau externe</strong> : fer et nickel liquides<br>
+• <strong>Noyau interne</strong> : fer et nickel solides<br>
+Température augmente vers le centre (~6000°C au cœur)</p>
+
+<h3>🌋 Les volcans</h3>
+<p>Un <strong>volcan</strong> est une ouverture dans la croûte par où sort le <strong>magma</strong>.<br>
+• <strong>Éruption effusive</strong> : lave fluide (Hawaï) → peu dangereuse<br>
+• <strong>Éruption explosive</strong> : lave visqueuse + cendres (Vésuve) → très dangereuse<br>
+• Produits : lave, cendres, bombes volcaniques, gaz<br>
+Les volcans se forment aux frontières des plaques tectoniques</p>
+
+<h3>🌊 Les séismes</h3>
+<p>Un <strong>séisme</strong> est une vibration brutale du sol due à la rupture de roches.<br>
+• <strong>Foyer</strong> (hypocentre) : lieu de la rupture<br>
+• <strong>Épicentre</strong> : point en surface au-dessus du foyer<br>
+• Mesure : échelle de Richter (magnitude)<br>
+• Tsunamis : séismes sous-marins → vagues géantes</p>
+
+<h3>🪨 Les roches</h3>
+<p>• <strong>Roches magmatiques</strong> : granite (lent) | basalte (rapide)<br>
+• <strong>Roches sédimentaires</strong> : calcaire, grès, argile<br>
+• <strong>Roches métamorphiques</strong> : transformées par chaleur et pression<br>
+Les roches témoignent de l\'histoire de la Terre</p>`
+      },
+      {
+        titre: 'L\'environnement et le développement durable',
+        resume: 'Écosystèmes, pollution, gestes éco-responsables',
+        contenu: `<h3>🌿 Les écosystèmes</h3>
+<p>Un <strong>écosystème</strong> = ensemble des êtres vivants + leur milieu de vie.<br>
+• Ex : forêt, lac, prairie, récif corallien<br>
+• Chaque espèce joue un rôle (prédateur, proie, décomposeur)<br>
+• <strong>Équilibre fragile</strong> : la disparition d\'une espèce peut déséquilibrer tout le système</p>
+
+<h3>⚠️ Les menaces sur l\'environnement</h3>
+<p>• <strong>Pollution</strong> : air (CO₂, particules), eau (pesticides, plastiques), sol<br>
+• <strong>Déforestation</strong> : destruction des forêts (CO₂, biodiversité)<br>
+• <strong>Réchauffement climatique</strong> : augmentation des GES → +1,1°C<br>
+• <strong>Surpêche</strong> : épuisement des ressources marines<br>
+• <strong>Espèces invasives</strong> : perturbent les écosystèmes locaux</p>
+
+<h3>♻️ Le développement durable</h3>
+<p>Répondre aux besoins du présent sans compromettre ceux des générations futures.<br>
+3 piliers : <strong>économique</strong> + <strong>social</strong> + <strong>environnemental</strong></p>
+
+<h3>🌱 Les gestes écologiques</h3>
+<p>• Réduire, réutiliser, recycler<br>
+• Économiser l\'eau et l\'énergie<br>
+• Se déplacer autrement (vélo, transports en commun)<br>
+• Consommer local et de saison<br>
+• Ne pas gaspiller la nourriture</p>`
+      },
+    ]
+  },
+  physchim: {
+    label: '⚗️ Physique-Chimie', color: '#60a5fa',
+    chapitres: [
+      {
+        titre: 'La matière — états et transformations',
+        resume: 'États de la matière, changements d\'état, mélanges',
+        contenu: `<h3>🧊 Les trois états de la matière</h3>
+<p>• <strong>Solide</strong> : forme et volume fixes (glace, fer, bois)<br>
+• <strong>Liquide</strong> : volume fixe, forme variable (eau, huile, mercure)<br>
+• <strong>Gazeux</strong> : forme et volume variables (vapeur d\'eau, air)<br>
+La matière est composée de <strong>molécules</strong> (ou atomes) en mouvement perpétuel</p>
+
+<h3>🔄 Les changements d\'état</h3>
+<p>• Solide → Liquide : <strong>fusion</strong> (ice → eau à 0°C)<br>
+• Liquide → Solide : <strong>solidification</strong> (eau → glace à 0°C)<br>
+• Liquide → Gaz : <strong>vaporisation</strong> (ébullition à 100°C ou évaporation)<br>
+• Gaz → Liquide : <strong>liquéfaction</strong> (condensation)<br>
+• Solide → Gaz : <strong>sublimation</strong> (carboglace)<br>
+Lors d\'un changement d\'état : <strong>la masse est conservée</strong></p>
+
+<h3>🧪 Les mélanges</h3>
+<p>• <strong>Mélange homogène</strong> : uniformément mélangé (eau sucrée, air)<br>
+• <strong>Mélange hétérogène</strong> : composants visibles (vinaigrette, sable+eau)<br>
+<strong>Séparation</strong> : filtration (solide/liquide) | décantation | distillation | chromatographie</p>
+
+<h3>💧 L\'eau</h3>
+<p>L\'eau existe sous 3 états naturellement sur Terre.<br>
+• Eau pure : incolore, inodore, sans saveur<br>
+• <strong>Cycle de l\'eau</strong> : évaporation → condensation → précipitations → ruissellement<br>
+• Eau potable : traitée pour être consommable</p>`
+      },
+      {
+        titre: 'L\'air et l\'atmosphère',
+        resume: 'Composition de l\'air, pression, combustion',
+        contenu: `<h3>💨 Composition de l\'air</h3>
+<p>L\'air est un <strong>mélange gazeux</strong> composé principalement de :<br>
+• <strong>Diazote N₂</strong> : ~78%<br>
+• <strong>Dioxygène O₂</strong> : ~21%<br>
+• Argon Ar : ~1%<br>
+• Dioxyde de carbone CO₂ : ~0,04% (augmente avec les activités humaines)<br>
+• Vapeur d\'eau (variable)</p>
+
+<h3>🌡️ La pression atmosphérique</h3>
+<p>L\'air a un <strong>poids</strong> qui s\'exerce sur tout : c\'est la <strong>pression atmosphérique</strong>.<br>
+• Valeur standard : 101 325 Pa (Pascals) = 1013 hPa<br>
+• Diminue avec l\'altitude (moins d\'air au-dessus)<br>
+• Mesurée par un baromètre<br>
+• Influence la météo (anticyclone, dépression)</p>
+
+<h3>🔥 La combustion</h3>
+<p>Une <strong>combustion</strong> est une réaction chimique entre un <strong>combustible</strong> et le <strong>comburant</strong> (O₂).<br>
+• Combustion du carbone : C + O₂ → CO₂<br>
+• Combustion du méthane : CH₄ + 2O₂ → CO₂ + 2H₂O<br>
+• Produit de la chaleur et de la lumière<br>
+• Combustion incomplète → monoxyde de carbone CO (toxique !)</p>
+
+<h3>🌍 Atmosphère et pollution</h3>
+<p>• <strong>Effet de serre</strong> : CO₂, CH₄ retiennent la chaleur → réchauffement<br>
+• Pollution de l\'air : particules fines, ozone, NOx (transports, industrie)<br>
+• <strong>Couche d\'ozone</strong> : filtre les UV (abîmée par certains gaz)<br>
+• Solutions : énergies renouvelables, réduction des émissions</p>`
+      },
+      {
+        titre: 'La lumière et les sons',
+        resume: 'Sources lumineuses, propagation, sons',
+        contenu: `<h3>💡 La lumière</h3>
+<p><strong>Source lumineuse primaire</strong> : émet sa propre lumière (Soleil, ampoule, bougie)<br>
+<strong>Source lumineuse secondaire</strong> : reflète la lumière (Lune, objets)<br>
+La lumière se propage en <strong>ligne droite</strong> dans un milieu homogène.<br>
+Vitesse de la lumière dans le vide : <strong>300 000 km/s</strong></p>
+
+<h3>🌈 Couleurs et lumière blanche</h3>
+<p>La lumière blanche est composée de <strong>toutes les couleurs</strong>.<br>
+• Décomposition : prisme → arc-en-ciel (rouge→orange→jaune→vert→bleu→violet)<br>
+• <strong>Synthèse additive</strong> : rouge + vert + bleu = blanc<br>
+• Un objet rouge absorbe toutes les couleurs sauf le rouge (qu\'il réfléchit)</p>
+
+<h3>🔊 Les sons</h3>
+<p>Le son est une <strong>vibration mécanique</strong> qui se propage dans un milieu matériel.<br>
+• Pas de son dans le vide (pas de matière pour vibrer)<br>
+• Vitesse : ~340 m/s dans l\'air | ~1500 m/s dans l\'eau<br>
+• <strong>Fréquence</strong> (Hz) : sons graves (basse fréquence) vs aigus (haute fréquence)<br>
+• Audible pour l\'humain : 20 Hz à 20 000 Hz</p>
+
+<h3>📏 Mesurer les sons</h3>
+<p>• <strong>Intensité sonore</strong> : force du son, en décibels (dB)<br>
+• 0 dB : seuil d\'audibilité | 60 dB : conversation | 120 dB : seuil de douleur<br>
+• Au-delà de 85 dB prolongé : risque de surdité<br>
+Protection : bouchons d\'oreilles, limitation de l\'exposition</p>`
+      },
+      {
+        titre: 'L\'électricité — les circuits simples',
+        resume: 'Circuit électrique, composants, tension, intensité',
+        contenu: `<h3>🔌 Le circuit électrique</h3>
+<p>Un circuit électrique est un <strong>chemin fermé</strong> parcouru par le courant électrique.<br>
+Composants de base :<br>
+• <strong>Générateur</strong> : source d\'énergie (pile, batterie)<br>
+• <strong>Récepteur</strong> : utilise l\'énergie (ampoule, moteur)<br>
+• <strong>Fils</strong> : relient les composants<br>
+• <strong>Interrupteur</strong> : ouvre ou ferme le circuit</p>
+
+<h3>📊 Schéma électrique</h3>
+<p>Symboles normalisés :<br>
+• Pile : ─||─ | Ampoule : ─⊗─ | Interrupteur : ─/ ─<br>
+• Résistance : ─□─ | Moteur : ─M─ | DEL : ─▷|─<br>
+• Le courant va du + vers le − (convention)</p>
+
+<h3>⚡ Tension et intensité</h3>
+<p>• <strong>Tension U</strong> : "force" électrique, en Volts (V)<br>
+  Mesurée avec un <strong>voltmètre</strong> branché en dérivation<br>
+• <strong>Intensité I</strong> : débit de charges, en Ampères (A)<br>
+  Mesurée avec un <strong>ampèremètre</strong> branché en série</p>
+
+<h3>🔗 Montages en série et dérivation</h3>
+<p><strong>En série</strong> : composants bout à bout<br>
+• Même intensité partout<br>
+• Si un composant grille → tout s\'éteint<br><br>
+<strong>En dérivation</strong> : plusieurs chemins parallèles<br>
+• Même tension pour chaque branche<br>
+• Si un composant grille → les autres fonctionnent</p>`
+      },
+    ]
+  },
+  techno: {
+    label: '⚙️ Technologie', color: '#e879f9',
+    chapitres: [
+      {
+        titre: 'Les objets techniques et leur évolution',
+        resume: 'Découvrir les objets techniques, leur histoire et leur évolution',
+        contenu: `<h3>⚙️ Qu\'est-ce qu\'un objet technique ?</h3>
+<p>Un <strong>objet technique</strong> est un objet fabriqué par l\'être humain pour répondre à un besoin.<br>
+• Il se distingue des objets naturels<br>
+• Ex : crayon, téléphone, vélo, machine à laver<br>
+• Tout objet technique a une <strong>fonction principale</strong> (à quoi il sert)</p>
+
+<h3>📈 L\'évolution des objets techniques</h3>
+<p>Les objets techniques évoluent au fil du temps :<br>
+• Amélioration des performances<br>
+• Nouveaux matériaux<br>
+• Nouvelles technologies<br>
+• Nouvelles contraintes (environnement, sécurité)<br>
+Ex : téléphone fixe → portable → smartphone</p>
+
+<h3>🔍 Analyser un objet technique</h3>
+<p>• <strong>Niveau d\'usage</strong> : à quoi ça sert ? (fonction principale)<br>
+• <strong>Niveau fonctionnel</strong> : comment ça marche ?<br>
+• <strong>Niveau structurel</strong> : comment c\'est fait ? (matériaux, pièces)<br>
+Ex pour un stylo : écrire | encre + bille + capillaires | plastique + métal + encre</p>
+
+<h3>🌍 Objets techniques et société</h3>
+<p>Les objets techniques transforment la société :<br>
+• Invention de la roue → transport<br>
+• Imprimerie → diffusion du savoir<br>
+• Internet → communication mondiale<br>
+Mais aussi des problèmes : pollution, dépendance, déchets technologiques</p>`
+      },
+      {
+        titre: 'Les matériaux',
+        resume: 'Propriétés, familles, choix des matériaux',
+        contenu: `<h3>📦 Les grandes familles de matériaux</h3>
+<p>• <strong>Métaux</strong> : fer, aluminium, cuivre → résistants, conducteurs, recyclables<br>
+• <strong>Plastiques</strong> : PET, PVC, polyéthylène → légers, isolants, faciles à mettre en forme<br>
+• <strong>Bois</strong> : chêne, pin, contreplaqué → renouvelable, isolant, esthétique<br>
+• <strong>Céramiques / Verres</strong> : résistants à la chaleur, durs mais fragiles<br>
+• <strong>Composites</strong> : fibre de carbone, fibre de verre → légers et résistants</p>
+
+<h3>🔬 Propriétés des matériaux</h3>
+<p>• <strong>Mécaniques</strong> : résistance à la traction, dureté, flexibilité<br>
+• <strong>Thermiques</strong> : conducteur ou isolant thermique<br>
+• <strong>Électriques</strong> : conducteur ou isolant électrique<br>
+• <strong>Esthétiques</strong> : couleur, brillance, texture</p>
+
+<h3>✅ Choisir un matériau</h3>
+<p>Le choix dépend :<br>
+• De la <strong>fonction</strong> (ce que doit faire l\'objet)<br>
+• Des <strong>contraintes</strong> (résistance, légèreté, coût, environnement)<br>
+Ex : pont → acier (résistance) | bouteille → plastique PET (légèreté + transparence)</p>
+
+<h3>♻️ Matériaux et environnement</h3>
+<p>• Recyclage : aluminium (95% d\'énergie économisée), verre (100%)<br>
+• Durée de vie en nature : plastique = 400 ans !, verre = 4000 ans<br>
+• Éco-conception : choisir des matériaux avec le moins d\'impact possible</p>`
+      },
+      {
+        titre: 'La communication et l\'informatique',
+        resume: 'Ordinateur, internet, données numériques',
+        contenu: `<h3>💻 L\'ordinateur</h3>
+<p>Composants principaux :<br>
+• <strong>Processeur (CPU)</strong> : cerveau de l\'ordinateur, effectue les calculs<br>
+• <strong>Mémoire vive (RAM)</strong> : stockage temporaire des données en cours<br>
+• <strong>Disque dur (SSD/HDD)</strong> : stockage permanent<br>
+• <strong>Carte graphique</strong> : gère l\'affichage<br>
+• <strong>Périphériques</strong> : écran, clavier, souris (entrée/sortie)</p>
+
+<h3>🌐 Internet</h3>
+<p>Internet est un <strong>réseau mondial</strong> d\'ordinateurs interconnectés.<br>
+• <strong>WWW</strong> (World Wide Web) : ensemble des pages web<br>
+• <strong>Navigateur</strong> : logiciel pour accéder au web (Chrome, Safari, Firefox)<br>
+• <strong>Adresse IP</strong> : identifiant unique de chaque appareil<br>
+• <strong>Protocole HTTP/HTTPS</strong> : règles d\'échange de données (S = sécurisé)</p>
+
+<h3>🔢 Les données numériques</h3>
+<p>Un ordinateur ne comprend que le <strong>binaire</strong> : 0 et 1.<br>
+• 1 bit = 0 ou 1 | 1 octet = 8 bits<br>
+• 1 ko = 1024 octets | 1 Mo = 1024 ko | 1 Go = 1024 Mo<br>
+• Tout est encodé en binaire : texte, image, son, vidéo</p>
+
+<h3>🔒 Sécurité numérique</h3>
+<p>• <strong>Mot de passe fort</strong> : long, avec chiffres, lettres et symboles<br>
+• Ne jamais partager ses identifiants<br>
+• Vérifier les sources sur internet (fake news)<br>
+• <strong>RGPD</strong> : protection des données personnelles en Europe</p>`
+      },
+    ]
+  },
+};
+
+
+
 const BREVET_DATA = {
   maths: {
     label: '📐 Mathématiques', color: '#f0c14b',
@@ -8061,7 +9650,7 @@ function renderQuizQuestion() {
   const isExam = quizState.matKey === 'exam';
   const mat = isExam
     ? { color: '#f0c14b', label: '📝 Examen Blanc' }
-    : BREVET_DATA[quizState.matKey];
+    : getActiveBrevetData()[quizState.matKey];
   const chTitle = isExam
     ? 'Examen blanc — toutes matières'
     : (mat.chapitres && mat.chapitres[quizState.chIdx] ? mat.chapitres[quizState.chIdx].titre : '');
@@ -8124,7 +9713,7 @@ function answerQuiz(choiceIdx) {
 function renderQuizResult() {
   const { score, questions, matKey, chIdx, answers } = quizState;
   const isExam = matKey === 'exam';
-  const mat = isExam ? { color: '#f0c14b', label: '📝 Examen Blanc', chapitres: [] } : BREVET_DATA[matKey];
+  const mat = isExam ? { color: '#f0c14b', label: '📝 Examen Blanc', chapitres: [] } : getActiveBrevetData()[matKey];
   const total = questions.length;
   const note = Math.round((score / total) * 20 * 10) / 10;
   const pct = Math.round((score / total) * 100);
@@ -8207,10 +9796,10 @@ function updateBrevetStreak() {
 function getBrevetStats() {
   const p = getBrevetProgress();
   let seen = 0, mastered = 0, bookmarked = 0, total = 0;
-  Object.values(BREVET_DATA).forEach(mat => {
+  Object.values(getActiveBrevetData()).forEach(mat => {
     mat.chapitres.forEach((_, i) => {
       total++;
-      const st = p[Object.keys(BREVET_DATA).find(k => BREVET_DATA[k] === mat) + '_' + i] || {};
+      const st = p[Object.keys(getActiveBrevetData()).find(k => getActiveBrevetData()[k] === mat) + '_' + i] || {};
       if (st.seen) seen++;
       if (st.mastered) mastered++;
       if (st.bookmarked) bookmarked++;
@@ -8226,7 +9815,7 @@ function getBrevetExamDate() {
   return Math.max(0, diff);
 }
 function getBreviMatiereStats(matKey) {
-  const mat = BREVET_DATA[matKey];
+  const mat = getActiveBrevetData()[matKey];
   const p = getBrevetProgress();
   let seen = 0, mastered = 0, totalScore = 0, scoreCount = 0;
   mat.chapitres.forEach((_, i) => {
@@ -8251,7 +9840,8 @@ function switchBrevetMat(el) {
 }
 
 function renderBrevetListe() {
-  const mat = BREVET_DATA[currentBrevetMat];
+  const activeData = getActiveBrevetData();
+  const mat = activeData[currentBrevetMat];
   const stats = getBreviMatiereStats(currentBrevetMat);
   const streak = getBrevetStreak();
   const daysLeft = getBrevetExamDate();
@@ -8321,7 +9911,7 @@ function renderBrevetListe() {
 
 function openBrevetChapitre(idx) {
   currentBrevetCh = idx;
-  const mat = BREVET_DATA[currentBrevetMat];
+  const mat = getActiveBrevetData()[currentBrevetMat];
   const ch = mat.chapitres[idx];
   const st = getChapterStatus(currentBrevetMat, idx);
 
@@ -8487,7 +10077,52 @@ function startExamBlanc() {
   renderQuizQuestion();
 }
 
+function getActiveBrevetData() {
+  const profile = store.get('userProfile', null);
+  const level = profile ? profile.level : '3e';
+  const levelMap = {
+    '6e': NIVEAU_DATA_6E,
+    '3e': BREVET_DATA,
+  };
+  return levelMap[level] || BREVET_DATA;
+}
+
+// Update brevet container title when rendering
+function updateBrevetModeCard() {
+  const profile = store.get('userProfile', null);
+  const level = profile ? profile.level : '3e';
+  const icons = { '6e':'📗','5e':'📘','4e':'📙','3e':'🎓','2nde':'🔥','1ere':'⚡','tle':'🏆' };
+  const labels = { '6e':'Cours 6ème','5e':'Cours 5ème','4e':'Cours 4ème','3e':'Brevet 3ème','2nde':'Cours 2nde','1ere':'Cours 1ère','tle':'Bac Terminale' };
+  const iconEl = document.getElementById('brevet-mode-icon');
+  const labelEl = document.getElementById('brevet-mode-label');
+  if (iconEl) iconEl.textContent = icons[level] || '🎓';
+  if (labelEl) labelEl.textContent = labels[level] || 'Brevet 3ème';
+}
+
+function updateBrevetTitle() {
+  const el = document.getElementById('brevet-level-label');
+  if (el) el.textContent = getBrevetExamLabel().replace(/^[\S]+\s/, '');
+}
+
+function getBrevetExamLabel() {
+  const profile = store.get('userProfile', null);
+  const level = profile ? profile.level : '3e';
+  const labels = {
+    '6e': '📚 Cours 6ème',
+    '5e': '📚 Cours 5ème',
+    '4e': '📚 Cours 4ème',
+    '3e': '🎓 Brevet 3ème',
+    '2nde': '📚 Cours 2nde',
+    '1ere': '📚 Cours 1ère',
+    'tle': '🎓 Bac Terminale',
+  };
+  return labels[level] || '🎓 Brevet 3ème';
+}
+
 function renderBrevet() {
+  updateBrevetTitle();
+  const titleEl = document.querySelector('#cours-brevet-container .page-title span');
+  if (titleEl) titleEl.textContent = getBrevetExamLabel().split(' ').slice(1).join(' ');
   renderBrevetListe();
 }
 
