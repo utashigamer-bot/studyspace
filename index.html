@@ -84,6 +84,77 @@
 .settings-row-sub { font-size:11px; color:var(--muted); margin-top:2px; }
 .settings-chevron { color:var(--muted); font-size:16px; }
 
+
+/* ===== COURS MODE SELECTOR ===== */
+.cours-mode-card {
+  display:flex; align-items:center; gap:16px;
+  padding:18px 16px; border-radius:18px;
+  background:var(--card); border:1px solid var(--border);
+  cursor:pointer; margin-bottom:12px;
+  transition:all 0.18s; -webkit-tap-highlight-color:transparent;
+}
+.cours-mode-card:active { transform:scale(0.98); }
+.cours-mode-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; flex-shrink:0;
+}
+.cours-mode-info { flex:1; min-width:0; }
+.cours-mode-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; }
+.cours-mode-sub { font-size:12px; color:var(--muted); margin-top:3px; line-height:1.3; }
+.cours-mode-arrow { font-size:22px; color:var(--muted); font-weight:300; }
+
+/* ===== BREVET MAT PILLS ===== */
+.brevet-mat-pill {
+  flex-shrink:0; padding:8px 14px; border-radius:20px;
+  font-size:13px; font-weight:700; cursor:pointer;
+  background:var(--card); border:2px solid var(--border);
+  color:var(--muted); transition:all 0.18s; white-space:nowrap;
+}
+.brevet-mat-pill.active {
+  background:var(--pill-active-bg, var(--accent)22);
+  border-color:var(--pill-active-color, var(--accent));
+  color:var(--pill-active-color, var(--accent));
+}
+
+/* ===== BREVET CHAPITRE CARDS (nouvelle version) ===== */
+.ch-card {
+  display:flex; align-items:center; gap:14px;
+  padding:16px 14px; border-radius:16px;
+  background:var(--card); border:1px solid var(--border);
+  cursor:pointer; margin-bottom:10px;
+  transition:all 0.15s; -webkit-tap-highlight-color:transparent;
+}
+.ch-card:active { transform:scale(0.99); }
+.ch-card.seen { border-color:var(--ch-color, var(--accent))44; }
+.ch-num {
+  width:36px; height:36px; border-radius:10px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:14px;
+  background:var(--surface); color:var(--muted);
+}
+.ch-num.seen { background:var(--ch-color, var(--accent))22; color:var(--ch-color, var(--accent)); }
+.ch-num.mastered { background:rgba(82,232,162,0.2); color:var(--accent3); }
+.ch-body { flex:1; min-width:0; }
+.ch-title { font-size:14px; font-weight:700; line-height:1.3; }
+.ch-resume { font-size:11px; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ch-score { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; flex-shrink:0; }
+.ch-arrow { font-size:18px; color:var(--muted); flex-shrink:0; }
+
+/* ===== BREVET HEADER COMPACT ===== */
+.brevet-header-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; border-radius:14px;
+  background:var(--card); border:1px solid var(--border);
+  margin-bottom:16px;
+}
+.brevet-stat-mini { text-align:center; flex:1; }
+.brevet-stat-mini-val {
+  font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:800;
+}
+.brevet-stat-mini-label { font-size:10px; color:var(--muted); margin-top:1px; }
+.brevet-stat-divider { width:1px; height:32px; background:var(--border); }
+
 </style>
 <style>
 /* ============================================================
@@ -1878,28 +1949,40 @@ body {
 
   <!-- MODE SELECTOR: Mes cours / Brevet / Anglais -->
   <div id="cours-mode-selector">
-    <div class="page-header" style="margin-bottom:16px">
-      <div>
-        <div class="page-title">📚 <span>Cours</span></div>
-        <div class="page-sub">Mes cours, révisions brevet & anglais</div>
-      </div>
+    <!-- Header -->
+    <div style="margin-bottom:24px">
+      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1.1">📚 Mes Espaces</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">Cours, révisions & anglais</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px">
-      <div onclick="setCoursMode('mescours')" id="mode-mescours" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--accent);transition:all 0.2s">
-        <div style="font-size:28px;margin-bottom:6px">📓</div>
-        <div style="font-size:13px;font-weight:700;color:var(--accent)">Mes Cours</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:3px">Tes notes perso</div>
+
+    <!-- Mode Mes Cours -->
+    <div onclick="setCoursMode('mescours')" id="mode-mescours" class="cours-mode-card">
+      <div class="cours-mode-icon" style="background:rgba(240,193,75,0.15)">📓</div>
+      <div class="cours-mode-info">
+        <div class="cours-mode-title">Mes Cours</div>
+        <div class="cours-mode-sub">Notes perso, photos de cours, chapitres</div>
       </div>
-      <div onclick="setCoursMode('brevet')" id="mode-brevet" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
-        <div style="font-size:28px;margin-bottom:6px" id="brevet-mode-icon">🎓</div>
-        <div style="font-size:13px;font-weight:700;color:var(--muted)" id="brevet-mode-label">Brevet 3ème</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:3px">Cours + Quiz</div>
+      <div class="cours-mode-arrow">›</div>
+    </div>
+
+    <!-- Mode Révisions -->
+    <div onclick="setCoursMode('brevet')" id="mode-brevet" class="cours-mode-card">
+      <div class="cours-mode-icon" style="background:rgba(155,138,251,0.15)" id="brevet-mode-icon">🎓</div>
+      <div class="cours-mode-info">
+        <div class="cours-mode-title" id="brevet-mode-label">Brevet 3ème</div>
+        <div class="cours-mode-sub">Cours complets + quiz par chapitre</div>
       </div>
-      <div onclick="setCoursMode('anglais')" id="mode-anglais" style="border-radius:16px;padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);border:2px solid var(--border);transition:all 0.2s">
-        <div style="font-size:28px;margin-bottom:6px">🇬🇧</div>
-        <div style="font-size:13px;font-weight:700;color:var(--muted)">Anglais</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:3px">Vocab & Quiz</div>
+      <div class="cours-mode-arrow">›</div>
+    </div>
+
+    <!-- Mode Anglais -->
+    <div onclick="setCoursMode('anglais')" id="mode-anglais" class="cours-mode-card">
+      <div class="cours-mode-icon" style="background:rgba(96,165,250,0.15)">🇬🇧</div>
+      <div class="cours-mode-info">
+        <div class="cours-mode-title">Anglais B1</div>
+        <div class="cours-mode-sub">Vocabulaire hebdo + quiz du jour</div>
       </div>
+      <div class="cours-mode-arrow">›</div>
     </div>
   </div>
 
@@ -1958,23 +2041,26 @@ body {
 
   <!-- ===== BREVET ===== -->
   <div id="cours-brevet-container" style="display:none">
-    <div class="page-header" style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;gap:12px">
-        <button class="cours-back-btn" onclick="setCoursMode(null)">‹</button>
-        <div>
-          <div class="page-title" id="brevet-main-title">🎓 <span id="brevet-level-label">Brevet 3ème</span></div>
-          <div class="page-sub">Cours complets + Quiz</div>
-        </div>
+
+    <!-- Header brevet -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <button class="cours-back-btn" onclick="setCoursMode(null)">‹</button>
+      <div style="flex:1">
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800" id="brevet-main-title"><span id="brevet-level-label">Brevet 3ème</span></div>
+        <div style="font-size:12px;color:var(--muted)">Cours complets + Quiz interactifs</div>
       </div>
     </div>
-    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px;padding-bottom:4px" id="brevet-matiere-tabs">
-      <div class="chip active" data-mat="maths" onclick="switchBrevetMat(this)">📐 Maths</div>
-      <div class="chip" data-mat="francais" onclick="switchBrevetMat(this)">📖 Français</div>
-      <div class="chip" data-mat="histoire" onclick="switchBrevetMat(this)">🌍 Hist-Géo</div>
-      <div class="chip" data-mat="svt" onclick="switchBrevetMat(this)">🌱 SVT</div>
-      <div class="chip" data-mat="physchim" onclick="switchBrevetMat(this)">⚗️ Physique</div>
-      <div class="chip" data-mat="techno" onclick="switchBrevetMat(this)">⚙️ Techno</div>
+
+    <!-- Onglets matières — pills colorées scrollables -->
+    <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-bottom:20px;padding-bottom:2px" id="brevet-matiere-tabs">
+      <div class="brevet-mat-pill active" data-mat="maths" data-color="#f0c14b" onclick="switchBrevetMat(this)">📐 Maths</div>
+      <div class="brevet-mat-pill" data-mat="francais" data-color="#9b8afb" onclick="switchBrevetMat(this)">📖 Français</div>
+      <div class="brevet-mat-pill" data-mat="histoire" data-color="#52e8a2" onclick="switchBrevetMat(this)">🌍 Histoire</div>
+      <div class="brevet-mat-pill" data-mat="svt" data-color="#34d399" onclick="switchBrevetMat(this)">🌱 SVT</div>
+      <div class="brevet-mat-pill" data-mat="physchim" data-color="#60a5fa" onclick="switchBrevetMat(this)">⚗️ Physique</div>
+      <div class="brevet-mat-pill" data-mat="techno" data-color="#e879f9" onclick="switchBrevetMat(this)">⚙️ Techno</div>
     </div>
+
     <div id="brevet-liste"></div>
     <div id="brevet-chapitre" style="display:none">
       <button class="cours-back-btn" onclick="closeBrevetchapitre()" style="margin-bottom:16px">‹ Retour</button>
@@ -3187,19 +3273,24 @@ function setCoursMode(mode) {
   document.getElementById('cours-brevet-container').style.display = mode === 'brevet' ? 'block' : 'none';
   document.getElementById('cours-anglais-container').style.display = mode === 'anglais' ? 'block' : 'none';
 
-  // Update card styles
-  ['mescours','brevet','anglais'].forEach(m => {
-    const el = document.getElementById('mode-' + m);
-    if (!el) return;
-    const colors = { mescours: '#f0c14b', brevet: '#9b8afb', anglais: '#60a5fa' };
+  // Update card styles — highlight active
+  const cardColors = { mescours: '#f0c14b', brevet: '#9b8afb', anglais: '#60a5fa' };
+  ['mescours','brevet','anglais'].forEach(function(m) {
+    const card = document.getElementById('mode-' + m);
+    if (!card) return;
     if (m === mode) {
-      el.style.borderColor = colors[m];
-      el.querySelector('div:nth-child(2)').style.color = colors[m];
+      card.style.borderColor = cardColors[m];
+      card.style.background = cardColors[m] + '12';
     } else {
-      el.style.borderColor = 'var(--border)';
-      el.querySelector('div:nth-child(2)').style.color = 'var(--muted)';
+      card.style.borderColor = 'var(--border)';
+      card.style.background = 'var(--card)';
     }
   });
+  // Activate first mat pill with its color
+  if (mode === 'brevet') {
+    const firstPill = document.querySelector('.brevet-mat-pill[data-mat="' + currentBrevetMat + '"]');
+    if (firstPill) switchBrevetMat(firstPill);
+  }
 
   if (mode === 'mescours') { renderMatieres(); }
   if (mode === 'brevet') { renderBrevet(); }
@@ -8922,6 +9013,241 @@ Transports : véhicules électriques, covoiturage, transports en commun</p>`
 // ============================================================
 //  QUIZ DATA — 10 questions par chapitre (tirées aléatoirement)
 // ============================================================
+// HISTOIRE EXTRA QUESTIONS — 20 nouvelles questions par chapitre
+const HISTOIRE_EXTRA = [
+  // Ch 0 — 1ère GM (20 questions supplémentaires)
+  [
+    { q: "Qu'est-ce que la 'guerre de tranchées' ?", choices: ["Combat statique depuis des tranchées creusées dans le sol","Combat naval en mer du Nord","Guerre de mouvement rapide","Attaque aérienne massive"], correct: 0 },
+    { q: "Le Plan Schlieffen prévoyait d'attaquer en premier :", choices: ["La France par la Belgique","La Russie par la Pologne","La Grande-Bretagne par la mer","L'Italie par les Alpes"], correct: 0 },
+    { q: "Qu'est-ce que les 'poilus' ?", choices: ["Surnom des soldats français","Unité d'élite allemande","Mercenaires africains","Officiers de l'état-major"], correct: 0 },
+    { q: "La bataille de la Marne (1914) a pour résultat :", choices: ["L'échec de l'avance allemande sur Paris","La prise de Paris par l'Allemagne","La victoire navale britannique","L'entrée en guerre des USA"], correct: 0 },
+    { q: "Le Traité de Versailles impose à l'Allemagne :", choices: ["Des réparations énormes et la perte de territoires","Une occupation militaire permanente","La dissolution de l'armée complète","Un protectorat français de 50 ans"], correct: 0 },
+    { q: "Les 'gueules cassées' désignent :", choices: ["Les soldats blessés au visage","Les canons abîmés","Les tranchées effondrées","Les chars détruits"], correct: 0 },
+    { q: "L'article 231 du Traité de Versailles déclare :", choices: ["L'Allemagne seule responsable de la guerre","La création de la SDN","L'indépendance de la Pologne","La neutralité de la Suisse"], correct: 0 },
+    { q: "Quelle nouvelle arme fait son apparition à la Somme en 1916 ?", choices: ["Le char d'assaut","Le sous-marin atomique","La bombe à hydrogène","Le lance-flammes"], correct: 0 },
+    { q: "Combien de pays environ composaient la SDN à sa création ?", choices: ["42","10","100","6"], correct: 0 },
+    { q: "La 'der des ders' est un surnom de :", choices: ["La Première Guerre Mondiale","La Seconde Guerre Mondiale","La Guerre de Crimée","La Guerre Franco-prussienne"], correct: 0 },
+    { q: "L'Italie rejoint quel camp en 1915 ?", choices: ["La Triple-Entente (Alliés)","La Triple-Alliance (Empires centraux)","Elle reste neutre","Elle rejoint la Russie seule"], correct: 0 },
+    { q: "Verdun est symbolique car :", choices: ["C'est la bataille la plus meurtrière et la plus longue","C'est la première bataille de tanks","C'est là que l'armistice est signé","C'est la première grande victoire alliée"], correct: 0 },
+    { q: "Quel empire disparaît à la fin de la 1ère GM ?", choices: ["L'empire ottoman, austro-hongrois et russe","L'empire britannique","L'empire français","L'empire allemand uniquement"], correct: 0 },
+    { q: "La mobilisation générale en France est décrétée le :", choices: ["1er août 1914","28 juin 1914","11 novembre 1918","4 août 1914"], correct: 0 },
+    { q: "Qu'est-ce que l'Union Sacrée (1914) ?", choices: ["Suspension des luttes politiques pour l'effort de guerre","Alliance militaire franco-britannique","Traité de paix provisoire","Union des syndicats contre la guerre"], correct: 0 },
+    { q: "Les mutineries de 1917 dans l'armée française expriment :", choices: ["Le refus des offensives inutiles et meurtrières","Un complot allemand","Un soutien à la révolution russe","La demande de meilleures armes"], correct: 0 },
+    { q: "Qu'est-ce que le 'bourrage de crâne' ?", choices: ["La propagande destinée à maintenir le moral","Un casque militaire renforcé","Une technique de combat rapproché","Un entraînement intensif"], correct: 0 },
+    { q: "Quelle ville alsacienne est l'enjeu symbolique franco-allemand ?", choices: ["Strasbourg","Marseille","Bordeaux","Lyon"], correct: 0 },
+    { q: "Les 14 Points du président Wilson (1918) proposent :", choices: ["Un ordre mondial fondé sur la paix et l'autodétermination","L'entrée définitive des USA en Europe","La punition sévère de l'Allemagne","Le partage des colonies allemandes"], correct: 0 },
+    { q: "La guerre sous-marine à outrance (1917) est menée par :", choices: ["L'Allemagne contre les navires alliés","La France contre les U-boote","Le Royaume-Uni en Méditerranée","Les USA dans le Pacifique"], correct: 0 },
+  ],
+  // Ch 1 — 2ème GM (20 questions supplémentaires)
+  [
+    { q: "Le 'blitzkrieg' (guerre éclair) est une stratégie :", choices: ["D'attaque rapide combinant chars, avions et infanterie","De siège lent des villes","De guerre de tranchées modernisée","D'attaques nocturnes surprises"], correct: 0 },
+    { q: "La 'drôle de guerre' (sept. 1939 – mai 1940) désigne :", choices: ["La période d'inaction militaire franco-britannique","L'invasion de la Pologne","La bataille de France","L'occupation de la zone libre"], correct: 0 },
+    { q: "Qu'est-ce que la ligne Maginot ?", choices: ["Fortifications françaises à la frontière allemande","Ligne de front en Normandie","Frontière entre zones occupée et libre","Réseau de résistants underground"], correct: 0 },
+    { q: "Quel événement pousse les USA à entrer en guerre ?", choices: ["L'attaque japonaise de Pearl Harbor (7 déc. 1941)","La chute de Paris","L'invasion de l'URSS","L'assassinat de Roosevelt"], correct: 0 },
+    { q: "La 'Solution finale' est décidée lors de :", choices: ["La conférence de Wannsee (jan. 1942)","La conférence de Yalta","Le congrès de Nuremberg","La conférence de Munich"], correct: 0 },
+    { q: "Le maréchal Pétain dirige le gouvernement de Vichy depuis :", choices: ["Juillet 1940","Septembre 1939","Juin 1944","Mai 1945"], correct: 0 },
+    { q: "La bataille de Stalingrad (1942-43) se termine par :", choices: ["La reddition de l'armée allemande","Une victoire allemande","Un armistice local","Le retrait soviétique"], correct: 0 },
+    { q: "Le STO (Service du Travail Obligatoire) envoie des Français :", choices: ["Travailler en Allemagne","Combattre en URSS","Garder les côtes françaises","Administrer les colonies"], correct: 0 },
+    { q: "Les Alliés débarquent en Afrique du Nord en :", choices: ["Novembre 1942","Juin 1944","Septembre 1943","Août 1945"], correct: 0 },
+    { q: "Qu'est-ce qu'Auschwitz ?", choices: ["Principal camp d'extermination nazi en Pologne","Ville bombardée en Allemagne","Base militaire de la Wehrmacht","Prison pour résistants français"], correct: 0 },
+    { q: "La libération de Paris a lieu en :", choices: ["Août 1944","Juin 1944","Mai 1945","Septembre 1944"], correct: 0 },
+    { q: "L'opération Overlord (D-Day) débarque sur les plages de :", choices: ["Normandie","Provence","Bretagne","Pas-de-Calais"], correct: 0 },
+    { q: "Qu'est-ce que la 'zone libre' en France ?", choices: ["Partie sud non occupée, gouvernée par Vichy","Zone libérée par les Alliés","Territoire suisse annexé","Zone neutre entre les deux armées"], correct: 0 },
+    { q: "Hiroshima et Nagasaki sont les cibles de :", choices: ["Bombes atomiques américaines (août 1945)","Bombardements classiques","Une invasion terrestre","Des attaques chimiques"], correct: 0 },
+    { q: "Les procès de Nuremberg (1945-46) jugent :", choices: ["Les criminels de guerre nazis","Les collaborateurs français","Les généraux japonais","Les espions soviétiques"], correct: 0 },
+    { q: "La France libre est basée :", choices: ["À Londres","À Alger","À New York","À Berne"], correct: 0 },
+    { q: "Quel régime Vichy instaure-t-il en France ?", choices: ["Un régime autoritaire avec devise 'Travail, Famille, Patrie'","Une monarchie constitutionnelle","Une démocratie populaire","Une dictature militaire classique"], correct: 0 },
+    { q: "La conférence de Yalta (fév. 1945) réunit :", choices: ["Roosevelt, Churchill et Staline","Hitler, Mussolini et Hirohito","De Gaulle, Eisenhower et Montgomery","Truman, Attlee et Staline"], correct: 0 },
+    { q: "Qu'est-ce qu'un Einsatzgruppen ?", choices: ["Unité mobile SS chargée des massacres de masse","Régiment de tanks d'élite","Corps d'ingénieurs militaires","Police secrète nazie"], correct: 0 },
+    { q: "L'ONU est créée en :", choices: ["1945","1919","1939","1947"], correct: 0 },
+  ],
+  // Ch 2 — Guerre Froide (20 questions supplémentaires)
+  [
+    { q: "La doctrine Truman (1947) s'engage à :", choices: ["Contenir l'expansion soviétique dans le monde","Aider l'URSS à reconstruire","Partager l'Europe en zones d'influence","Créer une armée européenne commune"], correct: 0 },
+    { q: "Le 'rideau de fer' est une expression de :", choices: ["Winston Churchill (1946)","Harry Truman","Joseph Staline","George Marshall"], correct: 0 },
+    { q: "Le blocus de Berlin (1948-49) est contourné par :", choices: ["Un pont aérien américain","Un tunnel sous-terrain","Un accord avec Staline","Des convois blindés alliés"], correct: 0 },
+    { q: "Le Pacte de Varsovie est créé en :", choices: ["1955","1949","1947","1961"], correct: 0 },
+    { q: "La course aux armements nucléaires : l'URSS fait exploser sa 1ère bombe en :", choices: ["1949","1945","1953","1957"], correct: 0 },
+    { q: "La crise de Cuba (1962) dure environ :", choices: ["13 jours","6 mois","1 an","3 semaines"], correct: 0 },
+    { q: "Le 'téléphone rouge' est :", choices: ["Une ligne directe entre Washington et Moscou","Le code d'alerte nucléaire","Un réseau d'espionnage","Le surnom de Khrouchtchev"], correct: 0 },
+    { q: "L'OTAN est une alliance :", choices: ["Militaire occidentale (USA, Europe de l'Ouest)","Économique soviétique","Politique des pays non-alignés","Commerciale atlantique"], correct: 0 },
+    { q: "Qu'est-ce que la 'déstalinisation' (1956) ?", choices: ["Khrouchtchev dénonce les crimes de Staline","La mort de Staline en 1953","La dissolution du goulag","L'abandon du communisme"], correct: 0 },
+    { q: "Le soulèvement de Budapest (1956) est écrasé par :", choices: ["L'armée soviétique","L'armée américaine","La police hongroise","Les troupes de l'OTAN"], correct: 0 },
+    { q: "La crise du Sputnik (1957) montre que l'URSS :", choices: ["Peut atteindre le territoire américain avec des missiles","A plus de bombes atomiques que les USA","A une économie plus forte","A gagné la course à la Lune"], correct: 0 },
+    { q: "Neil Armstrong marche sur la Lune en :", choices: ["1969","1965","1972","1961"], correct: 0 },
+    { q: "La 'guerre des étoiles' (1983) est un projet de :", choices: ["Défense antimissile américaine dans l'espace","Film de propagande américain","Programme spatial soviétique","Alliance militaire avec le Japon"], correct: 0 },
+    { q: "Le mur de Berlin tombe le :", choices: ["9 novembre 1989","25 décembre 1991","3 octobre 1990","8 mai 1945"], correct: 0 },
+    { q: "La réunification allemande a lieu en :", choices: ["1990","1989","1991","1992"], correct: 0 },
+    { q: "MAD (Mutually Assured Destruction) signifie :", choices: ["La destruction mutuelle assurée dissuade la guerre nucléaire","Un programme d'espionnage américain","Une alliance militaire secrète","Un traité de désarmement"], correct: 0 },
+    { q: "Le Comecon est :", choices: ["L'organisation économique du bloc soviétique","Un parti communiste international","Une alliance militaire","Un traité commercial atlantique"], correct: 0 },
+    { q: "La guerre du Vietnam se termine en :", choices: ["1975 avec la victoire nord-vietnamienne","1973 avec un armistice","1969 avec le retrait américain","1965 avec l'entrée en guerre US"], correct: 0 },
+    { q: "Les accords SALT (1972) portent sur :", choices: ["La limitation des armements nucléaires stratégiques","Le commerce entre les deux blocs","La coopération spatiale","Le statut de Berlin"], correct: 0 },
+    { q: "Mikhail Gorbatchev arrive au pouvoir en URSS en :", choices: ["1985","1979","1989","1982"], correct: 0 },
+  ],
+  // Ch 3 — France depuis 1958 (20 questions supplémentaires)
+  [
+    { q: "Le général de Gaulle démissionne en :", choices: ["1969 après l'échec d'un référendum","1974 après la mort de Pompidou","1965 après sa réélection","1958 après la crise algérienne"], correct: 0 },
+    { q: "François Mitterrand est le premier président socialiste de la Ve République, élu en :", choices: ["1981","1974","1988","1965"], correct: 0 },
+    { q: "La cohabitation désigne :", choices: ["Un président et un premier ministre de partis opposés","Une coalition gouvernementale","Un gouvernement d'union nationale","Le partage du pouvoir entre assemblées"], correct: 0 },
+    { q: "La loi Veil (1975) légalise :", choices: ["L'interruption volontaire de grossesse (IVG)","Le divorce par consentement mutuel","Le droit de vote à 18 ans","L'égalité salariale hommes-femmes"], correct: 0 },
+    { q: "La peine de mort est abolie en France en :", choices: ["1981","1975","1968","1995"], correct: 0 },
+    { q: "Le TGV (Train à Grande Vitesse) est inauguré en :", choices: ["1981","1968","1990","1975"], correct: 0 },
+    { q: "Les accords d'Évian accordent l'indépendance à :", choices: ["L'Algérie","Le Maroc","La Tunisie","L'Indochine"], correct: 0 },
+    { q: "Le Front National est fondé en :", choices: ["1972","1958","1981","1968"], correct: 0 },
+    { q: "La construction européenne : le marché unique est réalisé en :", choices: ["1993","1985","1999","1957"], correct: 0 },
+    { q: "Le référendum de 2005 rejette :", choices: ["La Constitution européenne","Le traité de Maastricht","L'entrée de la Turquie dans l'UE","Le traité de Lisbonne"], correct: 0 },
+    { q: "La semaine de 35 heures est instaurée en :", choices: ["1998-2000","1981","1968","2002"], correct: 0 },
+    { q: "Nicolas Sarkozy est élu président en :", choices: ["2007","2002","2012","2005"], correct: 0 },
+    { q: "L'euro remplace le franc français le :", choices: ["1er janvier 2002","1er janvier 1999","1er janvier 2000","1er juin 2002"], correct: 0 },
+    { q: "La Ve République est fondée sur quel principe clé ?", choices: ["Un exécutif fort avec un président puissant","Un parlement omnipotent","Un régime purement parlementaire","Une monarchie constitutionnelle"], correct: 0 },
+    { q: "La Nouvelle-Calédonie est consultée sur l'indépendance en :", choices: ["2018, 2020 et 2021","1988 et 1998","2010 et 2015","2000 et 2005"], correct: 0 },
+    { q: "Emmanuel Macron est élu président pour la première fois en :", choices: ["2017","2012","2019","2022"], correct: 0 },
+    { q: "Le PACS (Pacte Civil de Solidarité) est créé en :", choices: ["1999","1981","2005","2013"], correct: 0 },
+    { q: "La décentralisation (1982) transfère des pouvoirs vers :", choices: ["Les régions et départements","Les communes uniquement","Les préfectures","Les tribunaux locaux"], correct: 0 },
+    { q: "La décolonisation africaine principale vague se situe en :", choices: ["1960","1945","1975","1955"], correct: 0 },
+    { q: "Le mouvement des 'Gilets jaunes' éclate en :", choices: ["2018","2015","2020","2016"], correct: 0 },
+  ],
+  // Ch 4 — Colonisation et décolonisation (20 questions supplémentaires)
+  [
+    { q: "Aimé Césaire est l'auteur de :", choices: ["'Discours sur le colonialisme' (1950)","'Les Misérables'","'L'Étranger'","'Le Deuxième Sexe'"], correct: 0 },
+    { q: "Léopold Sédar Senghor est à la fois :", choices: ["Poète et premier président du Sénégal","Général et chef de guerre","Résistant français et ministre","Philosophe et prix Nobel"], correct: 0 },
+    { q: "L'Indochine française comprend :", choices: ["Vietnam, Cambodge et Laos","Vietnam et Thaïlande","Malaisie, Indonésie et Vietnam","Chine du Sud et Vietnam"], correct: 0 },
+    { q: "Les accords de Genève (1954) divisent le Vietnam en :", choices: ["Nord communiste et Sud pro-occidental","Est et Ouest","Zones française et britannique","Zones américaine et soviétique"], correct: 0 },
+    { q: "Le FLN algérien mène sa première attaque le :", choices: ["1er novembre 1954","8 mai 1945","1er juillet 1962","19 mars 1962"], correct: 0 },
+    { q: "Les 'pieds-noirs' sont :", choices: ["Les Européens installés en Algérie qui rentrent en France en 1962","Les soldats français blessés","Les combattants du FLN","Les Algériens restés en France"], correct: 0 },
+    { q: "Les harkis sont :", choices: ["Des Algériens ayant servi dans l'armée française","Des soldats français d'origine africaine","Des résistants algériens anti-FLN","Des colons français d'Algérie"], correct: 0 },
+    { q: "La 'Françafrique' désigne :", choices: ["Les relations d'influence néocoloniale entre France et Afrique","L'empire colonial français","Les accords de coopération militaire","La zone franc monétaire"], correct: 0 },
+    { q: "Nelson Mandela lutte contre :", choices: ["L'apartheid en Afrique du Sud","La colonisation française en Algérie","Le régime militaire au Chili","L'occupation américaine au Vietnam"], correct: 0 },
+    { q: "Mahatma Gandhi mène l'indépendance de :", choices: ["L'Inde (1947)","L'Algérie","L'Indochine","L'Afrique du Sud"], correct: 0 },
+    { q: "Le Congo belge devient indépendant en :", choices: ["1960","1945","1956","1975"], correct: 0 },
+    { q: "Ho Chi Minh est le leader de :", choices: ["La résistance vietnamienne contre la France","Le mouvement indépendantiste algérien","La révolution cubaine","La résistance kényane"], correct: 0 },
+    { q: "Le Maroc et la Tunisie deviennent indépendants en :", choices: ["1956","1960","1962","1954"], correct: 0 },
+    { q: "La Négritude est un mouvement :", choices: ["Culturel affirmant la fierté de l'identité africaine","Politique réclamant l'indépendance","Religieux de résistance","Militaire anti-colonial"], correct: 0 },
+    { q: "La conférence de Bandung (1955) réunit :", choices: ["29 pays d'Asie et d'Afrique refusant les blocs","Les pays du Commonwealth","Les pays membres de l'ONU","Les pays arabes indépendants"], correct: 0 },
+    { q: "Le 8 mai 1945 en Algérie est marqué par :", choices: ["Des massacres de nationalistes algériens à Sétif","La victoire contre l'Allemagne nazie","La proclamation de l'indépendance","Un soulèvement réprimé à Alger"], correct: 0 },
+    { q: "L'Organisation de l'Unité Africaine (OUA) est créée en :", choices: ["1963","1945","1960","1975"], correct: 0 },
+    { q: "Kwame Nkrumah est le premier président de :", choices: ["Ghana (1957)","Nigeria","Côte d'Ivoire","Sénégal"], correct: 0 },
+    { q: "Jean Moulin est mort :", choices: ["Torturé par la Gestapo en 1943","Fusillé en 1944","Déporté à Auschwitz","En combat en 1942"], correct: 0 },
+    { q: "La loi du 23 février 2005 controversée reconnaissait :", choices: ["Le 'rôle positif' de la colonisation française","L'indépendance de l'Algérie","Les crimes coloniaux","Le génocide arménien"], correct: 0 },
+  ],
+  // Ch 5 — Géo monde (20 questions supplémentaires)
+  [
+    { q: "Le PIB mondial est dominé par :", choices: ["USA + Chine + UE (plus de 50%)","USA seuls (plus de 50%)","G20 (plus de 80%)","Les pays du Golfe (plus de 40%)"], correct: 0 },
+    { q: "Le 'Sud global' regroupe :", choices: ["Les pays en développement d'Asie, Afrique, Amérique Latine","Les pays de l'hémisphère sud uniquement","Les pays émergents uniquement","Les pays producteurs de pétrole"], correct: 0 },
+    { q: "La mégalopolis BosWash s'étend de :", choices: ["Boston à Washington sur la côte est américaine","Budapest à Varsovie","Barcelone à Washington","Boston à Warsaw en Pologne"], correct: 0 },
+    { q: "Le détroit de Malacca est stratégique car :", choices: ["Il est emprunté par 40% du commerce maritime mondial","Il sépare l'Europe de l'Afrique","Il relie l'Atlantique au Pacifique","Il est sous contrôle américain"], correct: 0 },
+    { q: "L'ONU compte environ combien d'États membres ?", choices: ["193","150","220","100"], correct: 0 },
+    { q: "Le pétrole est exporté principalement depuis :", choices: ["Le Moyen-Orient (Arabie Saoudite, Émirats, Irak...)","L'Afrique du Nord uniquement","Le Venezuela et le Mexique","La Russie uniquement"], correct: 0 },
+    { q: "La Chine est surnommée 'l'usine du monde' car :", choices: ["Elle est le premier exportateur mondial de produits manufacturés","Elle a le plus grand PIB mondial","Elle produit le plus de nourriture","Elle est la première puissance militaire"], correct: 0 },
+    { q: "Les Routes de la Soie (Belt and Road) sont une initiative de :", choices: ["La Chine pour développer ses connexions commerciales","L'URSS pendant la Guerre Froide","Les États-Unis après 2001","L'UE pour relier l'Europe à l'Asie"], correct: 0 },
+    { q: "La Triade est composée de :", choices: ["USA + UE + Japon/Asie du Sud-Est","USA + Chine + Russie","OTAN + BRICS + G20","Amérique + Europe + Afrique"], correct: 0 },
+    { q: "Le dividende démographique désigne :", choices: ["L'avantage économique d'une forte population active","Les bénéfices du commerce international","Les revenus du pétrole","L'aide au développement"], correct: 0 },
+    { q: "Les Nations Unies ont été fondées en :", choices: ["1945","1919","1947","1950"], correct: 0 },
+    { q: "L'Inde devrait dépasser la Chine en population vers :", choices: ["2023 (déjà dépassé)","2030","2040","2050"], correct: 0 },
+    { q: "Le G7 réunit :", choices: ["7 grandes démocraties industrialisées","7 pays les plus peuplés","7 membres fondateurs de l'ONU","7 pays producteurs de pétrole"], correct: 0 },
+    { q: "Le concept de 'pays émergent' s'applique à :", choices: ["Des pays en forte croissance économique","Des pays qui viennent d'obtenir l'indépendance","Des pays qui sortent de guerre","Des pays récemment démocratisés"], correct: 0 },
+    { q: "La Zone de Libre-Échange Nord-Américaine s'appelle :", choices: ["ALENA/ACEUM (Canada, USA, Mexique)","MERCOSUR","ASEAN","CEDEAO"], correct: 0 },
+    { q: "Le réchauffement climatique menace particulièrement :", choices: ["Les petits États insulaires (Maldives, Tuvalu...)","Les grandes puissances industrielles","Les pays enclavés d'Afrique","Les zones polaires uniquement"], correct: 0 },
+    { q: "Le principal émetteur de CO₂ dans le monde est :", choices: ["La Chine","Les USA","L'Union Européenne","L'Inde"], correct: 0 },
+    { q: "Le concept de 'soft power' a été théorisé par :", choices: ["Joseph Nye (politologue américain)","Henry Kissinger","Zbigniew Brzezinski","Samuel Huntington"], correct: 0 },
+    { q: "L'ASEAN est une organisation régionale de :", choices: ["L'Asie du Sud-Est (10 pays)","L'Asie du Sud (Inde, Pakistan...)","L'Afrique de l'Est","L'Amérique du Sud"], correct: 0 },
+    { q: "Le port de Shanghai est :", choices: ["Le premier port mondial par volume","Le deuxième port d'Asie","Le principal port pétrolier mondial","Le premier port européen"], correct: 0 },
+  ],
+  // Ch 6 — Géo France (20 questions supplémentaires)
+  [
+    { q: "La 'métropolisation' en France se traduit par :", choices: ["La concentration des emplois et populations dans les grandes villes","La construction de nouvelles villes","L'exode urbain vers les campagnes","Le développement du monde rural"], correct: 0 },
+    { q: "La région Île-de-France représente environ quel % du PIB français ?", choices: ["30%","15%","50%","20%"], correct: 0 },
+    { q: "Le port du Havre est important car :", choices: ["C'est la principale porte d'entrée maritime de l'Europe du Nord","C'est le port militaire principal","C'est le plus ancien port de France","C'est le seul port de conteneurs français"], correct: 0 },
+    { q: "Le Mont-Blanc (4808m) se trouve :", choices: ["Dans les Alpes franco-italiennes","Dans les Pyrénées","Dans les Vosges","Dans le Massif Central"], correct: 0 },
+    { q: "La Guyane française est en :", choices: ["Amérique du Sud","Antilles","Afrique de l'Ouest","Océan Indien"], correct: 0 },
+    { q: "Le TGV relie Paris à Lyon en environ :", choices: ["2 heures","4 heures","1 heure","3 heures"], correct: 0 },
+    { q: "Quelle est la plus grande région française en superficie ?", choices: ["Nouvelle-Aquitaine","Île-de-France","Occitanie","Grand Est"], correct: 0 },
+    { q: "La Seine-Saint-Denis (93) est connue pour :", choices: ["Sa forte densité et sa diversité","Sa richesse économique","Ses activités agricoles","Son patrimoine historique exceptionnel"], correct: 0 },
+    { q: "Le Massif Central est une région de :", choices: ["Hautes terres volcaniques au centre de la France","Plaines agricoles","Littoral méditerranéen","Zones industrielles"], correct: 0 },
+    { q: "Mayotte est devenue le 101ème département français en :", choices: ["2011","2004","2001","2015"], correct: 0 },
+    { q: "La politique de la ville cible principalement :", choices: ["Les quartiers défavorisés des banlieues","Les centres historiques","Les zones rurales isolées","Les zones industrielles en déclin"], correct: 0 },
+    { q: "Airbus est principalement fabriqué à :", choices: ["Toulouse","Paris","Bordeaux","Marseille"], correct: 0 },
+    { q: "La France est le pays le plus visité au monde avec environ :", choices: ["90 millions de touristes/an","50 millions","120 millions","70 millions"], correct: 0 },
+    { q: "La 'diagonale du vide' s'étend du :", choices: ["Nord-Est (Ardennes) au Sud-Ouest (Landes)","Nord-Ouest au Sud-Est","Est au Ouest","Nord au Sud en passant par Paris"], correct: 0 },
+    { q: "Lyon est surnommée :", choices: ["Capitale de la gastronomie française","La Ville Rose","La Cité Phocéenne","La Ville Lumière"], correct: 0 },
+    { q: "La DATAR/CGET a pour mission :", choices: ["L'aménagement équilibré du territoire","La gestion des frontières","Le développement de l'agriculture","La construction des routes nationales"], correct: 0 },
+    { q: "La Corse a un statut :", choices: ["De collectivité territoriale à statut particulier","De DOM","De région ordinaire","De TOM (territoire d'outre-mer)"], correct: 0 },
+    { q: "Le principal fleuve français en débit est :", choices: ["La Loire (le plus long) / Le Rhône (le plus fort débit)","La Seine","La Garonne","Le Rhin"], correct: 0 },
+    { q: "Quel département est le plus peuplé de France ?", choices: ["Le Nord (59)","La Seine-Saint-Denis (93)","Le Pas-de-Calais (62)","Paris (75)"], correct: 0 },
+    { q: "La French Tech désigne :", choices: ["L'écosystème français de startups technologiques","Les entreprises françaises exportatrices","Le réseau des grandes écoles d'ingénieurs","La politique industrielle française"], correct: 0 },
+  ],
+  // Ch 7 — EMC Démocratie (20 questions supplémentaires)
+  [
+    { q: "Le Conseil d'État est :", choices: ["La plus haute juridiction administrative","Le Conseil des ministres","La Cour des comptes","Le Sénat en séance plénière"], correct: 0 },
+    { q: "La Cour de Cassation est :", choices: ["La plus haute juridiction judiciaire","La cour internationale","Le tribunal constitutionnel","La juridiction administrative suprême"], correct: 0 },
+    { q: "Un referendum d'initiative partagée nécessite :", choices: ["1/5 des parlementaires + 1/10 des électeurs","1/2 des parlementaires","100 000 signatures citoyennes","Un vote du Sénat"], correct: 0 },
+    { q: "La motion de censure peut renverser :", choices: ["Le gouvernement (Premier ministre)","Le Président de la République","Le Parlement","Le Conseil constitutionnel"], correct: 0 },
+    { q: "L'article 49-3 permet au gouvernement de :", choices: ["Faire passer une loi sans vote de l'Assemblée","Dissoudre le Parlement","Déclencher un référendum","Modifier la Constitution"], correct: 0 },
+    { q: "La proportionnelle est un mode de scrutin où :", choices: ["Les sièges sont répartis selon le pourcentage de votes","Le candidat avec le plus de voix gagne tout","Il y a deux tours d'élection","Les régions élisent un nombre fixe de représentants"], correct: 0 },
+    { q: "Le Parlement européen est élu pour :", choices: ["5 ans","4 ans","7 ans","6 ans"], correct: 0 },
+    { q: "La Cour Pénale Internationale (CPI) juge :", choices: ["Les crimes contre l'humanité et génocides","Les conflits commerciaux entre États","Les violations des droits des migrants","Les crimes organisés transnationaux"], correct: 0 },
+    { q: "La CEDH (Cour Européenne des Droits de l'Homme) siège à :", choices: ["Strasbourg","Bruxelles","Luxembourg","La Haye"], correct: 0 },
+    { q: "Le droit d'asile permet à :", choices: ["Des personnes persécutées de demander protection à un autre État","Tout étranger d'entrer sur le territoire","Aux réfugiés climatiques d'émigrer légalement","Aux travailleurs de changer de pays librement"], correct: 0 },
+    { q: "La Déclaration de 1789 affirme que la souveraineté appartient à :", choices: ["La nation","Le roi","Le parlement","Le peuple directement"], correct: 0 },
+    { q: "Un État de droit est caractérisé par :", choices: ["La soumission de tous (y compris l'État) à la loi","La force des institutions militaires","L'absence de constitution","La suprématie du parlement"], correct: 0 },
+    { q: "La séparation des pouvoirs théorisée par Montesquieu distingue :", choices: ["Exécutif, législatif et judiciaire","Président, parlement et armée","État, régions et communes","Gouvernement, opposition et citoyens"], correct: 0 },
+    { q: "Le principe d'égalité républicaine interdit toute discrimination basée sur :", choices: ["L'origine, le sexe, la religion","Le mérite et les compétences","La richesse uniquement","L'âge et l'expérience"], correct: 0 },
+    { q: "Le Défenseur des droits est chargé de :", choices: ["Défendre les citoyens face aux administrations","Défendre la France devant les tribunaux internationaux","Juger les ministres","Contrôler les élections"], correct: 0 },
+    { q: "La loi du 9 décembre 1905 sépare :", choices: ["L'Église et l'État","Les pouvoirs exécutif et législatif","Le droit civil et le droit pénal","La justice et l'administration"], correct: 0 },
+    { q: "Le quotient électoral en proportionnelle est calculé par :", choices: ["Total des votes / nombre de sièges","Votes du parti / 100","Nombre de circonscriptions × 2","Total des inscrits / 10"], correct: 0 },
+    { q: "L'Assemblée nationale peut être dissoute par :", choices: ["Le Président de la République","Le Premier Ministre","Le Sénat","Le Conseil Constitutionnel"], correct: 0 },
+    { q: "Le Conseil de l'Europe (47 membres) est différent de :", choices: ["L'Union Européenne (27 membres)","L'OTAN","L'ONU","Le G20"], correct: 0 },
+    { q: "La 'démocratie participative' désigne :", choices: ["L'implication directe des citoyens dans les décisions","Les élections présidentielles","Le vote en ligne","Les sondages d'opinion"], correct: 0 },
+  ],
+  // Ch 8 — EMC Citoyenneté (20 questions supplémentaires)
+  [
+    { q: "La Convention Internationale des Droits de l'Enfant (CIDE) date de :", choices: ["1989","1948","1966","2000"], correct: 0 },
+    { q: "Les droits de 3ème génération sont les droits :", choices: ["De solidarité (environnement, développement, paix)","Civils et politiques","Économiques et sociaux","Des peuples autochtones"], correct: 0 },
+    { q: "L'abstention aux élections est en France :", choices: ["En augmentation depuis les années 1980","En diminution constante","Stable autour de 20%","Légalement sanctionnée"], correct: 0 },
+    { q: "Le vote blanc est :", choices: ["Un vote comptabilisé mais non attribué à un candidat","Un vote nul","Un vote pour l'opposition","Un vote comptabilisé comme voix valables depuis 2014"], correct: 0 },
+    { q: "La discrimination positive consiste à :", choices: ["Favoriser des groupes sous-représentés pour compenser des inégalités","Discriminer positivement les femmes","Avantager les minorités dans tous les domaines","Supprimer toute distinction entre groupes"], correct: 0 },
+    { q: "Le CCAS (Centre Communal d'Action Sociale) a pour mission :", choices: ["L'aide sociale de proximité aux habitants","La gestion des impôts locaux","L'entretien des routes communales","La police municipale"], correct: 0 },
+    { q: "Le racisme est puni en France de :", choices: ["Peines d'emprisonnement et d'amende","Un simple avertissement","Amendes civiles uniquement","Mesures de rééducation"], correct: 0 },
+    { q: "La bioéthique porte sur :", choices: ["Les questions morales liées aux sciences du vivant","L'éthique dans les entreprises","Les droits des animaux","La protection de l'environnement"], correct: 0 },
+    { q: "L'impôt progressif signifie :", choices: ["Plus on gagne, plus on paie un pourcentage élevé","Tout le monde paie le même montant","Les riches paient moins pour stimuler l'économie","L'impôt augmente chaque année"], correct: 0 },
+    { q: "Le droit de grève est reconnu en France depuis :", choices: ["La Constitution de 1946 (préambule)","La loi de 1884","La Révolution de 1789","La Ve République (1958)"], correct: 0 },
+    { q: "La parité en politique vise à :", choices: ["L'égalité hommes-femmes dans les fonctions électives","La proportionnelle intégrale","La représentation des minorités","La rotation des mandats"], correct: 0 },
+    { q: "Le harcèlement scolaire est :", choices: ["Un délit punissable pénalement","Une infraction disciplinaire uniquement","Une pratique tolérée hors école","Un problème uniquement virtuel"], correct: 0 },
+    { q: "La liberté de la presse est garantie par :", choices: ["La loi du 29 juillet 1881","L'article 1er de la Constitution","Le préambule de 1946","La loi de 1972"], correct: 0 },
+    { q: "RSA signifie :", choices: ["Revenu de Solidarité Active","Revenu Salarial Annuel","Réseau Social Administratif","Régime Social des Artisans"], correct: 0 },
+    { q: "Le principe de fraternité a été reconnu par le Conseil Constitutionnel comme incluant :", choices: ["L'aide aux migrants en situation irrégulière","L'aide uniquement aux ressortissants français","La solidarité économique","L'entraide entre voisins"], correct: 0 },
+    { q: "L'éducation nationale est gratuite et obligatoire de :", choices: ["3 à 16 ans en France","6 à 18 ans","5 à 18 ans","3 à 18 ans"], correct: 0 },
+    { q: "Les fake news sont combattues notamment par :", choices: ["La loi contre la manipulation de l'information (2018)","L'interdiction des réseaux sociaux","La censure préalable des médias","Le contrôle gouvernemental d'internet"], correct: 0 },
+    { q: "Le service civique est :", choices: ["Un engagement volontaire de 6 à 12 mois pour les 16-25 ans","Un service militaire obligatoire","Une alternative aux études supérieures","Un stage en entreprise obligatoire"], correct: 0 },
+    { q: "L'interculturalité désigne :", choices: ["L'échange et le dialogue entre cultures différentes","La domination d'une culture sur d'autres","L'assimilation des minorités","L'isolement culturel"], correct: 0 },
+    { q: "Le principe de neutralité s'applique à :", choices: ["Les agents de la fonction publique dans l'exercice de leurs fonctions","Tous les citoyens en toutes circonstances","Les élus dans l'exercice du vote","Les enseignants uniquement"], correct: 0 },
+  ],
+  // Ch 9 — Trente Glorieuses et Mai 68 (20 questions supplémentaires)
+  [
+    { q: "Le baby-boom d'après-guerre se caractérise par :", choices: ["Une forte natalité entre 1945 et 1965","Un boom des naissances uniquement en 1945","Une immigration massive","Une forte mortalité infantile"], correct: 0 },
+    { q: "Le Plan Marshall (1948) aide à reconstruire :", choices: ["L'Europe occidentale dévastée par la guerre","L'Allemagne de l'Est uniquement","L'Asie du Sud-Est","L'Afrique coloniale"], correct: 0 },
+    { q: "Les 'Trente Glorieuses' voient le chômage :", choices: ["Quasiment inexistant (plein emploi)","À 10% en permanence","Fluctuant entre 5 et 15%","Concentré dans les mines"], correct: 0 },
+    { q: "La société de consommation des années 1960 est symbolisée par :", choices: ["L'accès de masse à la voiture, la télé, l'électroménager","La disparition des inégalités","Le tout-nucléaire","La fin du travail à la chaîne"], correct: 0 },
+    { q: "Le Fordisme désigne :", choices: ["La production industrielle en série avec travail à la chaîne","Un modèle de voiture populaire","Une politique économique libérale","Un syndicat américain"], correct: 0 },
+    { q: "En mai 1968, les étudiants occupent notamment :", choices: ["La Sorbonne (Paris)","L'Élysée","L'Assemblée nationale","Le Sénat"], correct: 0 },
+    { q: "Simone de Beauvoir est associée au :", choices: ["Féminisme et à l'existentialisme","Mouvement ouvrier de 1968","Gaullisme de gauche","Mouvement étudiant de Nanterre"], correct: 0 },
+    { q: "Simone Veil défend la loi IVG malgré :", choices: ["Une vive opposition et des propos antisémites à l'Assemblée","Un soutien unanime","L'opposition du Président Giscard","Un referendum défavorable"], correct: 0 },
+    { q: "Le premier choc pétrolier (1973) est provoqué par :", choices: ["L'embargo des pays arabes producteurs de pétrole","La nationalisation du pétrole iranien","La révolution iranienne","La guerre Iran-Irak"], correct: 0 },
+    { q: "Le taux de croissance pendant les Trente Glorieuses est d'environ :", choices: ["5% par an","1% par an","10% par an","2% par an"], correct: 0 },
+    { q: "La loi Neuwirth (1967) légalise :", choices: ["La contraception","L'avortement","Le divorce","L'homosexualité"], correct: 0 },
+    { q: "En 1968, de Gaulle obtient la dissolution et :", choices: ["Une victoire électorale massive en juin 1968","Une défaite aux législatives","L'arrêt des grèves par décret","Un accord avec les syndicats"], correct: 0 },
+    { q: "Le chômage explose après 1975, atteignant :", choices: ["Plus de 10% dans les années 1980-90","5% maximum","3% au plus fort de la crise","20% dès 1976"], correct: 0 },
+    { q: "Les attentats de Charlie Hebdo ont eu lieu le :", choices: ["7 janvier 2015","13 novembre 2015","14 juillet 2016","9 janvier 2015"], correct: 0 },
+    { q: "Le 13 novembre 2015, les attaques terroristes à Paris font :", choices: ["130 morts (Bataclan + terrasses)","50 morts","250 morts","80 morts"], correct: 0 },
+    { q: "L'État islamique (Daech) proclame son 'califat' en :", choices: ["2014","2011","2016","2013"], correct: 0 },
+    { q: "La crise des 'subprimes' de 2008 est d'abord une crise :", choices: ["Immobilière et financière américaine","Industrielle européenne","Énergétique mondiale","Alimentaire mondiale"], correct: 0 },
+    { q: "Le traité de Lisbonne (2007) réforme :", choices: ["Les institutions de l'Union Européenne","L'OTAN","La Banque Mondiale","Le Conseil de sécurité de l'ONU"], correct: 0 },
+    { q: "En 1968, la réforme Fouchet contestée portait sur :", choices: ["L'université française","Le baccalauréat","Les lycées professionnels","La formation des enseignants"], correct: 0 },
+    { q: "Le mouvement MeToo (2017) dénonce :", choices: ["Les violences et harcèlements sexuels","La discrimination raciale","Les inégalités salariales","La corruption politique"], correct: 0 },
+  ],
+];
+
+
 const QUIZ_DATA = {
   maths: [
     // Ch 0 — Nombres et calculs
@@ -9617,7 +9943,11 @@ const QUIZ_DATA = {
 let quizState = null;
 
 function startQuiz(matKey, chIdx) {
-  const allQ = QUIZ_DATA[matKey]?.[chIdx] || [];
+  const baseQ = QUIZ_DATA[matKey]?.[chIdx] || [];
+  // Merge with extra questions if available
+  const extraMap = { histoire: HISTOIRE_EXTRA };
+  const extraQ = (extraMap[matKey] && extraMap[matKey][chIdx]) ? extraMap[matKey][chIdx] : [];
+  const allQ = [...baseQ, ...extraQ];
   if (!allQ.length) { alert('Pas de quiz disponible pour ce chapitre.'); return; }
   const shuffled = [...allQ].sort(() => Math.random() - 0.5).slice(0, 10);
   shuffled.forEach(q => {
@@ -9830,8 +10160,15 @@ function getBreviMatiereStats(matKey) {
 }
 
 function switchBrevetMat(el) {
-  document.querySelectorAll('[data-mat]').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.brevet-mat-pill').forEach(function(c) {
+    c.classList.remove('active');
+    c.style.removeProperty('--pill-active-color');
+    c.style.removeProperty('--pill-active-bg');
+  });
   el.classList.add('active');
+  const color = el.dataset.color || 'var(--accent)';
+  el.style.setProperty('--pill-active-color', color);
+  el.style.setProperty('--pill-active-bg', color + '22');
   currentBrevetMat = el.dataset.mat;
   currentBrevetCh = null;
   document.getElementById('brevet-liste').style.display = 'block';
@@ -9843,66 +10180,71 @@ function renderBrevetListe() {
   const activeData = getActiveBrevetData();
   const mat = activeData[currentBrevetMat];
   const stats = getBreviMatiereStats(currentBrevetMat);
-  const streak = getBrevetStreak();
   const daysLeft = getBrevetExamDate();
   const globalStats = getBrevetStats();
+  const streak = getBrevetStreak();
   const p = getBrevetProgress();
   const el = document.getElementById('brevet-liste');
+  const matColor = mat.color;
 
-  // Header with global dashboard
-  let headerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">'
-    + '<div style="background:linear-gradient(135deg,rgba(240,193,75,0.2),rgba(240,193,75,0.05));border:1px solid rgba(240,193,75,0.4);border-radius:14px;padding:14px;text-align:center">'
-      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:800;color:var(--accent)">' + daysLeft + '</div>'
-      + '<div style="font-size:11px;color:var(--muted);margin-top:2px">jours avant le brevet 📅</div>'
-    + '</div>'
-    + '<div style="background:linear-gradient(135deg,rgba(251,146,60,0.2),rgba(251,146,60,0.05));border:1px solid rgba(251,146,60,0.4);border-radius:14px;padding:14px;text-align:center">'
-      + '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;font-weight:800;color:var(--accent6)">' + streak.count + ' 🔥</div>'
-      + '<div style="font-size:11px;color:var(--muted);margin-top:2px">jours de révision</div>'
-    + '</div>'
-  + '</div>'
-  // Global progress bar
-  + '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px">'
-    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
-      + '<div style="font-size:13px;font-weight:700">📊 Progression globale</div>'
-      + '<div style="font-size:13px;font-weight:700;color:var(--accent)">' + globalStats.seen + '/' + globalStats.total + ' chapitres vus</div>'
-    + '</div>'
-    + '<div style="background:var(--border);border-radius:10px;height:8px;overflow:hidden">'
-      + '<div style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:10px;width:' + Math.round(globalStats.seen/globalStats.total*100) + '%;transition:width 0.5s"></div>'
-    + '</div>'
-    + '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px">'
-      + '<span>✅ Maîtrisés : ' + globalStats.mastered + '</span>'
-      + '<span>🔖 Marque-pages : ' + globalStats.bookmarked + '</span>'
-      + '<span><button class="btn btn-ghost btn-sm" style="padding:4px 10px;font-size:11px" onclick="startExamBlanc()">📝 Examen blanc</button></span>'
-    + '</div>'
-  + '</div>';
+  // ── Compact stats bar
+  const headerHTML =
+    '<div class="brevet-header-bar">'
+      + '<div class="brevet-stat-mini">'
+        + '<div class="brevet-stat-mini-val" style="color:var(--accent)">' + daysLeft + '</div>'
+        + '<div class="brevet-stat-mini-label">jours J</div>'
+      + '</div>'
+      + '<div class="brevet-stat-divider"></div>'
+      + '<div class="brevet-stat-mini">'
+        + '<div class="brevet-stat-mini-val" style="color:var(--accent6)">' + streak.count + ' 🔥</div>'
+        + '<div class="brevet-stat-mini-label">streak</div>'
+      + '</div>'
+      + '<div class="brevet-stat-divider"></div>'
+      + '<div class="brevet-stat-mini">'
+        + '<div class="brevet-stat-mini-val" style="color:var(--accent3)">' + globalStats.mastered + '/' + globalStats.total + '</div>'
+        + '<div class="brevet-stat-mini-label">maîtrisés</div>'
+      + '</div>'
+      + '<div class="brevet-stat-divider"></div>'
+      + '<div class="brevet-stat-mini">'
+        + '<button onclick="startExamBlanc()" style="background:var(--accent)22;border:none;color:var(--accent);font-size:11px;font-weight:700;padding:6px 10px;border-radius:10px;cursor:pointer">📝 Exam</button>'
+      + '</div>'
+    + '</div>';
 
-  // Matière header with its own stats
-  let matHeader = '<div style="background:linear-gradient(135deg,' + mat.color + '22,' + mat.color + '08);border:1px solid ' + mat.color + '44;border-radius:16px;padding:18px;margin-bottom:12px">'
-    + '<div style="display:flex;align-items:center;gap:14px">'
-      + '<div style="font-size:36px">' + mat.label.split(' ')[0] + '</div>'
+  // ── Matière progress strip
+  const pct = stats.pct;
+  const matHeader =
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">'
+      + '<div style="font-size:28px">' + mat.label.split(' ')[0] + '</div>'
       + '<div style="flex:1">'
-        + '<div style="font-family:\'Syne\',sans-serif;font-size:18px;font-weight:800">' + mat.label.slice(3) + '</div>'
-        + '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + stats.seen + '/' + stats.total + ' chapitres vus' + (stats.avgScore ? ' · Moy: ' + stats.avgScore + '/20' : '') + '</div>'
-        + '<div style="background:var(--surface);border-radius:6px;height:4px;margin-top:8px;overflow:hidden"><div style="height:100%;background:' + mat.color + ';width:' + stats.pct + '%;transition:width 0.5s"></div></div>'
+        + '<div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800">' + mat.label.slice(3) + '</div>'
+        + '<div style="display:flex;align-items:center;gap:8px;margin-top:6px">'
+          + '<div style="flex:1;background:var(--border);border-radius:4px;height:4px;overflow:hidden">'
+            + '<div style="height:100%;background:' + matColor + ';width:' + pct + '%;transition:width 0.5s"></div>'
+          + '</div>'
+          + '<span style="font-size:11px;color:var(--muted);white-space:nowrap">' + stats.seen + '/' + stats.total + ' vus</span>'
+        + '</div>'
       + '</div>'
-    + '</div>'
-  + '</div>';
+    + '</div>';
 
-  // Chapter list
-  let chaptersHTML = mat.chapitres.map((ch, i) => {
+  // ── Chapter cards
+  const chaptersHTML = mat.chapitres.map(function(ch, i) {
     const st = p[currentBrevetMat + '_' + i] || {};
-    const statusIcon = st.mastered ? '✅' : st.seen ? '👁️' : '○';
-    const statusColor = st.mastered ? 'var(--accent3)' : st.seen ? 'var(--accent2)' : 'var(--border)';
-    const bookmarkIcon = st.bookmarked ? '🔖' : '';
-    const scoreText = st.lastScore !== null && st.lastScore !== undefined ? st.lastScore + '/20' : '';
-    return '<div onclick="openBrevetChapitre(' + i + ')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border:1px solid ' + (st.seen ? mat.color + '44' : 'var(--border)') + ';border-radius:14px;cursor:pointer;margin-bottom:8px;transition:all 0.15s">'
-      + '<div style="width:32px;height:32px;border-radius:10px;background:' + statusColor + '22;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:' + statusColor + ';font-family:\'Space Grotesk\',sans-serif;font-weight:700">' + (st.mastered || st.seen ? statusIcon : (i+1)) + '</div>'
-      + '<div style="flex:1;min-width:0">'
-        + '<div style="font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px">' + ch.titre + (bookmarkIcon ? ' <span>' + bookmarkIcon + '</span>' : '') + '</div>'
-        + '<div style="font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ch.resume + '</div>'
+    const score = (st.lastScore !== null && st.lastScore !== undefined) ? st.lastScore : null;
+    const scoreColor = score !== null ? (score >= 10 ? 'var(--accent3)' : 'var(--accent4)') : 'var(--muted)';
+
+    let numClass = 'ch-num';
+    let numContent = i + 1;
+    if (st.mastered) { numClass += ' mastered'; numContent = '✓'; }
+    else if (st.seen) { numClass += ' seen'; }
+
+    return '<div class="ch-card' + (st.seen ? ' seen' : '') + '" style="--ch-color:' + matColor + '" onclick="openBrevetChapitre(' + i + ')">'
+      + '<div class="' + numClass + '">' + numContent + '</div>'
+      + '<div class="ch-body">'
+        + '<div class="ch-title">' + ch.titre + (st.bookmarked ? ' 🔖' : '') + '</div>'
+        + '<div class="ch-resume">' + ch.resume + '</div>'
       + '</div>'
-      + (scoreText ? '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:12px;font-weight:700;color:' + (parseFloat(scoreText) >= 10 ? 'var(--accent3)' : 'var(--accent4)') + ';flex-shrink:0">' + scoreText + '</div>' : '')
-      + '<div style="font-size:18px;color:var(--muted);flex-shrink:0">›</div>'
+      + (score !== null ? '<div class="ch-score" style="color:' + scoreColor + '">' + score + '/20</div>' : '')
+      + '<div class="ch-arrow">›</div>'
     + '</div>';
   }).join('');
 
