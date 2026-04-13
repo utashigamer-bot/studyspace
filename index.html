@@ -1138,8 +1138,14 @@ body {
   overflow: hidden;
 }
 .nav-item.active { color: var(--accent); }
-.nav-emoji { font-size: 24px; line-height: 1; flex-shrink: 0; }
-.nav-item > span:last-of-type { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.nav-emoji { font-size: var(--nav-emoji-size, 24px); line-height: 1; flex-shrink: 0; }
+.nav-item > span:last-of-type { font-size: var(--nav-label-size, 11px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+body[data-nav-size="small"]  { --nav-emoji-size: 19px; --nav-label-size: 9px; }
+body[data-nav-size="small"]  .nav-item { padding: 6px 4px 4px; gap: 1px; }
+body[data-nav-size="large"]  { --nav-emoji-size: 28px; --nav-label-size: 12px; }
+body[data-nav-size="large"]  .nav-item { padding: 12px 4px 8px; gap: 4px; }
+body[data-nav-size="xlarge"] { --nav-emoji-size: 32px; --nav-label-size: 13px; }
+body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
 .nav-badge {
   position: absolute; top: 6px; right: calc(50% - 18px);
   background: var(--accent4); color: #fff;
@@ -4312,23 +4318,18 @@ function getWeekNumber(date) {
 }
 
 function getParentForDate(date) {
-  // Référence: semaine 11 de 2026 (9-15 mars) = chez maman lun-jeu, chez papa ven-dim
-  const refMonday = new Date(2026, 2, 9); // 9 mars 2026 = lundi semaine 11
-  const diffDays = Math.floor((date - refMonday) / 86400000);
-  const diffWeeks = Math.floor(diffDays / 7);
-  const dow = date.getDay(); // 0=dim, 1=lun ... 6=sam
-
-  // Dans chaque semaine: lun(1)-jeu(4) = premier parent de la semaine, ven(5)-dim(0,6) = second
-  const weekIsEven = diffWeeks % 2 === 0;
-
-  if (dow >= 1 && dow <= 4) {
-    // Lundi à jeudi
-    return weekIsEven ? 'mama' : 'papa';
-  } else {
-    // Vendredi, samedi, dimanche
-    return weekIsEven ? 'papa' : 'mama';
-  }
+  var cfg = store.get('familleConfig', {changeDay: 5, refDate: '2026-03-09'});
+  var cd = parseInt(cfg.changeDay !== undefined ? cfg.changeDay : 5);
+  var rp = (cfg.refDate || '2026-03-09').split('-');
+  var refMonday = new Date(parseInt(rp[0]), parseInt(rp[1])-1, parseInt(rp[2]));
+  var diffDays = Math.floor((date - refMonday) / 86400000);
+  var diffWeeks = Math.floor(diffDays / 7);
+  var dow = date.getDay();
+  var weekIsEven = diffWeeks % 2 === 0;
+  var isFirstHalf = dow === 0 ? false : dow < cd;
+  return isFirstHalf ? (weekIsEven ? 'mama' : 'papa') : (weekIsEven ? 'papa' : 'mama');
 }
+// REPLACED_PARENT_PLACEHOLDER
 
 function changeWeek(dir) { planningWeekOffset += dir; renderFamille(); }
 
@@ -5478,6 +5479,35 @@ function renderParametres() {
       + makeSettingsToggle('hasRoulette', '🎡', 'Roulette', 'Outil de décision', profile.hasRoulette)
     + '</div>'
 
+    // ── Personnalisation
+    + '<div class="settings-group">'
+      + '<div class="settings-group-title">⚙️ Personnalisation</div>'
+      + '<div class="settings-row" onclick="settingsEditExam()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">📅</span>'
+        + '<div><div class="settings-row-label">Mon examen</div>'
+        + '<div class="settings-row-sub">' + (store.get('examConfig',{name:'Brevet'}).name||'Brevet') + ' — ' + (store.get('examConfig',{date:'2026-06-19'}).date||'2026-06-19') + '</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+      + '<div class="settings-row" onclick="settingsEditFamilleConfig()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">🔄</span>'
+        + '<div><div class="settings-row-label">Garde alternée</div>'
+        + '<div class="settings-row-sub">Configurer le jour et la référence</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+      + '<div class="settings-row" onclick="settingsExportImport()">'
+        + '<div class="settings-row-left"><span class="settings-row-icon">📤</span>'
+        + '<div><div class="settings-row-label">Exporter / Importer</div>'
+        + '<div class="settings-row-sub">Sauvegarder ou transférer tes données</div></div></div>'
+        + '<span class="settings-chevron">›</span></div>'
+      + '<div style="padding:10px 12px 8px">'
+        + '<div style="font-size:12px;font-weight:700;margin-bottom:8px">📱 Taille des boutons de navigation</div>'
+        + '<div style="display:flex;gap:6px">'
+          + makeNavSizeBtn("small",  "🔹 Petit")
+          + makeNavSizeBtn("medium", "🔷 Moyen")
+          + makeNavSizeBtn("large",  "🔵 Grand")
+          + makeNavSizeBtn("xlarge", "⬛ XL")
+        + '</div>'
+      + '</div>'
+    + '</div>'
+
     // ── Danger zone
     + '<div class="settings-group">'
       + '<div class="settings-group-title">⚠️ Zone dangereuse</div>'
@@ -5614,6 +5644,120 @@ function saveSettingsFamily(familyId) {
   saveProfile(profile);
   updateDrawerVisibility();
   renderParametres();
+}
+
+
+// ============================================================
+//  PARAMÈTRES — PERSONNALISATION
+// ============================================================
+function settingsEditExam() {
+  var cfg = getExamConfig();
+  var el = document.getElementById('parametres-content');
+  el.innerHTML = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;margin-bottom:12px">📅 Configurer mon examen</div>'
+    + '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Nom de l&rsquo;examen</label>'
+    + '<input class="ob-input" id="s-exam-name" value="' + (cfg.name||'Brevet') + '" placeholder="Brevet, Bac, BTS..." style="margin-bottom:12px">'
+    + '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Date de l&rsquo;examen</label>'
+    + '<input class="ob-input" id="s-exam-date" type="date" value="' + (cfg.date||'2026-06-19') + '" style="margin-bottom:16px">'
+    + '<div style="display:flex;gap:8px">'
+      + '<button class="btn btn-primary" style="flex:1" onclick="saveExamConfig()">Sauvegarder</button>'
+      + '<button class="btn btn-ghost" style="flex:1" onclick="renderParametres()">Annuler</button>'
+    + '</div></div>';
+}
+
+function saveExamConfig() {
+  var name = (document.getElementById('s-exam-name').value||'').trim() || 'Brevet';
+  var date = document.getElementById('s-exam-date').value || '2026-06-19';
+  store.set('examConfig', {name:name, date:date});
+  renderParametres();
+  renderDashboard();
+}
+
+function settingsEditFamilleConfig() {
+  var cfg = store.get('familleConfig', {changeDay:5, refDate:'2026-03-09'});
+  var days = ['','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var opts = '';
+  for (var i = 1; i <= 6; i++) {
+    opts += '<option value="' + i + '"' + (parseInt(cfg.changeDay)===i?' selected':'') + '>' + days[i] + '</option>';
+  }
+  var el = document.getElementById('parametres-content');
+  el.innerHTML = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;margin-bottom:12px">🔄 Garde alternée</div>'
+    + '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Jour de changement</label>'
+    + '<select class="ob-input" id="s-fam-day" style="margin-bottom:12px">' + opts + '</select>'
+    + '<label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Date de référence (un lundi chez Maman)</label>'
+    + '<input class="ob-input" id="s-fam-ref" type="date" value="' + (cfg.refDate||'2026-03-09') + '" style="margin-bottom:16px">'
+    + '<div style="display:flex;gap:8px">'
+      + '<button class="btn btn-primary" style="flex:1" onclick="saveFamilleConfig()">Sauvegarder</button>'
+      + '<button class="btn btn-ghost" style="flex:1" onclick="renderParametres()">Annuler</button>'
+    + '</div></div>';
+}
+
+function saveFamilleConfig() {
+  var changeDay = parseInt(document.getElementById('s-fam-day').value);
+  var refDate = document.getElementById('s-fam-ref').value || '2026-03-09';
+  store.set('familleConfig', {changeDay:changeDay, refDate:refDate});
+  if (typeof renderCalendar === 'function') renderCalendar();
+  if (typeof renderFamille === 'function') renderFamille();
+  renderParametres();
+}
+
+function settingsExportImport() {
+  var el = document.getElementById('parametres-content');
+  el.innerHTML = '<div style="padding:16px;background:var(--surface);border-radius:14px;border:1px solid var(--accent)44">'
+    + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">'
+      + '<button class="cours-back-btn" onclick="renderParametres()">&#8249;</button>'
+      + '<div style="font-size:14px;font-weight:700">📤 Exporter / Importer</div>'
+    + '</div>'
+    + '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px">'
+      + '<div style="font-size:13px;font-weight:700;margin-bottom:6px">Exporter mes données</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-bottom:12px">Télécharge toutes tes données en fichier JSON.</div>'
+      + '<button class="btn btn-primary" style="width:100%" onclick="exportAllData()">⬇️ Télécharger</button>'
+    + '</div>'
+    + '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px">'
+      + '<div style="font-size:13px;font-weight:700;margin-bottom:6px">Importer des données</div>'
+      + '<div style="font-size:12px;color:var(--muted);margin-bottom:12px">⚠️ Écrase tes données actuelles.</div>'
+      + '<label style="display:block;cursor:pointer">'
+        + '<div class="btn btn-ghost" style="width:100%;text-align:center">📁 Choisir un fichier .json</div>'
+        + '<input type="file" accept=".json" style="display:none" onchange="importData(this)">'
+      + '</label>'
+    + '</div></div>';
+}
+
+function exportAllData() {
+  var data = {};
+  var keys = ['userProfile','matieres','agendaEvents','objectifs','stickies','chStats',
+    'bdays','familleData','courseItems','wheelItems','brevetProgress','brevetStreak',
+    'apparenceCustom','palette','extraTheme','fontChoice','examConfig','familleConfig',
+    'customQuestions','customFiches','customDico','englishStats','codeRouteProgress',
+    'englishTextDone','englishRulesProgress','dashStyle','navSize','pomoStats'];
+  keys.forEach(function(k) {
+    try { var v = localStorage.getItem(k); if (v) data[k] = JSON.parse(v); } catch(e) {}
+  });
+  var profile = store.get('userProfile', {});
+  var fname = (profile && profile.name ? profile.name.replace(/[^a-zA-Z0-9]/g,'_') : 'StudySpace');
+  var blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'StudySpace_' + fname + '_' + new Date().toISOString().split('T')[0] + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function importData(input) {
+  var file = input.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      if (!confirm('Importer ces données ? Tes données actuelles seront écrasées.')) return;
+      Object.keys(data).forEach(function(k) {
+        try { localStorage.setItem(k, JSON.stringify(data[k])); } catch(err) {}
+      });
+      alert('Import réussi !'); location.reload();
+    } catch(err) { alert('Fichier invalide.'); }
+  };
+  reader.readAsText(file);
 }
 
 function confirmResetOnboarding() {
@@ -5970,7 +6114,7 @@ Si conduite accompagnée (AAE) depuis 16 ans : permis probatoire de 3 points, du
 → Obligation de repasser le permis (théorie + pratique)<br>
 → Après annulation judiciaire : délai d'interdiction de repasser variable<br><br>
 <strong>Invalidation</strong> : capital de points épuisé<br>
-→ Délai de 6 mois avant de repasser l'examen</p>`,
+→ Délai de 6 mois avant de repasser l&rsquo;examen</p>`,
     quiz:[
       {q:"Un permis ordinaire a combien de points ?",choices:["12 points","6 points","10 points","18 points"],correct:0},
       {q:"Un permis probatoire démarre avec combien de points ?",choices:["6 points","12 points","3 points","9 points"],correct:0},
@@ -6531,6 +6675,45 @@ function renderCodeResult() {
 }
 
 
+function initNavSize() {
+  var size = store.get('navSize', 'medium');
+  document.body.setAttribute('data-nav-size', size);
+}
+
+function setNavSize(size) {
+  store.set('navSize', size);
+  document.body.setAttribute('data-nav-size', size);
+  renderParametres();
+}
+
+function makeNavSizeBtn(size, label) {
+  var current = store.get('navSize', 'medium');
+  var active = current === size;
+  var sa = 'flex:1;padding:10px 4px;border-radius:12px;cursor:pointer;text-align:center;font-size:11px;font-family:inherit;'
+    + 'border:1px solid ' + (active ? 'var(--accent)' : 'var(--border)') + ';'
+    + 'background:' + (active ? 'var(--accent)22' : 'var(--card)') + ';'
+    + 'color:' + (active ? 'var(--accent)' : 'var(--muted)') + ';'
+    + 'font-weight:' + (active ? '700' : '500') + ';';
+  return '<button data-ns="' + size + '" onclick="setNavSize(this.getAttribute(\'data-ns\'))" style="' + sa + '">' + label + '</button>';
+}
+
+function checkSharedProfile() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var p = params.get('profile');
+    if (!p) return;
+    var data = JSON.parse(decodeURIComponent(atob(p)));
+    if (confirm('Profil reçu. Appliquer les paramètres ?')) {
+      var ex = store.get('userProfile', {});
+      if (data.level) ex.level = data.level;
+      if (data.theme) ex.theme = data.theme;
+      store.set('userProfile', ex);
+      if (data.examConfig) store.set('examConfig', data.examConfig);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  } catch(e) {}
+}
+
 // Init all
 // Reset any bad saved text colors from previous versions
 (function() {
@@ -6542,6 +6725,8 @@ function renderCodeResult() {
 })();
 initApparence();
 initExtraPersonalisation();
+initNavSize();
+checkSharedProfile();
 renderDashboard();
 renderMatieres();
 renderCalendar();
@@ -7721,6 +7906,165 @@ function renderTextResult() {
 }
 
 // ── Vocabulaire hebdo
+
+// ── Vocabulaire hebdomadaire
+const ENGLISH_WEEKLY_VOCAB = [
+  [
+    {en:'beautiful',fr:'beau / belle',ex:'What a beautiful day!'},
+    {en:'friend',fr:'ami(e)',ex:'She is my best friend.'},
+    {en:'school',fr:'école',ex:'I go to school by bus.'},
+    {en:'important',fr:'important(e)',ex:'This is very important.'},
+    {en:'because',fr:'parce que',ex:'I stayed home because it was raining.'},
+    {en:'together',fr:'ensemble',ex:'Let’s work together.'},
+    {en:'different',fr:'différent(e)',ex:'We have different opinions.'},
+    {en:'people',fr:'les gens / personnes',ex:'Many people use social media.'},
+  ],
+  [
+    {en:'environment',fr:'environnement',ex:'We must protect the environment.'},
+    {en:'challenge',fr:'défi',ex:'Climate change is a major challenge.'},
+    {en:'solution',fr:'solution',ex:'We need to find a solution.'},
+    {en:'technology',fr:'technologie',ex:'Technology changes our lives.'},
+    {en:'government',fr:'gouvernement',ex:'The government passed a new law.'},
+    {en:'health',fr:'santé',ex:'Exercise is good for your health.'},
+    {en:'dangerous',fr:'dangereux(-euse)',ex:'Driving fast is dangerous.'},
+    {en:'achieve',fr:'réaliser / accomplir',ex:'You can achieve your goals.'},
+  ],
+  [
+    {en:'freedom',fr:'liberté',ex:'Freedom of speech is important.'},
+    {en:'responsibility',fr:'responsabilité',ex:'We have a responsibility to act.'},
+    {en:'improve',fr:'améliorer',ex:'I want to improve my English.'},
+    {en:'opportunity',fr:'opportunité / chance',ex:'This is a great opportunity.'},
+    {en:'community',fr:'communauté',ex:'She volunteers in her community.'},
+    {en:'influence',fr:'influence / influencer',ex:'Social media influences young people.'},
+    {en:'knowledge',fr:'connaissance / savoir',ex:'Knowledge is power.'},
+    {en:'reduce',fr:'réduire',ex:'We should reduce plastic use.'},
+  ],
+  [
+    {en:'although',fr:'bien que / même si',ex:'Although it was late, we continued.'},
+    {en:'therefore',fr:'donc / par conséquent',ex:'He was tired; therefore, he slept.'},
+    {en:'moreover',fr:'de plus / en outre',ex:'Moreover, the price is very low.'},
+    {en:'however',fr:'cependant / mais',ex:'However, there are some problems.'},
+    {en:'whereas',fr:'alors que / tandis que',ex:'She likes coffee, whereas he prefers tea.'},
+    {en:'despite',fr:'malgré',ex:'Despite the rain, we went out.'},
+    {en:'whereas',fr:'tandis que',ex:'I study hard, whereas he does not.'},
+    {en:'consequently',fr:'par conséquent',ex:'He missed the bus; consequently, he was late.'},
+  ],
+];
+
+const ENGLISH_QUIZ_WORDS = [
+  {en:'happy',fr:'heureux/heureuse'},{en:'sad',fr:'triste'},{en:'angry',fr:'en colère'},
+  {en:'tired',fr:'fatigué(e)'},{en:'hungry',fr:'affamé(e) / avoir faim'},{en:'afraid',fr:'avoir peur / effrayé'},
+  {en:'brave',fr:'courageux/courageuse'},{en:'kind',fr:'gentil/gentille'},{en:'honest',fr:'honnête'},
+  {en:'clever',fr:'intelligent(e) / malin'},{en:'polite',fr:'poli(e)'},{en:'rude',fr:'impoli(e) / grossier'},
+  {en:'strong',fr:'fort(e)'},{en:'weak',fr:'faible'},{en:'quiet',fr:'calme / silencieux'},
+  {en:'noisy',fr:'bruyant(e)'},{en:'busy',fr:'occupé(e)'},{en:'free',fr:'libre / gratuit'},
+  {en:'early',fr:'tôt / en avance'},{en:'late',fr:'tard / en retard'},
+];
+
+function getEnglishWeekIndex() {
+  var ref = new Date(2026, 0, 5); // lundi 5 jan 2026
+  var now = new Date();
+  var diff = Math.floor((now - ref) / (7 * 86400000));
+  return ((diff % ENGLISH_WEEKLY_VOCAB.length) + ENGLISH_WEEKLY_VOCAB.length) % ENGLISH_WEEKLY_VOCAB.length;
+}
+
+function getCurrentWeekWords() {
+  return ENGLISH_WEEKLY_VOCAB[getEnglishWeekIndex()];
+}
+
+// ── Quiz vocabulaire
+var englishQuizState = null;
+
+function englishStartQuiz() {
+  var words = [...ENGLISH_QUIZ_WORDS].sort(function(){ return Math.random()-0.5; }).slice(0,8);
+  var questions = words.map(function(w) {
+    var wrong = ENGLISH_QUIZ_WORDS.filter(function(x){ return x.en !== w.en; })
+      .sort(function(){ return Math.random()-0.5; }).slice(0,3);
+    var choices = [w.fr].concat(wrong.map(function(x){ return x.fr; }))
+      .sort(function(){ return Math.random()-0.5; });
+    return { q: w.en, choices: choices, correct: choices.indexOf(w.fr) };
+  });
+  englishQuizState = { questions: questions, current: 0, score: 0, answers: [] };
+  renderEnglishQuizQuestion();
+}
+
+function renderEnglishQuizQuestion() {
+  var el = document.getElementById('anglais-content');
+  var s = englishQuizState;
+  var q = s.questions[s.current];
+  var pct = Math.round(s.current / s.questions.length * 100);
+
+  el.innerHTML = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">'
+    + '<button class="cours-back-btn" onclick="renderAnglaisHome()">&#8249;</button>'
+    + '<div><div style="font-size:16px;font-weight:800">🎯 Quiz vocabulaire</div>'
+    + '<div style="font-size:12px;color:var(--muted)">Question ' + (s.current+1) + ' / ' + s.questions.length + '</div></div>'
+    + '<div style="margin-left:auto;font-family:Space Grotesk,sans-serif;font-size:22px;font-weight:800;color:var(--accent)">' + s.score + '/' + s.current + '</div>'
+  + '</div>'
+  + '<div style="background:var(--border);border-radius:8px;height:6px;margin-bottom:24px;overflow:hidden">'
+    + '<div style="height:100%;background:var(--accent);border-radius:8px;width:' + pct + '%;transition:width 0.4s"></div>'
+  + '</div>'
+  + '<div style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;text-align:center;margin-bottom:24px;padding:20px;background:var(--card);border-radius:14px">' + q.q + '</div>'
+  + '<div style="display:flex;flex-direction:column;gap:10px" id="eq-choices">'
+  + q.choices.map(function(c, i) {
+    return '<button onclick="answerEnglishQuiz(' + i + ')" id="eq-btn-' + i + '" style="text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer">' + c + '</button>';
+  }).join('')
+  + '</div>';
+}
+
+function answerEnglishQuiz(idx) {
+  var s = englishQuizState;
+  var q = s.questions[s.current];
+  var ok = idx === q.correct;
+  if (ok) s.score++;
+  s.answers.push({q: q.q, chosen: q.choices[idx], correct: q.choices[q.correct], ok: ok});
+
+  q.choices.forEach(function(_, i) {
+    var btn = document.getElementById('eq-btn-' + i);
+    if (!btn) return;
+    btn.onclick = null; btn.style.cursor = 'default';
+    if (i === q.correct) { btn.style.background = 'rgba(82,232,162,0.2)'; btn.style.borderColor = 'var(--accent3)'; }
+    else if (i === idx && !ok) { btn.style.background = 'rgba(248,113,113,0.2)'; btn.style.borderColor = 'var(--accent4)'; }
+  });
+  var fb = document.createElement('div');
+  fb.style.cssText = 'margin-top:10px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;background:' + (ok?'rgba(82,232,162,0.15)':'rgba(248,113,113,0.15)') + ';color:' + (ok?'var(--accent3)':'var(--accent4)');
+  fb.textContent = ok ? '✅ Correct !' : '❌ ' + q.choices[q.correct];
+  document.getElementById('eq-choices').appendChild(fb);
+  if (navigator.vibrate) navigator.vibrate(ok ? 40 : [30,40,30]);
+
+  setTimeout(function() {
+    s.current++;
+    if (s.current >= s.questions.length) renderEnglishQuizResult();
+    else renderEnglishQuizQuestion();
+  }, 1400);
+}
+
+function renderEnglishQuizResult() {
+  var s = englishQuizState;
+  var total = s.questions.length;
+  var el = document.getElementById('anglais-content');
+  var emoji = s.score === total ? '🏆' : s.score >= total*0.75 ? '⭐' : s.score >= total*0.5 ? '😊' : '📖';
+
+  el.innerHTML = '<div style="text-align:center;padding:28px 16px;background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.4);border-radius:20px;margin-bottom:20px">'
+    + '<div style="font-size:48px;margin-bottom:8px">' + emoji + '</div>'
+    + '<div style="font-family:Space Grotesk,sans-serif;font-size:56px;font-weight:800;color:var(--accent);line-height:1">' + s.score + '<span style="font-size:22px">/' + total + '</span></div>'
+    + '<div style="font-size:13px;color:var(--muted);margin-top:6px">' + (s.score===total?'Parfait !':s.score>=total/2?'Bien joué !':'Continue à réviser !') + '</div>'
+  + '</div>'
+  + '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px">'
+  + s.answers.map(function(a) {
+    return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="font-size:13px;font-weight:700">' + a.q + '</div>'
+      + '<div style="font-size:12px;color:' + (a.ok?'var(--accent3)':'var(--accent4)') + '">' + (a.ok?'✅ ':'❌ ') + (a.ok?a.correct:a.chosen+' → '+a.correct) + '</div>'
+    + '</div>';
+  }).join('')
+  + '</div>'
+  + '<div style="display:flex;gap:10px">'
+    + '<button class="btn btn-primary" style="flex:1" onclick="englishStartQuiz()">🔄 Refaire</button>'
+    + '<button class="btn btn-ghost" style="flex:1" onclick="renderAnglaisHome()">🏠 Accueil</button>'
+  + '</div>';
+
+  if (s.score >= total * 0.75 && typeof launchConfetti === 'function') launchConfetti();
+}
+
 function renderAnglaisVocab() {
   const el = document.getElementById('anglais-content');
   const weekWords = getCurrentWeekWords();
@@ -11346,12 +11690,15 @@ function getBrevetStats() {
   });
   return { seen, mastered, bookmarked, total };
 }
+function getExamConfig() {
+  return store.get('examConfig', {name: 'Brevet', date: '2026-06-19'});
+}
+
 function getBrevetExamDate() {
-  // Brevet 2026: ~19 juin 2026
-  const exam = new Date(2026, 5, 19);
-  const now = new Date();
-  const diff = Math.ceil((exam - now) / 86400000);
-  return Math.max(0, diff);
+  var cfg = getExamConfig();
+  var exam = new Date(cfg.date || '2026-06-19');
+  var now = new Date();
+  return Math.max(0, Math.ceil((exam - now) / 86400000));
 }
 function getBreviMatiereStats(matKey) {
   const mat = getActiveBrevetData()[matKey];
