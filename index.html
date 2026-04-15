@@ -22,7 +22,7 @@
 .ob-step-dot { flex:1; height:4px; border-radius:2px; background:var(--border); transition:background 0.3s; }
 .ob-step-dot.active { background:var(--accent); }
 .ob-step-dot.done { background:var(--accent)66; }
-.ob-title { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; margin-bottom:8px; line-height:1.2; }
+.ob-title { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; margin-bottom:8px; line-height:1.3; letter-spacing:0.01em; }
 .ob-sub { font-size:14px; color:var(--muted); margin-bottom:28px; line-height:1.5; }
 .ob-emoji { font-size:52px; margin-bottom:16px; display:block; }
 .ob-option {
@@ -100,8 +100,8 @@
   font-size:26px; flex-shrink:0;
 }
 .cours-mode-info { flex:1; min-width:0; }
-.cours-mode-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; }
-.cours-mode-sub { font-size:12px; color:var(--muted); margin-top:3px; line-height:1.3; }
+.cours-mode-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; letter-spacing:0.01em; line-height:1.3; }
+.cours-mode-sub { font-size:12px; color:var(--muted); margin-top:4px; line-height:1.5; letter-spacing:0.01em; }
 .cours-mode-arrow { font-size:22px; color:var(--muted); font-weight:300; }
 
 /* ===== BREVET MAT PILLS ===== */
@@ -247,7 +247,7 @@
 }
 .splash-title {
   font-family: 'Syne', sans-serif;
-  font-size: 32px; font-weight: 800;
+  font-size: 28px; font-weight: 700;
   animation: splashFadeUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .splash-sub {
@@ -318,7 +318,7 @@
 /* ANNIVERSAIRES */
 .bday-hero { display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: var(--radius); background: linear-gradient(135deg, rgba(248,113,113,0.15), rgba(251,146,60,0.08)); border: 1px solid rgba(248,113,113,0.25); margin-bottom: 24px; }
 .bday-hero-icon { font-size: 52px; flex-shrink: 0; }
-.bday-hero-info h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.bday-hero-info h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
 .bday-hero-info p { font-size: 13px; color: var(--muted); }
 .bday-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
 .bday-list { display: flex; flex-direction: column; gap: 10px; }
@@ -369,7 +369,7 @@
 /* ANNIVERSAIRES */
 .bday-hero { display: flex; align-items: center; gap: 20px; padding: 24px 28px; border-radius: var(--radius); background: linear-gradient(135deg, rgba(248,113,113,0.15), rgba(251,146,60,0.08)); border: 1px solid rgba(248,113,113,0.25); margin-bottom: 24px; }
 .bday-hero-icon { font-size: 52px; flex-shrink: 0; }
-.bday-hero-info h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.bday-hero-info h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
 .bday-hero-info p { font-size: 13px; color: var(--muted); }
 .bday-layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
 .bday-list { display: flex; flex-direction: column; gap: 10px; }
@@ -412,8 +412,8 @@ body {
 }
 .page-title {
   font-family: 'Syne', sans-serif;
-  font-size: 32px; font-weight: 800;
-  letter-spacing: -1px; line-height: 1.35;
+  font-size: 28px; font-weight: 700;
+  letter-spacing: 0px; line-height: 1.35;
 }
 .page-title span { color: var(--accent); }
 .page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
@@ -1108,7 +1108,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 14px; font-weight: 700;
 }
-.top-bar-logo-text { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; }
+.top-bar-logo-text { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
 .top-bar-actions { display: flex; gap: 8px; align-items: center; }
 .top-bar-btn {
   width: 34px; height: 34px; border-radius: 10px;
@@ -1202,7 +1202,7 @@ body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
 .drawer-bottom-row { display: flex; align-items: center; justify-content: space-between; padding: 0 0 4px; }
 .drawer-logo { display: flex; align-items: center; gap: 8px; }
 .drawer-logo-icon { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); color: #0c0b14; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-.drawer-logo-text { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; }
+.drawer-logo-text { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
 .drawer-theme-swatches { display: flex; gap: 6px; }
 .drawer-theme-swatch {
   width: 22px; height: 22px; border-radius: 50%;
@@ -1322,7 +1322,7 @@ body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
 .famille-hero-info { flex: 1; }
 .famille-hero-location {
   font-family: 'Syne', sans-serif;
-  font-size: 28px; font-weight: 800; letter-spacing: 0px;
+  font-size: 26px; font-weight: 700; letter-spacing: 0.01em;
   margin-bottom: 4px;
 }
 .famille-hero-sub { font-size: 14px; opacity: 0.8; }
@@ -1362,7 +1362,7 @@ body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
   display: flex; align-items: center; justify-content: center;
   font-size: 26px; flex-shrink: 0;
 }
-.famille-card-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+.famille-card-name { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; }
 .famille-card-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .famille-edit-btn {
   margin-left: auto; background: none; border: 1px solid var(--border);
@@ -1434,7 +1434,7 @@ body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
   width: 480px; max-width: 92vw;
   box-shadow: var(--shadow);
 }
-.pwa-box h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.pwa-box h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
 .pwa-box .pwa-sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
 .pwa-step {
   display: flex; gap: 14px; align-items: flex-start;
@@ -1614,8 +1614,8 @@ body[data-nav-size="xlarge"] .nav-item { padding: 14px 4px 10px; gap: 5px; }
   color: var(--accent); filter: drop-shadow(0 0 20px var(--accent));
 }
 .info-hero-name {
-  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 900;
-  letter-spacing: -1px; margin-bottom: 8px;
+  font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700;
+  letter-spacing: 0px; margin-bottom: 8px;
 }
 .info-version-badge {
   background: var(--accent); color: #0c0b14;
@@ -7618,7 +7618,7 @@ Usage : action antérieure à une autre action passée<br>
 • Toujours suivi du <strong>verbe base</strong> (sans to sauf have to, ought to)<br>
 • Interrogatif : inversion modal + sujet → <em>Can you...? Must I...?</em><br>
 • <strong>Must not / Mustn't</strong> = interdiction forte<br>
-• <strong>Don't have to</strong> = pas obligatoire (différent de mustn't !)</p>`,
+• <strong>Don’t have to</strong> = pas obligatoire (différent de mustn't !)</p>`,
     quiz: [
       { q: "'You ___ smoke here.' (strong prohibition)", choices: ["mustn't", "don't have to", "shouldn't", "can't"], correct: 0 },
       { q: "'___ I use your phone?' (polite request)", choices: ["Could", "Must", "Should", "Would"], correct: 0 },
@@ -7693,13 +7693,13 @@ Usage : action antérieure à une autre action passée<br>
 <div style="display:grid;grid-template-columns:2fr 2fr;gap:10px">
 <div style="font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px">Expression</div>
 <div style="font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px">Signification</div>
-<div style="font-weight:700">It's up to you</div><div style="color:var(--muted)">C'est à toi de décider</div>
+<div style="font-weight:700">It’s up to you</div><div style="color:var(--muted)">C'est à toi de décider</div>
 <div style="font-weight:700">Never mind</div><div style="color:var(--muted)">Ce n'est pas grave / Laisse tomber</div>
 <div style="font-weight:700">I'm in a hurry</div><div style="color:var(--muted)">Je suis pressé(e)</div>
 <div style="font-weight:700">Take it easy</div><div style="color:var(--muted)">Calme-toi / Prends ça calmement</div>
 <div style="font-weight:700">I can't make it</div><div style="color:var(--muted)">Je ne pourrai pas venir</div>
-<div style="font-weight:700">What's going on?</div><div style="color:var(--muted)">Que se passe-t-il ?</div>
-<div style="font-weight:700">That's the point</div><div style="color:var(--muted)">C'est exactement ça / C'est le but</div>
+<div style="font-weight:700">What’s going on?</div><div style="color:var(--muted)">Que se passe-t-il ?</div>
+<div style="font-weight:700">That’s the point</div><div style="color:var(--muted)">C'est exactement ça / C'est le but</div>
 <div style="font-weight:700">I'm fed up</div><div style="color:var(--muted)">J'en ai marre</div>
 <div style="font-weight:700">Break a leg!</div><div style="color:var(--muted)">Bonne chance ! (théâtre, examen)</div>
 <div style="font-weight:700">Hit the road</div><div style="color:var(--muted)">Se mettre en route</div>
@@ -7718,7 +7718,7 @@ Usage : action antérieure à une autre action passée<br>
       { q: "'I'm fed up' means?", choices: ["J'en ai marre", "Je suis nourri", "Je suis épuisé", "J'ai chaud"], correct: 0 },
       { q: "'Break a leg!' is used?", choices: ["To wish someone good luck", "To say goodbye", "To apologise", "To express surprise"], correct: 0 },
       { q: "'In the long run' means?", choices: ["À long terme", "En courant", "Au final (aujourd'hui)", "En avance"], correct: 0 },
-      { q: "'It's up to you' means?", choices: ["C'est à toi de décider", "C'est à toi de payer", "C'est contre toi", "Dépends de toi (géographiquement)"], correct: 0 },
+      { q: "'It’s up to you' means?", choices: ["C'est à toi de décider", "C'est à toi de payer", "C'est contre toi", "Dépends de toi (géographiquement)"], correct: 0 },
       { q: "'Keep in touch' means?", choices: ["Rester en contact", "Garder le silence", "Se serrer la main", "Continuer à écrire"], correct: 0 },
     ]
   },
@@ -7909,47 +7909,95 @@ function renderTextResult() {
 
 // ── Vocabulaire hebdomadaire
 const ENGLISH_WEEKLY_VOCAB = [
+  // Semaine 1 — Verbes du quotidien (actions courantes)
   [
-    {en:'beautiful',fr:'beau / belle',ex:'What a beautiful day!'},
-    {en:'friend',fr:'ami(e)',ex:'She is my best friend.'},
-    {en:'school',fr:'école',ex:'I go to school by bus.'},
-    {en:'important',fr:'important(e)',ex:'This is very important.'},
-    {en:'because',fr:'parce que',ex:'I stayed home because it was raining.'},
-    {en:'together',fr:'ensemble',ex:'Let’s work together.'},
-    {en:'different',fr:'différent(e)',ex:'We have different opinions.'},
-    {en:'people',fr:'les gens / personnes',ex:'Many people use social media.'},
+    {en:'to get', fr:'obtenir / avoir / devenir', ex:'I need to get some food.'},
+    {en:'to make', fr:'faire / fabriquer', ex:'Can you make me a coffee?'},
+    {en:'to take', fr:'prendre', ex:'Take the bus, it’s faster.'},
+    {en:'to give', fr:'donner', ex:'Can you give me your number?'},
+    {en:'to come', fr:'venir', ex:'Come and sit down.'},
+    {en:'to look', fr:'regarder / avoir l’air', ex:'You look tired today.'},
+    {en:'to keep', fr:'garder / continuer', ex:'Keep the change.'},
+    {en:'to put', fr:'mettre / poser', ex:'Put your phone away.'},
   ],
+  // Semaine 2 — Verbes du quotidien (communication & pensée)
   [
-    {en:'environment',fr:'environnement',ex:'We must protect the environment.'},
-    {en:'challenge',fr:'défi',ex:'Climate change is a major challenge.'},
-    {en:'solution',fr:'solution',ex:'We need to find a solution.'},
-    {en:'technology',fr:'technologie',ex:'Technology changes our lives.'},
-    {en:'government',fr:'gouvernement',ex:'The government passed a new law.'},
-    {en:'health',fr:'santé',ex:'Exercise is good for your health.'},
-    {en:'dangerous',fr:'dangereux(-euse)',ex:'Driving fast is dangerous.'},
-    {en:'achieve',fr:'réaliser / accomplir',ex:'You can achieve your goals.'},
+    {en:'to tell', fr:'dire / raconter', ex:'Tell me what happened.'},
+    {en:'to ask', fr:'demander / poser une question', ex:'She asked me for help.'},
+    {en:'to show', fr:'montrer', ex:'Show me your homework.'},
+    {en:'to feel', fr:'se sentir / ressentir', ex:'I feel great today.'},
+    {en:'to mean', fr:'vouloir dire / signifier', ex:'What do you mean?'},
+    {en:'to need', fr:'avoir besoin de', ex:'I need more time.'},
+    {en:'to leave', fr:'partir / laisser / quitter', ex:'What time do you leave?'},
+    {en:'to run', fr:'courir / gérer', ex:'She runs every morning.'},
   ],
+  // Semaine 3 — Noms courants (personnes & lieux)
   [
-    {en:'freedom',fr:'liberté',ex:'Freedom of speech is important.'},
-    {en:'responsibility',fr:'responsabilité',ex:'We have a responsibility to act.'},
-    {en:'improve',fr:'améliorer',ex:'I want to improve my English.'},
-    {en:'opportunity',fr:'opportunité / chance',ex:'This is a great opportunity.'},
-    {en:'community',fr:'communauté',ex:'She volunteers in her community.'},
-    {en:'influence',fr:'influence / influencer',ex:'Social media influences young people.'},
-    {en:'knowledge',fr:'connaissance / savoir',ex:'Knowledge is power.'},
-    {en:'reduce',fr:'réduire',ex:'We should reduce plastic use.'},
+    {en:'friend', fr:'ami(e)', ex:'He is my best friend.'},
+    {en:'family', fr:'famille', ex:'My family is very close.'},
+    {en:'place', fr:'endroit / lieu', ex:'This is a nice place.'},
+    {en:'home', fr:'chez soi / maison', ex:'I want to go home.'},
+    {en:'job', fr:'travail / emploi', ex:'She has a good job.'},
+    {en:'school', fr:'école / lycée', ex:'School starts at 8.'},
+    {en:'name', fr:'nom / prénom', ex:'What’s your name?'},
+    {en:'city', fr:'ville', ex:'Paris is a big city.'},
   ],
+  // Semaine 4 — Noms courants (objets & concepts)
   [
-    {en:'although',fr:'bien que / même si',ex:'Although it was late, we continued.'},
-    {en:'therefore',fr:'donc / par conséquent',ex:'He was tired; therefore, he slept.'},
-    {en:'moreover',fr:'de plus / en outre',ex:'Moreover, the price is very low.'},
-    {en:'however',fr:'cependant / mais',ex:'However, there are some problems.'},
-    {en:'whereas',fr:'alors que / tandis que',ex:'She likes coffee, whereas he prefers tea.'},
-    {en:'despite',fr:'malgré',ex:'Despite the rain, we went out.'},
-    {en:'whereas',fr:'tandis que',ex:'I study hard, whereas he does not.'},
-    {en:'consequently',fr:'par conséquent',ex:'He missed the bus; consequently, he was late.'},
+    {en:'time', fr:'temps / heure / fois', ex:'I don’t have time now.'},
+    {en:'money', fr:'argent', ex:'Do you have any money?'},
+    {en:'phone', fr:'téléphone', ex:'My phone is dead.'},
+    {en:'food', fr:'nourriture / repas', ex:'I love French food.'},
+    {en:'water', fr:'eau', ex:'Can I have some water?'},
+    {en:'problem', fr:'problème', ex:'We have a problem.'},
+    {en:'idea', fr:'idée', ex:'That’s a great idea!'},
+    {en:'help', fr:'aide / aider', ex:'I need your help.'},
   ],
-];
+  // Semaine 5 — Verbes courants (actions physiques)
+  [
+    {en:'to eat', fr:'manger', ex:'What do you want to eat?'},
+    {en:'to drink', fr:'boire', ex:'Drink more water.'},
+    {en:'to sleep', fr:'dormir', ex:'I need to sleep.'},
+    {en:'to walk', fr:'marcher / se promener', ex:'Let’s walk to school.'},
+    {en:'to drive', fr:'conduire', ex:'She drives to work.'},
+    {en:'to buy', fr:'acheter', ex:'I want to buy a new phone.'},
+    {en:'to pay', fr:'payer', ex:'Can I pay by card?'},
+    {en:'to use', fr:'utiliser', ex:'Use a pencil, not a pen.'},
+  ],
+  // Semaine 6 — Verbes courants (relations sociales)
+  [
+    {en:'to meet', fr:'rencontrer / retrouver', ex:'Nice to meet you!'},
+    {en:'to call', fr:'appeler / téléphoner', ex:'Call me tonight.'},
+    {en:'to wait', fr:'attendre', ex:'Wait for me!'},
+    {en:'to help', fr:'aider', ex:'Can you help me please?'},
+    {en:'to understand', fr:'comprendre', ex:'I don’t understand.'},
+    {en:'to remember', fr:'se souvenir', ex:'Do you remember her?'},
+    {en:'to forget', fr:'oublier', ex:'Don’t forget your keys!'},
+    {en:'to start', fr:'commencer / démarrer', ex:'Let’s start the lesson.'},
+  ],
+  // Semaine 7 — Noms courants (vie quotidienne)
+  [
+    {en:'day', fr:'jour / journée', ex:'Have a nice day!'},
+    {en:'week', fr:'semaine', ex:'See you next week.'},
+    {en:'morning', fr:'matin / matinée', ex:'Good morning!'},
+    {en:'evening', fr:'soir / soirée', ex:'What are you doing this evening?'},
+    {en:'minute', fr:'minute', ex:'Wait a minute please.'},
+    {en:'door', fr:'porte', ex:'Close the door.'},
+    {en:'room', fr:'pièce / chambre / salle', ex:'Clean your room.'},
+    {en:'bag', fr:'sac', ex:'Where is my bag?'},
+  ],
+  // Semaine 8 — Noms courants (émotions & abstractions)
+  [
+    {en:'life', fr:'vie', ex:'Life is beautiful.'},
+    {en:'love', fr:'amour / aimer', ex:'I love spending time with you.'},
+    {en:'dream', fr:'rêve / rêver', ex:'Follow your dream.'},
+    {en:'fear', fr:'peur / crainte', ex:'What is your biggest fear?'},
+    {en:'news', fr:'nouvelles / actualités', ex:'Have you seen the news?'},
+    {en:'plan', fr:'plan / projet', ex:'What’s the plan for today?'},
+    {en:'reason', fr:'raison / cause', ex:'Give me a reason.'},
+    {en:'choice', fr:'choix', ex:'It’s your choice.'},
+  ],
+]
 
 const ENGLISH_QUIZ_WORDS = [
   {en:'happy',fr:'heureux/heureuse'},{en:'sad',fr:'triste'},{en:'angry',fr:'en colère'},
